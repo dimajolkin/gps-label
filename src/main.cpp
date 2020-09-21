@@ -1,39 +1,49 @@
 #include <Arduino.h>
-#include <Adafruit_GFX.h>    // Core graphics library
-#include <Adafruit_ST7735.h> // Hardware-specific library for ST7735
+#include <Adafruit_GFX.h>
+#include <Adafruit_ST7735.h>
+#include <Adafruit_I2CDevice.h>
 #include <SPI.h>
 
+#include "menu.h"
+#include "lan.h"
 
-#define TFT_CS        10 // Hallowing display control pins: chip select
-#define TFT_RST       8 // Display reset
-#define TFT_DC        9 // Display data/command select
-#define TFT_BACKLIGHT  7 // Display backlight pin
+#define TFT_CS        2
+#define TFT_DC        3 
+#define TFT_MOSI      4
+#define TFT_SCLK      5
+#define TFT_RST       6
 
-Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
-//Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
+#define RADIO_CE       10
+#define RADIO_CSP      9
 
-#include "interface.h"
+RF24 radio(RADIO_CE ,RADIO_CSP); // CE, CSP
+Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 
-void setup(void) {
-  Serial.begin(9600);
-  Serial.print(F("Hello! ST77xx TFT Test"));
-
+void initDisplay() {
   tft.initR(INITR_BLACKTAB); 
-
-  pinMode(TFT_BACKLIGHT, OUTPUT);
-  digitalWrite(TFT_BACKLIGHT, HIGH); // Backlight on
-
-  Serial.println(F("Initialized"));
+  tft.setRotation(2);
   tft.fillScreen(ST77XX_BLACK);
-
-  delay(500);
-
-  // large block of text
-  tft.fillScreen(ST77XX_BLACK);
-  testdrawtext("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur adipiscing ante sed nibh tincidunt feugiat. Maecenas enim massa, fringilla sed malesuada et, malesuada sit amet turpis. Sed porttitor neque ut ante pretium vitae malesuada nunc bibendum. Nullam aliquet ultrices massa eu hendrerit. Ut sed nisi lorem. In vestibulum purus a tortor imperdiet posuere. ", ST77XX_WHITE);
-  delay(1000);
 }
 
-void loop() {
-  delay(500);
+Menu menu = Menu(&tft);
+Lan lan = Lan(&radio);
+
+void setup(void)
+{
+  Serial.begin(9600);
+
+  initDisplay();
+  menu.render();
+  lan.init();
+  Serial.println("Scan network...");
+}
+byte n = 0;
+void loop(void)
+{
+  n++;
+  if (n > 5) n = 0;
+  menu.setActive(n);
+  menu.render();
+
+  lan.test();
 }
