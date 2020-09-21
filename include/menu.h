@@ -36,9 +36,8 @@ class Menu {
 
     void render() {
         _tft->fillRect(0, 0, 7, 5 * 10, ST77XX_BLACK);
-        
-       _tft->setTextColor(ST77XX_WHITE);
-       _tft->setTextWrap(true);
+        _tft->setTextColor(ST77XX_WHITE);
+        _tft->setTextWrap(true);
         
         element(1, "LAN");
         element(2, "GPS");
