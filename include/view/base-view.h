@@ -20,6 +20,7 @@ class BaseView {
 
         void goBack() {
             next = preview;
+            next->setNext(NULL);
             preview = NULL;
         }
 
