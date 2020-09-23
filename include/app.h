@@ -37,7 +37,7 @@ class App {
         if (current->getNext() != NULL) {
             BaseView *next = current->getNext();
             next->SetPreview(current);
-            current->SetNext(NULL);
+            // current->SetNext(NULL);
             current = next;
             refresh();
         }
