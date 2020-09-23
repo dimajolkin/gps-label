@@ -11,3 +11,11 @@
 #define BTN_UP  A3
 #define BTN_DOWN  A4
 #define BTN_OK  A0
+
+const uint8_t BUTTON_PINS[BTN_PIN_COUNT] = {
+   BTN_RIGHT,
+   BTN_LEFT,
+   BTN_UP,
+   BTN_DOWN,
+   BTN_OK,
+};

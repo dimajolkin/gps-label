@@ -14,7 +14,7 @@ class Buttons {
         count = BTN_PIN_COUNT;
     }
 
-    void init() {
+    void setup() {
         for(uint8_t i = 0; i < count; i++) {
             pinMode(pins[i], INPUT_PULLUP);
             buttons[i].init(pins[i], HIGH, pins[i]);
