@@ -13,15 +13,22 @@ class BaseView {
     public:
         BaseView(Adafruit_ST7735 *display, uint8_t dy): display(display), dy(dy) {}
 
+        virtual String getName();
+
         void setup() {
             display->fillRect(0, dy, display->width(), display->height(), ST7735_BLACK);
             is_render = 0;
         }
 
         void goBack() {
-            next = preview;
-            next->setNext(NULL);
-            preview = NULL;
+            setNext(preview);
+            preview->setNext(NULL);
+            setPreview(NULL);
+        }
+
+        void redirectTo(BaseView *view) {
+            next = view;
+            next->setPreview(this);
         }
 
         virtual void onClick(uint8_t btn);
@@ -34,11 +41,11 @@ class BaseView {
             return preview;
         }
 
-        void SetPreview(BaseView *view) {
+        void setPreview(BaseView *view) {
             preview = view;
         }
 
-        void SetNext(BaseView *view) {
+        void setNext(BaseView *view) {
             next = view;
         }
         

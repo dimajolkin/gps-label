@@ -9,18 +9,18 @@
 #include "lan.h"
 #include "app.h"
 
-RF24 radio(RADIO_CE ,RADIO_CSP); // CE, CSP
+// RF24 radio(RADIO_CE ,RADIO_CSP); // CE, CSP
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
 void initDisplay() {
   tft.initR(INITR_BLACKTAB); 
-  tft.setRotation(2);
+  tft.setRotation(0);
   tft.fillScreen(ST77XX_BLACK);
 }
 
 // Menu menu = Menu(&tft);
-Lan lan = Lan(&radio);
-App app = App(&tft);
+// Lan lan = Lan(&radio);
+
 
 void displayChoiceChannel(uint8_t x0, uint8_t y0) {
   const uint8_t dx = 2;
@@ -39,7 +39,7 @@ void displayChoiceChannel(uint8_t x0, uint8_t y0) {
     );
 }
 
-
+App app = App(&tft);
 void handleEvent(AceButton *button, uint8_t eventType, uint8_t buttonState) {
   if (eventType != AceButton::kEventClicked) {
     return;
@@ -50,7 +50,9 @@ void handleEvent(AceButton *button, uint8_t eventType, uint8_t buttonState) {
 void setup(void)
 {
   initDisplay();
+
   // lan.init();
+  displayChoiceChannel(20, 20);
 
   Serial.begin(9600);
   Serial.println("Start app");

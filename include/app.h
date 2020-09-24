@@ -1,7 +1,14 @@
 #include "header/header.h"
+
 #include "view/base-view.h"
-#include "view/menu.h"
+#include "view/channel.h"
+#include "view/test-view.h"
+// #include ...
+// added new view 
+
+#include "view/setting.h"
 #include "view/home.h"
+
 
 class App {
     private:
@@ -12,8 +19,9 @@ class App {
     public:
     App(Adafruit_ST7735 *display) {
         header = new Header(display);
-        current = new Home(display, header->getDy());
         buttons = new Buttons(BUTTON_PINS);
+
+        current = new Home(display, header->getDy());
     }
 
     void setup() {
@@ -32,13 +40,9 @@ class App {
 
     void onClick(uint8_t btn) {
         current->onClick(btn);
-        Serial.println("click");
 
         if (current->getNext() != NULL) {
-            BaseView *next = current->getNext();
-            next->SetPreview(current);
-            // current->SetNext(NULL);
-            current = next;
+            current = current->getNext();
             refresh();
         }
     }
