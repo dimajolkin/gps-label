@@ -45,7 +45,7 @@ class Setting: public BaseView {
                 } else if (active == 3) {
                     return redirectTo(new TestView(display, dy, "Navigation"));
                 } else if (active == 4) {
-                    return redirectTo(new TestView(display, dy, "Exit"));
+                    return redirectTo(new TestView(display, dy, "Logs"));
                 }
             }
 
@@ -58,7 +58,7 @@ class Setting: public BaseView {
             display->setTextColor(ST77XX_WHITE);
             display->setTextWrap(true);
 
-            element(1, "LAN");
+            element(1, "LAN Channel");
             element(2, "GPS");
             element(3, "Navigation");
             element(4, "Exit");

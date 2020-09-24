@@ -17,7 +17,6 @@ class Home: public BaseView {
         }
 
         void onClick(uint8_t btn) {
-            Serial.println("home view click");
             if (btn == BTN_OK) {
                 return redirectTo(new Setting(display, dy));
             }

@@ -12,6 +12,8 @@
 #define BTN_DOWN  A4
 #define BTN_OK  A0
 
+#define BACKGROUND_COLOR ST77XX_BLACK
+
 const uint8_t BUTTON_PINS[BTN_PIN_COUNT] = {
    BTN_RIGHT,
    BTN_LEFT,
