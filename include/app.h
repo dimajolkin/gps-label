@@ -22,7 +22,7 @@ class App {
     App(Adafruit_ST7735 *display, Container *container): display(display), container(container) {
         header = new Header(display);
         buttons = new Buttons(BUTTON_PINS);
-        current = new Home(display, header->getDy());
+        current = new Home(display, header->getDy() + 1);
     }
 
     void setup() {
@@ -56,8 +56,8 @@ class App {
     }
 
     void loop() {
-        buttons->check();
         header->check();
+        buttons->check();
         current->check();
     }
 };

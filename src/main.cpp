@@ -16,7 +16,9 @@
 
 RF24 radio(RADIO_CE ,RADIO_CSP);
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
-App app = App(&tft, new Container(new Lan(&radio), new Server()));
+Lan lan(&radio);
+Container container(&lan, new Server());
+App app = App(&tft, &container);
 
 void handleEvent(AceButton *button, uint8_t eventType, uint8_t buttonState) {
   if (eventType != AceButton::kEventClicked) {

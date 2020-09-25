@@ -10,7 +10,7 @@ class Renderer {
         virtual ~Renderer() {}
 
         void load() {
-            display->fillRect(0, dy, display->width(), display->height(), BACKGROUND_COLOR);
+            display->fillRect(0, dy + 1, display->width(), display->height(), BACKGROUND_COLOR);
             is_render = 0;
         }
 

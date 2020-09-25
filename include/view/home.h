@@ -4,7 +4,7 @@ class Home: public BaseView {
         uint8_t is_render = 0;
 
     public:
-        Home(Adafruit_ST7735 *display, uint8_t dx): BaseView(display, dx) {}
+        Home(Adafruit_ST7735 *display, uint8_t dy): BaseView(display, dy) {}
         ~Home() {}
 
         void render() {

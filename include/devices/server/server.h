@@ -2,7 +2,7 @@
 class Server {
 
     public:
-        uint8_t getPower() {
+        uint8_t getPowerPercent() {
             return 10;
         }
 
