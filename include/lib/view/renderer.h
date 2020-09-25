@@ -10,8 +10,12 @@ class Renderer {
         virtual ~Renderer() {}
 
         void load() {
-            display->fillRect(0, dy + 1, display->width(), display->height(), BACKGROUND_COLOR);
+            clear();
             is_render = 0;
+        }
+
+        void clear() {
+            display->fillRect(0, dy + 1, display->width(), display->height(), BACKGROUND_COLOR);
         }
 
         virtual void configure(Container *container) {}
