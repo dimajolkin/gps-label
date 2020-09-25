@@ -30,7 +30,7 @@ void handleEvent(AceButton *button, uint8_t eventType, uint8_t buttonState) {
 void setup(void)
 {
   Serial.begin(9600);
-  Serial.println(F("Start app2"));
+  Serial.println(F("Start app"));
   app.setup();
   app.registerHandlerKeyboard(handleEvent);
 }
