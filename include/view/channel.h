@@ -97,10 +97,6 @@ class ChannelView: public BaseView {
             }
         }
 
-        String getName() {
-            return "ChannelView";
-        }
-
         void render() {
             for(uint8_t n = 1; n < COUNT_CHANELS; n++) {
                 block(n);

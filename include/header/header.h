@@ -4,8 +4,14 @@ class Header {
         Adafruit_ST7735 *display;
         uint8_t power = 10;
         uint8_t tmp_power = 10;
+
+        uint16_t memory = 0;
+        uint16_t tmp_memory = 0;
+
         const uint8_t startX = 100;
         const uint8_t startY = 0;
+
+        unsigned long timing;
     public:
         Header(Adafruit_ST7735 *display): display(display) {}
 
@@ -20,8 +26,9 @@ class Header {
         void renderPower(uint8_t x, uint8_t y) {
             display->setCursor(x, y + 1);
             display->setTextSize(1);
-            display->print(10);
-            display->print("%");
+            display->print(power);
+            display->print(F("%"));
+
             display->drawLine(x + 22, y, x + 24, y, ST7735_WHITE);
             display->fillRect(x + 20, y + 1, 7, 9, ST7735_WHITE);
 
@@ -32,15 +39,34 @@ class Header {
             );
         }
 
+        void renderMemory(uint8_t x, uint8_t y) {
+            display->setCursor(x, y + 1);
+            display->setTextSize(1);
+            display->setTextWrap(true);
+            display->fillRect(x, y + 1, 30, 10, BACKGROUND_COLOR);
+            display->print(memory);
+            display->print(F("b"));
+        }
+
         uint8_t readPower() {
             return 10;
         }
 
         void check() {
-            // tmp_power = readPower();
-            // if (tmp_power != power) {
-            //     power = tmp_power;
-            //     //renderPower(startX, startY);
-            // }
+            if (millis() - timing > 1000) {
+                timing = millis(); 
+                tmp_memory = readPower();
+                tmp_memory = availableMemory(0, 4096);
+            }
+
+            if (tmp_memory != memory) {
+                memory = tmp_memory;
+                renderMemory(10, startY);
+            }
+
+            if (tmp_power != power) {
+                power = tmp_power;
+                renderPower(startX, startY);
+            }
         }
 };

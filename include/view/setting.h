@@ -2,25 +2,23 @@
 class Setting: public BaseView {
     private:
         uint8_t active = 1;
-
+        
         void element(byte n, const char *chars) {
             display->setCursor(1, dy + (n * 10));
             if (n == active) {
-                display->print("* ");
+                display->print(F("* "));
             } else {
-                display->print("  ");
+                display->print(F("  "));
             }
             display->print(n);
-            display->print(". ");
+            display->print(F(". "));
             display->print(chars);
         }
 
     public:
         Setting(Adafruit_ST7735 *display, uint8_t dy): BaseView(display, dy) {}
+        ~Setting() {}
 
-        String getName() {
-            return "setting";
-        }
 
         void onClick(uint8_t btn) {
             if (btn == BTN_LEFT) {

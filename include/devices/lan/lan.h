@@ -17,19 +17,19 @@ class Lan {
   private:
     uint8_t values[NUM_CHANELS];
     RF24 *radio;
-    const int num_reps = 100;
-    LanConfig *config;
+    const uint8_t num_reps = 100;
+    LanConfig config;
   public:
     Lan(RF24 *radio): radio(radio) {
-        config = new LanConfig();
+        config = LanConfig();
     }
 
     LanConfig* getConfig() {
-        return config;
+        return &config;
     }
 
     void init() {
-        config->init();
+        config.init();
         // printf_begin();
         // radio->begin();
         // radio->setAutoAck(false);
