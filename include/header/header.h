@@ -1,7 +1,7 @@
 
-class Header {
+class Header: public Renderer {
     private:
-        Adafruit_ST7735 *display;
+        Server *server;
         uint8_t power = 10;
         uint8_t tmp_power = 10;
 
@@ -11,19 +11,21 @@ class Header {
         const uint8_t startX = 100;
         const uint8_t startY = 0;
 
-        unsigned long timing;
+        unsigned int timing;
     public:
-        Header(Adafruit_ST7735 *display): display(display) {}
+        Header(Adafruit_ST7735 *display): Renderer(display) {}
 
-        void setup() {
-            renderPower(startX, startY);
+        void configure(Container *container) {
+            server = container->getServer();
         }
 
         uint8_t getDy() {
             return 11;
         }
 
-        void renderPower(uint8_t x, uint8_t y) {
+        void renderPower() {
+            uint8_t x = 100;
+            uint8_t y = 0;
             display->setCursor(x, y + 1);
             display->setTextSize(1);
             display->print(power);
@@ -31,15 +33,11 @@ class Header {
 
             display->drawLine(x + 22, y, x + 24, y, ST7735_WHITE);
             display->fillRect(x + 20, y + 1, 7, 9, ST7735_WHITE);
-
-            display->drawLine(
-                0, getDy(),
-                display->width(), getDy(),
-                ST7735_WHITE
-            );
         }
 
-        void renderMemory(uint8_t x, uint8_t y) {
+        void renderMemory() {
+            uint8_t x = 10;
+            uint8_t y = 0;
             display->setCursor(x, y + 1);
             display->setTextSize(1);
             display->setTextWrap(true);
@@ -48,25 +46,31 @@ class Header {
             display->print(F("b"));
         }
 
-        uint8_t readPower() {
-            return 10;
-        }
-
-        void check() {
+        void update() {
             if (millis() - timing > 1000) {
                 timing = millis(); 
-                tmp_memory = readPower();
-                tmp_memory = availableMemory(0, 4096);
+                tmp_power = server->getPower();
+                tmp_memory = server->getAvailableMemory();
             }
 
             if (tmp_memory != memory) {
                 memory = tmp_memory;
-                renderMemory(10, startY);
+                renderMemory();
             }
 
             if (tmp_power != power) {
                 power = tmp_power;
-                renderPower(startX, startY);
+                renderPower();
             }
+        }
+
+        void render() {
+            renderMemory();
+            renderPower();
+             display->drawLine(
+                0, getDy(),
+                display->width(), getDy(),
+                ST7735_WHITE
+            );
         }
 };

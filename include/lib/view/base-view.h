@@ -1,29 +1,15 @@
 
-class BaseView {
-    protected:
-        uint8_t is_render = 0;
-        uint8_t state = 0;
-        
+class BaseView: public Renderer {
+    private:
         BaseView *next  = NULL;
         BaseView *preview  = NULL;
 
-        Adafruit_ST7735 *display;
-        uint8_t dy = 0;
-
     public:
-        BaseView(Adafruit_ST7735 *display, uint8_t dy): display(display), dy(dy) {}
-        virtual ~BaseView() {}
+        BaseView(Adafruit_ST7735 *display, uint8_t dy): Renderer(display, dy) {}
+        virtual  ~BaseView() {}
         
-        void setup() {
-            display->fillRect(0, dy, display->width(), display->height(), BACKGROUND_COLOR);
-            is_render = 0;
-        }
-
-        virtual void configure(Container *container) {}
-
         void goBack() {
             setNext(preview);
-
             if (preview->getNext() != NULL) {
                 delete preview->getNext();
                 preview->setNext(NULL);
@@ -39,7 +25,7 @@ class BaseView {
             next->setPreview(this);
         }
 
-        virtual void onClick(uint8_t btn);
+        virtual void onClick(uint8_t btn) {};
 
         BaseView* getNext() {
             return next;
@@ -56,13 +42,6 @@ class BaseView {
         void setNext(BaseView *view) {
             next = view;
         }
-        
-        virtual void render();
 
-        void check() {
-            if (!is_render) {
-                render();
-                is_render = 1;
-            }
-        }
+        virtual void render() {}
 };

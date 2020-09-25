@@ -9,13 +9,14 @@
 
 #include "config.h"
 #include "buttons.h"
+#include "devices/server/server.h"
 #include "devices/lan/lan.h"
 #include "container.h"
 #include "app.h"
 
-RF24 radio(RADIO_CE ,RADIO_CSP); // CE, CSP
+RF24 radio(RADIO_CE ,RADIO_CSP);
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
-App app = App(&tft, new Container(new Lan(&radio)));
+App app = App(&tft, new Container(new Lan(&radio), new Server()));
 
 void handleEvent(AceButton *button, uint8_t eventType, uint8_t buttonState) {
   if (eventType != AceButton::kEventClicked) {

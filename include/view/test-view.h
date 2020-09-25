@@ -19,5 +19,4 @@ class TestView: public BaseView {
             display->println(F("Test view"));
             display->println(str);
         }
-    
 };

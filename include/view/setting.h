@@ -19,7 +19,6 @@ class Setting: public BaseView {
         Setting(Adafruit_ST7735 *display, uint8_t dy): BaseView(display, dy) {}
         ~Setting() {}
 
-
         void onClick(uint8_t btn) {
             if (btn == BTN_LEFT) {
                 return goBack();

@@ -1,10 +1,12 @@
 
-int availableMemory(uint16_t min, uint16_t max) {
-  if (min==max-1)
+int16_t availableMemory(uint16_t min, uint16_t max) {
+  if (min == max-1) {
     return min;
+  }
+    
 
-  int size=max;
-  int lastSize=size;
+  int16_t size=max;
+  int16_t lastSize=size;
   byte *buf;
   while ((buf = (byte *) malloc(size)) == NULL)
   {

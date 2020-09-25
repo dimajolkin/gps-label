@@ -1,5 +1,7 @@
+#include "lib/view/renderer.h"
+#include "lib/view/base-view.h"
+
 #include "header/header.h"
-#include "view/base-view.h"
 #include "view/channel.h"
 #include "view/test-view.h"
 // #include ...
@@ -27,16 +29,17 @@ class App {
         display->initR(INITR_BLACKTAB); 
         display->setRotation(0);
         display->fillScreen(BACKGROUND_COLOR);
+        buttons->setup();
+
         container->getLan()->init();
 
-        buttons->setup();
-        refresh();
+        start(header);
+        start(current);
     }
 
-    void refresh() {
-        current->setup();
-        current->configure(container);
-        header->setup();
+    void start(Renderer *view) {
+        view->load();
+        view->configure(container);
     }
 
     void registerHandlerKeyboard(ButtonConfig::EventHandler handleEvent) {
@@ -48,13 +51,13 @@ class App {
 
         if (current->getNext() != NULL) {
             current = current->getNext();
-            refresh();
+            start(current);
         }
     }
 
     void loop() {
-        header->check();
         buttons->check();
+        header->check();
         current->check();
     }
 };
