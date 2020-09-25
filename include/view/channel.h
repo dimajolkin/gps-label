@@ -10,6 +10,7 @@ class ChannelView: public BaseView {
         static const uint16_t BACKGROUND_BLOCK = ST7735_BLUE;
         static const uint16_t BACKGROUND_ACTIVE_BLOCK = ST7735_GREEN;
         static const uint16_t BACKGROUND_SELECT_BLOCK = ST7735_YELLOW;
+        static const uint16_t BACKGROUND_DISABLE = ST7735_BLACK;
         Lan *lan;
 
         void drawSelect(uint8_t n, uint8_t previewNumber) {
@@ -18,28 +19,39 @@ class ChannelView: public BaseView {
         }
 
         void selectBlock(uint8_t n) {
-             drawBlock(n, BACKGROUND_SELECT_BLOCK);
+            if (lan->isChannelActive(n)) {
+                drawBlock(n, BACKGROUND_SELECT_BLOCK, BACKGROUND_BLOCK);
+            } else {
+                drawBlock(n, BACKGROUND_SELECT_BLOCK, BACKGROUND_DISABLE);
+            }
         }
 
         void defaultBlock(uint8_t n) {
-            drawBlock(n, BACKGROUND_BLOCK);
+            drawBlock(n, BACKGROUND_BLOCK, BACKGROUND_BLOCK);
+        }
+
+        void disableBlock(uint8_t n) {
+            drawBlock(n, BACKGROUND_DISABLE, BACKGROUND_DISABLE);
         }
 
         void block(uint8_t n) {
             if (n == active) {
-                drawBlock(n, BACKGROUND_ACTIVE_BLOCK);
-            } else {
+                drawBlock(n, BACKGROUND_ACTIVE_BLOCK, BACKGROUND_BLOCK);
+            } else if (lan->isChannelActive(n)) {
                 defaultBlock(n);
+            } else {
+                disableBlock(n);
             }
         }
 
-        void drawBlock(uint8_t n, uint16_t color) {
+        void drawBlock(uint8_t n, uint16_t color, uint16_t background) {
             uint8_t x = ((n - 1) % COUNT_BLOCKS_IN_LINE);
             uint8_t y = (n - 1) / COUNT_BLOCKS_IN_LINE;
             
-            display->fillRoundRect((x * 20) + 3, (y * 20) + dy + 5, 18, 18, 1, BACKGROUND_BLOCK);
+            display->fillRoundRect((x * 20) + 3, (y * 20) + dy + 5, 18, 18, 1, background);
             display->drawRect((x * 20) + 3, (y * 20) + dy + 5, 18, 18, color);
             display->setCursor((x * 20) + 3, (y * 20) + dy + 5 + 7);
+            display->setTextColor(ST7735_WHITE);
             display->print(n);
         }
 
@@ -65,7 +77,9 @@ class ChannelView: public BaseView {
                     return goBack();
                 }
 
-                setActive(selected);
+                if (lan->isChannelActive(selected)) {
+                    setActive(selected);
+                }
             }
             
             uint8_t previewNumber = selected;
@@ -102,10 +116,8 @@ class ChannelView: public BaseView {
             display->println(F("Start scan chanels..."));
             lan->startTest();
             clear();
-            for(uint8_t n = 1; n < COUNT_CHANELS; n++) {
-                if (!lan->getChannelStatus(n)) {
-                    block(n);
-                }
+            for(uint8_t n = 1; n < lan->getCountChanels(); n++) {
+                block(n);
             }
             lan->stopTest();
         }

@@ -38,6 +38,7 @@ void handleEvent(AceButton *button, uint8_t eventType, uint8_t buttonState) {
   app.onClick(button->getId());
 }
 
+const byte address[6] = "00001";
 void setup(void)
 {
   printfBegin();
@@ -45,9 +46,17 @@ void setup(void)
   Serial.println(F("Start app"));
   app.setup();
   app.registerHandlerKeyboard(handleEvent);
+  //radio.openReadingPipe(1, address);
 }
 
 void loop(void)
 {
+    // if (lan.available()) {
+    //   Package *pack = lan.read();
+    //   Serial.println("-- YES --- ");
+    //   Serial.println(pack->getLan());
+    //   Serial.println(pack->getLng());
+    //   Serial.println(pack->getNumber());
+    // }
   app.loop();
 }

@@ -34,6 +34,7 @@ class App {
         display->initR(INITR_BLACKTAB); 
         display->setRotation(0);
         display->fillScreen(BACKGROUND_COLOR);
+       // initialize
        
         Lan *lan = container->getLan();
         lan->init();

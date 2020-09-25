@@ -1,60 +1,77 @@
 #include <nRF24L01.h>
 #include <RF24.h>
+#include "package.h"
 #include "config.h"
-
-#define NUM_CHANELS 128
 
 class Lan {
   private:
-    uint8_t values[NUM_CHANELS];
+    const uint8_t num_channels = 128;
+    uint8_t values[128];
+    const int num_reps = 100;
     RF24 *radio;
-    const uint8_t num_reps = 100;
     LanConfig config;
   public:
     Lan(RF24 *radio): radio(radio) {
         config = LanConfig();
     }
 
+    uint8_t getCountChanels() {
+        return num_channels;
+    }
+
     LanConfig* getConfig() {
         return &config;
     }
-
 
     void init() {
         config.init();
         radio->begin();
         radio->setAutoAck(false);
-        radio->setChannel(config.getChannel());
         radio->startListening();
-        radio->setDataRate(RF24_250KBPS);
-        radio->printDetails();
+        delay(5000);
+        radio->stopListening();
     }
 
-    void test() {
-        startTest();
-        for(uint8_t i = 0; i < NUM_CHANELS; i++) {
-            printf("%x", getChannelStatus(i));
-        }
+    uint8_t available() {
+        return radio->available();
     }
 
-    uint8_t getChannelStatus(uint8_t c) {
-        return min(0xf,values[c]&0xf);
+    void send(Package *package) {
+        radio->write(package, sizeof(Package));
+    }
+
+    Package* read() {
+        Package *package;
+        radio->read( &package, sizeof(Package) );
+        return package;
+    }
+
+    uint8_t isChannelActive(uint8_t c) {
+        return min(0xf,values[c]&0xf) == 0;
     }
 
     void startTest() {
-        memset(values, 0, sizeof(values));
-        int rep_counter = num_reps;
-        while (rep_counter--) {
-            int i = NUM_CHANELS;
-            while (i--) {
-            radio->setChannel(i);
-            radio->startListening();
-            delayMicroseconds(128);
-            radio->stopListening();
-            if ( radio->testCarrier() )
-                ++values[i];
+            memset(values,0,sizeof(values));
+            int rep_counter = num_reps;
+            while (rep_counter--) {
+                int i = num_channels;
+                while (i--) {
+                radio->setChannel(i);
+                radio->startListening();
+                delayMicroseconds(128);
+                radio->stopListening();
+                if ( radio->testCarrier() )
+                    ++values[i];
+                }
             }
-        }
+    }
+
+    void test() {
+            startTest();
+            for (uint8_t i = 0; i < 128; i++) {
+                printf("%x", isChannelActive(i));
+            }
+            printf("\n\r");
     }
 
     void stopTest() {
