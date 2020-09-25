@@ -1,7 +1,7 @@
 
 class Home: public BaseView {
     private:
-        const uint8_t DEFAULT_RADIUS_STEP = 3;
+        const uint8_t DEFAULT_RADIUS_STEP = 10;
         const uint8_t MAX_RADIUS_STEP = 30;
 
         const uint8_t MAX_RADIUS = 70;
