@@ -35,10 +35,12 @@ class Home: public BaseView {
             if (btn == BTN_UP) {
                 radiusStep += DEFAULT_RADIUS_STEP;
                 is_render = 0;
+                clear();
             }
             if (btn == BTN_DOWN) {
                 radiusStep -= DEFAULT_RADIUS_STEP;
                 is_render = 0;
+                clear();
             }
 
             if (radiusStep < 0) {
@@ -48,6 +50,6 @@ class Home: public BaseView {
             if (radiusStep > MAX_RADIUS_STEP) {
                 radiusStep = MAX_RADIUS_STEP;
             }
-            clear();
+            
         }
 };
