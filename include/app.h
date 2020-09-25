@@ -17,6 +17,7 @@ class App {
         Buttons *buttons;
         Adafruit_ST7735 *display;
         Container *container;
+        uint8_t stop = 0;
         
     public:
     App(Adafruit_ST7735 *display, Container *container): display(display), container(container) {
@@ -25,14 +26,20 @@ class App {
         current = new Home(display, header->getDy() + 1);
     }
 
+    void exist() {
+        stop = 1;
+    }
+
     void setup() {
         display->initR(INITR_BLACKTAB); 
         display->setRotation(0);
         display->fillScreen(BACKGROUND_COLOR);
+       
+        Lan *lan = container->getLan();
+        lan->init();
+
         buttons->setup();
-
-        container->getLan()->init();
-
+        display->fillScreen(BACKGROUND_COLOR);
         start(header);
         start(current);
     }
@@ -59,5 +66,6 @@ class App {
         header->check();
         buttons->check();
         current->check();
+        container->getLan()->check();
     }
 };

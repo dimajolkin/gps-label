@@ -10,7 +10,7 @@ class ChannelView: public BaseView {
         static const uint16_t BACKGROUND_BLOCK = ST7735_BLUE;
         static const uint16_t BACKGROUND_ACTIVE_BLOCK = ST7735_GREEN;
         static const uint16_t BACKGROUND_SELECT_BLOCK = ST7735_YELLOW;
-        LanConfig *lanConfig;
+        Lan *lan;
 
         void drawSelect(uint8_t n, uint8_t previewNumber) {
             block(previewNumber);
@@ -47,15 +47,15 @@ class ChannelView: public BaseView {
              defaultBlock(active);
              active = n;
              block(active);
-             lanConfig->setChannel(active);
+             lan->getConfig()->setChannel(active);
         }
 
     public:
         ChannelView(Adafruit_ST7735 *display, uint8_t dy): BaseView(display, dy) {}
 
         void configure(Container *container) {
-            lanConfig = container->getLan()->getConfig();
-            active = lanConfig->getChannel();
+            lan = container->getLan();
+            active = lan->getConfig()->getChannel();
             selected = active;
         }
 
@@ -98,8 +98,15 @@ class ChannelView: public BaseView {
         }
 
         void render() {
+            display->setCursor(0, 50);
+            display->println(F("Start scan chanels..."));
+            lan->startTest();
+            clear();
             for(uint8_t n = 1; n < COUNT_CHANELS; n++) {
-                block(n);
+                if (!lan->getChannelStatus(n)) {
+                    block(n);
+                }
             }
+            lan->stopTest();
         }
 };

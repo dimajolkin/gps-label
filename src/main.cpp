@@ -16,6 +16,17 @@
 
 RF24 radio(RADIO_CE ,RADIO_CSP);
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
+
+int serial_putc(char c, FILE *) {
+    // tft.write(c);
+    Serial.write(c);
+    return c;
+}
+
+void printfBegin(void) {
+   fdevopen(&serial_putc, 0 );
+}
+
 Lan lan(&radio);
 Container container(&lan, new Server());
 App app = App(&tft, &container);
@@ -29,15 +40,14 @@ void handleEvent(AceButton *button, uint8_t eventType, uint8_t buttonState) {
 
 void setup(void)
 {
+  printfBegin();
   Serial.begin(9600);
   Serial.println(F("Start app"));
-  // lan.init();
   app.setup();
   app.registerHandlerKeyboard(handleEvent);
 }
 
 void loop(void)
 {
-  lan.test();
   app.loop();
 }

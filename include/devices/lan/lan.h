@@ -4,15 +4,6 @@
 
 #define NUM_CHANELS 128
 
-int serial_putc( char c, FILE * ) {
-    Serial.write( c );
-    return c;
-}
-
-void printf_begin(void) {
-   fdevopen(&serial_putc, 0 );
-}
-       
 class Lan {
   private:
     uint8_t values[NUM_CHANELS];
@@ -28,33 +19,30 @@ class Lan {
         return &config;
     }
 
+
     void init() {
         config.init();
-        // printf_begin();
-        // radio->begin();
-        // radio->setAutoAck(false);
-        // radio->startListening();
-
-        // radio->printDetails();  // Вот эта строка напечатает нам что-то, если все правильно соединили.
-        // delay(5000);              // И посмотрим на это пять секунд.
-
-        // radio->stopListening();
-        // int i = 0;    // А это напечатает нам заголовки всех 127 каналов
-        // while ( i < NUM_CHANELS )  {
-        //     printf("%x",i>>4);
-        //     ++i;
-        // }
-        // printf("\n\r");
-        // i = 0;
-        // while ( i < NUM_CHANELS ) {
-        //     printf("%x",i&0xf);
-        //     ++i;
-        // }
-        // printf("\n\r");
+        radio->begin();
+        radio->setAutoAck(false);
+        radio->setChannel(config.getChannel());
+        radio->startListening();
+        radio->setDataRate(RF24_250KBPS);
+        radio->printDetails();
     }
 
     void test() {
-         memset(values,0,sizeof(values));
+        startTest();
+        for(uint8_t i = 0; i < NUM_CHANELS; i++) {
+            printf("%x", getChannelStatus(i));
+        }
+    }
+
+    uint8_t getChannelStatus(uint8_t c) {
+        return min(0xf,values[c]&0xf);
+    }
+
+    void startTest() {
+        memset(values, 0, sizeof(values));
         int rep_counter = num_reps;
         while (rep_counter--) {
             int i = NUM_CHANELS;
@@ -67,12 +55,16 @@ class Lan {
                 ++values[i];
             }
         }
-        int i = 0;
-        while ( i < NUM_CHANELS ) {
-            printf("%x",min(0xf,values[i]&0xf));
-            ++i;
+    }
+
+    void stopTest() {
+        
+    }
+
+    void check() {
+        if (radio->available()) {
+
         }
-        printf("\n\r");
     }
 };
 
