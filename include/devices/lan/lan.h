@@ -24,12 +24,24 @@ class Lan {
     }
 
     void init() {
+        const byte address[6] = "00001";
+
         config.init();
-        radio->begin();
-        radio->setAutoAck(false);
-        radio->startListening();
+        radio->begin(); //активировать модуль
+
+        radio->setAutoAck(1);         //режим подтверждения приёма, 1 вкл 0 выкл
+        radio->setRetries(0, 15);     //(время между попыткой достучаться, число попыток)
+        radio->setPayloadSize(32);     //размер пакета, в байтах
+        radio->openReadingPipe(1, address);      //хотим слушать трубу 0
+        radio->setChannel(5);  //выбираем канал (в котором нет шумов!)
+        radio->setPALevel(RF24_PA_MAX); //уровень мощности передатчика. На выбор RF24_PA_MIN, RF24_PA_LOW, RF24_PA_HIGH, RF24_PA_MAX
+        radio->setDataRate(RF24_1MBPS); //скорость обмена. На выбор RF24_2MBPS, RF24_1MBPS, RF24_250KBPS
+        //должна быть одинакова на приёмнике и передатчике!
+        //при самой низкой скорости имеем самую высокую чувствительность и дальность!!
+        radio->printDetails();
         delay(5000);
-        radio->stopListening();
+        radio->powerUp(); //начать работу
+        radio->startListening();  //начинаем слушать эфир, мы приёмный модуль
     }
 
     uint8_t available() {
@@ -40,9 +52,12 @@ class Lan {
         radio->write(package, sizeof(Package));
     }
 
-    Package* read() {
-        Package *package;
-        radio->read( &package, sizeof(Package) );
+    Package read() {
+        Package package;
+        // package.lan = 0;
+        // package.lng = 0;
+        // package.n = 0;
+        radio->read(&package, sizeof(package));
         return package;
     }
 
@@ -51,6 +66,8 @@ class Lan {
     }
 
     void startTest() {
+         radio->stopListening();
+         
             memset(values,0,sizeof(values));
             int rep_counter = num_reps;
             while (rep_counter--) {

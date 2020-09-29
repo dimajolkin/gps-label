@@ -11,7 +11,13 @@ class Home: public BaseView {
         Home(Adafruit_ST7735 *display, uint8_t dy): BaseView(display, dy) {}
         ~Home() {}
 
-        void render() {
+
+        void update() {
+           
+        }
+
+
+        void render2() {
             uint8_t cx = display->width() / 2;
             uint8_t cy = 85;
             display->fillCircle(cx, cy, 2, ST7735_BLUE);
