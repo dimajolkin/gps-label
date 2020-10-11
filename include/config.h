@@ -1,3 +1,6 @@
+#pragma once 
+
+
 #define TFT_CS        2
 #define TFT_DC        3 
 #define TFT_RST       4

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "lib/view/base-view.h"
+
 class TestView: public BaseView {
     private:
         String str;

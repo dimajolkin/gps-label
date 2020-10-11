@@ -1,5 +1,7 @@
 #pragma once
 
+#include "lib/view/base-view.h"
+
 class Home: public BaseView {
     private:
         const uint8_t DEFAULT_RADIUS_STEP = 10;

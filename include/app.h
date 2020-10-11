@@ -1,6 +1,5 @@
 #pragma once
 
-#include "lib/view/renderer.h"
 #include "lib/view/base-view.h"
 
 #include "header/header.h"

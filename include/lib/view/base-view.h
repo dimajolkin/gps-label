@@ -1,5 +1,7 @@
 #pragma once
 
+#include "renderer.h"
+
 class BaseView: public Renderer {
     private:
         BaseView *next  = NULL;

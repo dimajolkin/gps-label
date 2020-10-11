@@ -1,5 +1,7 @@
 #pragma once
 
+#include "lib/view/base-view.h"
+
 class ChannelView: public BaseView {
     private:
         uint8_t active = 1;
