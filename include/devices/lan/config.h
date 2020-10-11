@@ -1,4 +1,5 @@
 
+#pragma once
 #define LAN_CONFIG_SAVE_CHANNEL_ADDRESS 1
 
 class LanConfig {

@@ -1,3 +1,4 @@
+#pragma once
 
 int16_t availableMemory(uint16_t min, uint16_t max) {
   if (min == max-1) {

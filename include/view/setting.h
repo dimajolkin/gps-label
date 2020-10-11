@@ -1,3 +1,4 @@
+#pragma once
 
 class Setting: public BaseView {
     private:

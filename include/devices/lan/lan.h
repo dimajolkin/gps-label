@@ -1,3 +1,5 @@
+#pragma once
+
 #include <nRF24L01.h>
 #include <RF24.h>
 #include "package.h"
