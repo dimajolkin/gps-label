@@ -20,7 +20,7 @@ class Home: public BaseView {
         }
 
 
-        void render2() {
+        void render() {
             uint8_t cx = display->width() / 2;
             uint8_t cy = 85;
             display->fillCircle(cx, cy, 2, ST7735_BLUE);

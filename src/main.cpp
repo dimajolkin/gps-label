@@ -27,10 +27,14 @@ void setup(void)
 
 void loop(void)
 {
-    // if (lan.available()) {
-    //     // Package pack = lan.read();
-    //     Serial.println(1);
-    // }
+    if (lan.available()) {
+        Package pack = lan.read();
+        Serial.println(pack.n);
+        Serial.println(pack.getLan());
+        Serial.println(pack.getLng());
+        Serial.println("===== ");
+
+    }
 
     app.loop();
 }

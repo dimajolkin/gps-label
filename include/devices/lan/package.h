@@ -9,6 +9,9 @@ typedef struct {
         float getLan() {
             return lan;
         }
+        float getLng() {
+            return lng;
+        }
 }
 
 Package;

@@ -57,6 +57,7 @@ class App {
     }
 
     void onClick(uint8_t btn) {
+        Serial.println(F("Click"));
         current->onClick(btn);
 
         if (current->getNext() != NULL) {
