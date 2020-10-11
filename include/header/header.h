@@ -14,7 +14,7 @@ class Header: public Renderer {
 
         unsigned int timing;
     public:
-        Header(Adafruit_ST7735 *display): Renderer(display) {}
+        Header(Display *display): Renderer(display) {}
 
         void configure(Container *container) {
             server = container->getServer();

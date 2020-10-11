@@ -6,7 +6,7 @@ class BaseView: public Renderer {
         BaseView *preview  = NULL;
 
     public:
-        BaseView(Adafruit_ST7735 *display, uint8_t dy): Renderer(display, dy) {}
+        BaseView(Display *display, uint8_t dy): Renderer(display, dy) {}
         virtual  ~BaseView() {}
         
         void goBack() {

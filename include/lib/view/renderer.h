@@ -2,12 +2,12 @@
 
 class Renderer {
     protected:
-        Adafruit_ST7735 *display;
+        Display *display;
         uint8_t is_render = 0;
         uint8_t dy = 0;
     public:
-        Renderer(Adafruit_ST7735 *display, uint8_t dy): display(display), dy(dy) {}
-        Renderer(Adafruit_ST7735 *display): display(display) {}
+        Renderer(Display *display, uint8_t dy): display(display), dy(dy) {}
+        Renderer(Display *display): display(display) {}
         virtual ~Renderer() {}
 
         void load() {

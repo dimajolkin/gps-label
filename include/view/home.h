@@ -9,7 +9,7 @@ class Home: public BaseView {
 
         uint8_t radiusStep = DEFAULT_RADIUS_STEP;
     public:
-        Home(Adafruit_ST7735 *display, uint8_t dy): BaseView(display, dy) {}
+        Home(Display *display, uint8_t dy): BaseView(display, dy) {}
         ~Home() {}
 
 

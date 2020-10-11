@@ -14,6 +14,9 @@
 
 #define BACKGROUND_COLOR ST77XX_BLACK
 
+#define DEBUG 1
+#define SERIAL_BAUND 9600
+
 const uint8_t BUTTON_PINS[BTN_PIN_COUNT] = {
    BTN_RIGHT,
    BTN_LEFT,

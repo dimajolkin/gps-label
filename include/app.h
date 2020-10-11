@@ -17,22 +17,21 @@ class App {
         Header *header;
         BaseView *current;
         Buttons *buttons;
-        Adafruit_ST7735 *display;
+        Display *display;
         Container *container;
         uint8_t stop = 0;
         
     public:
-    App(Adafruit_ST7735 *display, Container *container): display(display), container(container) {
+    App(Display *display, Container *container): display(display), container(container) {
         header = new Header(display);
         buttons = new Buttons(BUTTON_PINS);
         current = new Home(display, header->getDy() + 1);
     }
 
-    void exist() {
-        stop = 1;
-    }
-
     void setup() {
+        container->getLogger()->start();
+        Serial.println(F("Start app"));
+
         display->initR(INITR_BLACKTAB); 
         display->setRotation(0);
         display->fillScreen(BACKGROUND_COLOR);
@@ -45,6 +44,8 @@ class App {
         display->fillScreen(BACKGROUND_COLOR);
         start(header);
         start(current);
+
+        Serial.println("run loop ");
     }
 
     void start(Renderer *view) {

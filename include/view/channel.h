@@ -63,7 +63,7 @@ class ChannelView: public BaseView {
         }
 
     public:
-        ChannelView(Adafruit_ST7735 *display, uint8_t dy): BaseView(display, dy) {}
+        ChannelView(Display *display, uint8_t dy): BaseView(display, dy) {}
 
         void configure(Container *container) {
             lan = container->getLan();

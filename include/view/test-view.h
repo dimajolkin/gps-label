@@ -4,7 +4,7 @@ class TestView: public BaseView {
     private:
         String str;
     public:
-        TestView(Adafruit_ST7735 *display, uint8_t dy, String str): BaseView(display, dy), str(str) {}
+        TestView(Display *display, uint8_t dy, String str): BaseView(display, dy), str(str) {}
 
         ~TestView() {}
 

@@ -3,7 +3,7 @@
 class Setting: public BaseView {
     private:
         uint8_t active = 1;
-        
+
         void element(byte n, const char *chars) {
             display->setCursor(1, dy + (n * 10));
             if (n == active) {
@@ -17,7 +17,7 @@ class Setting: public BaseView {
         }
 
     public:
-        Setting(Adafruit_ST7735 *display, uint8_t dy): BaseView(display, dy) {}
+        Setting(Display *display, uint8_t dy): BaseView(display, dy) {}
         ~Setting() {}
 
         void onClick(uint8_t btn) {
