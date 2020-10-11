@@ -1,22 +1,13 @@
 #pragma once
 
-// int serial_putc(char c, FILE *) {
-//     Serial.write(c);
-//     return c;
-// }
+#include "devices/display/display.h"
 
-// int display_puct(char c, FILE *) {
-//     display.write(c);
-//     return c;
-// }
+Display *loggerDisplayLink = NULL;
 
 class Logger {
-    private:
     public:
-        static Display *display;
         void start() {
             Serial.begin(SERIAL_BAUND);
-            attachSerial();
         }
 
         void attachSerial() {
@@ -24,14 +15,14 @@ class Logger {
             fdevopen(&serialPutc, 0);
         }
 
-        void attachDisplay(Display *display) {
-            display = display;
+        void attachDisplay(Display *disp) {
+            loggerDisplayLink = disp;
             fdev_close();
             fdevopen(&displayPutc, 0);
         }
 
         void detachDisplay() {
-            display = NULL;
+            loggerDisplayLink = NULL;
             fdev_close();
         }
 
@@ -40,8 +31,9 @@ class Logger {
             return c;
         }
 
-        static int displayPutc(char c, FILE *) {
-            display->write(c);
+        int inline static displayPutc(char c, FILE *) {
+            Serial.write(c);
+            loggerDisplayLink->write(c);
             return c;
         }
 };

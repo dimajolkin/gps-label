@@ -3,7 +3,6 @@
 #include <AceButton.h>
 using namespace ace_button;
 
-
 class Buttons {
   private:
     const uint8_t *pins;

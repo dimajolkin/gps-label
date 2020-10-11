@@ -13,6 +13,7 @@
 RF24 radio(RADIO_CE, RADIO_CSP);
 Display display = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 Logger *logger = new Logger();
+
 Lan lan(&radio);
 Container container(&lan, new Server(), logger);
 App app = App(&display, &container);
@@ -27,18 +28,6 @@ void setup(void)
 
 void loop(void)
 {
-    if (lan.available()) {
-        Package pack = lan.read();
-        if (pack.validate()) {
-          Serial.println(pack.n);
-          Serial.println(pack.getLan());
-          Serial.println(pack.getLng());
-          Serial.println("===== ");
-        } else {
-          Serial.println("Failed...");
-        }
-    }
-
     app.loop();
 }
 

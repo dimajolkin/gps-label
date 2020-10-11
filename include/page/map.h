@@ -1,8 +1,9 @@
 #pragma once
 
 #include "lib/page/page.h"
+#include "page/setting.h"
 
-class HomePage: public Page {
+class MapPage: public Page {
     private:
         const uint8_t DEFAULT_RADIUS_STEP = 10;
         const uint8_t MAX_RADIUS_STEP = 30;
@@ -11,8 +12,8 @@ class HomePage: public Page {
 
         uint8_t radiusStep = DEFAULT_RADIUS_STEP;
     public:
-        HomePage(Display *display, uint8_t dy): Page(display, dy) {}
-        ~HomePage() {}
+        MapPage(Display *display, uint8_t dy): Page(display, dy) {}
+        ~MapPage() {}
 
         void update() {
            
@@ -50,13 +51,14 @@ class HomePage: public Page {
                 clear();
             }
 
-            if (radiusStep < 0) {
-                radiusStep = 0;
+            if (radiusStep < DEFAULT_RADIUS_STEP) {
+                radiusStep = DEFAULT_RADIUS_STEP;
             }
 
             if (radiusStep > MAX_RADIUS_STEP) {
                 radiusStep = MAX_RADIUS_STEP;
             }
-            
+
+            Serial.println(radiusStep);
         }
 };

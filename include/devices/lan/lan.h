@@ -56,9 +56,6 @@ class Lan {
 
     Package read() {
         Package package;
-        // package.lan = 0;
-        // package.lng = 0;
-        // package.n = 0;
         radio->read(&package, sizeof(package));
         return package;
     }
@@ -68,39 +65,34 @@ class Lan {
     }
 
     void startTest() {
-         radio->stopListening();
+        radio->stopListening();
          
-            memset(values,0,sizeof(values));
-            int rep_counter = num_reps;
-            while (rep_counter--) {
-                int i = num_channels;
-                while (i--) {
+        memset(values,0,sizeof(values));
+        int rep_counter = num_reps;
+        while (rep_counter--) {
+            int i = num_channels;
+            while (i--) {
                 radio->setChannel(i);
                 radio->startListening();
                 delayMicroseconds(128);
                 radio->stopListening();
-                if ( radio->testCarrier() )
+                if (radio->testCarrier()) {
                     ++values[i];
                 }
             }
+        }
     }
 
     void test() {
-            startTest();
-            for (uint8_t i = 0; i < 128; i++) {
-                printf("%x", isChannelActive(i));
-            }
-            printf("\n\r");
+        startTest();
+        for (uint8_t i = 0; i < 128; i++) {
+            printf("%x", isChannelActive(i));
+        }
+        printf("\n\r");
     }
 
     void stopTest() {
         
-    }
-
-    void check() {
-        if (radio->available()) {
-
-        }
     }
 };
 

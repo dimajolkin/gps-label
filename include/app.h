@@ -4,7 +4,7 @@
 
 #include "header/header.h"
 #include "page/setting.h"
-#include "page/home.h"
+#include "page/map.h"
 
 class App {
     private:
@@ -14,22 +14,27 @@ class App {
         Display *display;
         Container *container;
         uint8_t stop = 0;
+        Package *lastPackage = NULL;
         
     public:
     App(Display *display, Container *container): display(display), container(container) {
         header = new Header(display);
         buttons = new Buttons(BUTTON_PINS);
 
-        current = new HomePage(display, header->getDy() + 1);
+        current = new MapPage(display, header->getDy() + 1);
     }
 
     void setup() {
         container->getLogger()->start();
+        // container->getLogger()->attachDisplay(display);
+        container->getLogger()->attachSerial();
+
         Serial.println(F("Start app"));
 
         display->initR(INITR_BLACKTAB); 
         display->setRotation(0);
         display->fillScreen(BACKGROUND_COLOR);
+        display->println(F("Wait initilize..."));
        // initialize
        
         Lan *lan = container->getLan();
@@ -40,7 +45,7 @@ class App {
         start(header);
         start(current);
 
-        Serial.println("run loop ");
+        Serial.println(F("run loop"));
     }
 
     void start(Renderer *view) {
@@ -66,6 +71,19 @@ class App {
         header->check();
         buttons->check();
         current->check();
-        container->getLan()->check();
+        
+        if (container->getLan()->available()) {
+            Package pack = container->getLan()->read();
+            if (pack.validate()) {
+                lastPackage = &pack;
+
+                Serial.println(lastPackage->n);
+                Serial.println(lastPackage->getLan());
+                Serial.println(lastPackage->getLng());
+                Serial.println(F("===== "));
+            } else {
+                 Serial.println(F("Failed..."));
+            }
+        }
     }
 };
