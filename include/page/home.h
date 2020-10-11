@@ -1,8 +1,8 @@
 #pragma once
 
-#include "lib/view/base-view.h"
+#include "lib/page/page.h"
 
-class Home: public BaseView {
+class HomePage: public Page {
     private:
         const uint8_t DEFAULT_RADIUS_STEP = 10;
         const uint8_t MAX_RADIUS_STEP = 30;
@@ -11,14 +11,12 @@ class Home: public BaseView {
 
         uint8_t radiusStep = DEFAULT_RADIUS_STEP;
     public:
-        Home(Display *display, uint8_t dy): BaseView(display, dy) {}
-        ~Home() {}
-
+        HomePage(Display *display, uint8_t dy): Page(display, dy) {}
+        ~HomePage() {}
 
         void update() {
            
         }
-
 
         void render() {
             uint8_t cx = display->width() / 2;

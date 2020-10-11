@@ -6,6 +6,10 @@ typedef struct {
         float lng;
         uint8_t n;
 
+        uint8_t validate() {
+            return lan != 0 && lng != 0 && n != 0;
+        }
+
         float getLan() {
             return lan;
         }

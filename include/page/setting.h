@@ -1,8 +1,10 @@
 #pragma once
 
-#include "lib/view/base-view.h"
+#include "lib/page/page.h"
+#include "page/channel.h"
+#include "page/test-page.h"
 
-class Setting: public BaseView {
+class Setting: public Page {
     private:
         uint8_t active = 1;
 
@@ -19,7 +21,7 @@ class Setting: public BaseView {
         }
 
     public:
-        Setting(Display *display, uint8_t dy): BaseView(display, dy) {}
+        Setting(Display *display, uint8_t dy): Page(display, dy) {}
         ~Setting() {}
 
         void onClick(uint8_t btn) {
@@ -39,13 +41,13 @@ class Setting: public BaseView {
 
             if (btn == BTN_OK) {
                 if (active == 1) {
-                    return redirectTo(new ChannelView(display, dy));
+                    return redirectTo(new ChannelPage(display, dy));
                 } else if (active == 2) {
-                    return redirectTo(new TestView(display, dy, "GPS"));
+                    return redirectTo(new TestPage(display, dy, "GPS"));
                 } else if (active == 3) {
-                    return redirectTo(new TestView(display, dy, "Navigation"));
+                    return redirectTo(new TestPage(display, dy, "Navigation"));
                 } else if (active == 4) {
-                    return redirectTo(new TestView(display, dy, "Logs"));
+                    return redirectTo(new TestPage(display, dy, "Logs"));
                 }
             }
 
@@ -59,7 +61,7 @@ class Setting: public BaseView {
             display->setTextWrap(true);
 
             element(1, "LAN Channel");
-            element(2, "GPS");
+            element(2, "Connected");
             element(3, "Navigation");
             element(4, "Exit");
         }

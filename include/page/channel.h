@@ -1,8 +1,9 @@
 #pragma once
 
-#include "lib/view/base-view.h"
+#include "lib/page/page.h"
+#include "devices/lan/lan.h"
 
-class ChannelView: public BaseView {
+class ChannelPage: public Page {
     private:
         uint8_t active = 1;
         uint8_t selected = 1;
@@ -65,7 +66,7 @@ class ChannelView: public BaseView {
         }
 
     public:
-        ChannelView(Display *display, uint8_t dy): BaseView(display, dy) {}
+        ChannelPage(Display *display, uint8_t dy): Page(display, dy) {}
 
         void configure(Container *container) {
             lan = container->getLan();

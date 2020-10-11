@@ -1,14 +1,12 @@
 #pragma once
 
-#include "lib/view/base-view.h"
+#include "lib/page/page.h"
 
-class TestView: public BaseView {
+class TestPage: public Page {
     private:
         String str;
     public:
-        TestView(Display *display, uint8_t dy, String str): BaseView(display, dy), str(str) {}
-
-        ~TestView() {}
+        TestPage(Display *display, uint8_t dy, String str): Page(display, dy), str(str) {}
 
         void onClick(uint8_t btn) {
             if (btn == BTN_LEFT) {

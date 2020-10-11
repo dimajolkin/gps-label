@@ -29,11 +29,14 @@ void loop(void)
 {
     if (lan.available()) {
         Package pack = lan.read();
-        Serial.println(pack.n);
-        Serial.println(pack.getLan());
-        Serial.println(pack.getLng());
-        Serial.println("===== ");
-
+        if (pack.validate()) {
+          Serial.println(pack.n);
+          Serial.println(pack.getLan());
+          Serial.println(pack.getLng());
+          Serial.println("===== ");
+        } else {
+          Serial.println("Failed...");
+        }
     }
 
     app.loop();

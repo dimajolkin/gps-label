@@ -1,5 +1,9 @@
 #pragma once
 
+#include "config.h"
+#include "devices/display/display.h"
+#include "container.h"
+
 class Renderer {
     protected:
         Display *display;

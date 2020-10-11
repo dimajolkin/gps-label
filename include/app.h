@@ -1,20 +1,15 @@
 #pragma once
 
-#include "lib/view/base-view.h"
+#include "lib/page/page.h"
 
 #include "header/header.h"
-#include "view/channel.h"
-#include "view/test-view.h"
-// #include ...
-// added new view 
-
-#include "view/setting.h"
-#include "view/home.h"
+#include "page/setting.h"
+#include "page/home.h"
 
 class App {
     private:
         Header *header;
-        BaseView *current;
+        Page *current;
         Buttons *buttons;
         Display *display;
         Container *container;
@@ -24,7 +19,8 @@ class App {
     App(Display *display, Container *container): display(display), container(container) {
         header = new Header(display);
         buttons = new Buttons(BUTTON_PINS);
-        current = new Home(display, header->getDy() + 1);
+
+        current = new HomePage(display, header->getDy() + 1);
     }
 
     void setup() {

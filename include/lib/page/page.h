@@ -2,14 +2,14 @@
 
 #include "renderer.h"
 
-class BaseView: public Renderer {
+class Page: public Renderer {
     private:
-        BaseView *next  = NULL;
-        BaseView *preview  = NULL;
+        Page *next  = NULL;
+        Page *preview  = NULL;
 
     public:
-        BaseView(Display *display, uint8_t dy): Renderer(display, dy) {}
-        virtual  ~BaseView() {}
+        Page(Display *display, uint8_t dy): Renderer(display, dy) {}
+        virtual  ~Page() {}
         
         void goBack() {
             setNext(preview);
@@ -23,27 +23,27 @@ class BaseView: public Renderer {
             }
         }
 
-        void redirectTo(BaseView *view) {
+        void redirectTo(Page *view) {
             next = view;
             next->setPreview(this);
         }
 
         virtual void onClick(uint8_t btn) {};
 
-        BaseView* getNext() {
+        Page* getNext() {
             return next;
         }
 
-        BaseView* getPreview() {
+        Page* getPreview() {
             return preview;
         }
 
-        void setPreview(BaseView *view) {
-            preview = view;
+        void setPreview(Page *page) {
+            preview = page;
         }
 
-        void setNext(BaseView *view) {
-            next = view;
+        void setNext(Page *page) {
+            next = page;
         }
 
         virtual void render() {}
