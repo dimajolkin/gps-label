@@ -3,6 +3,7 @@
 #include "lib/page/page.h"
 #include "page/channel.h"
 #include "page/test-page.h"
+#include "page/connection-list.h"
 
 class Setting: public Page {
     private:
@@ -43,9 +44,9 @@ class Setting: public Page {
                 if (active == 1) {
                     return redirectTo(new ChannelPage(display, dy));
                 } else if (active == 2) {
-                    return redirectTo(new TestPage(display, dy, "GPS"));
+                    return redirectTo(new ConnectionListPage(display, dy));
                 } else if (active == 3) {
-                    return redirectTo(new TestPage(display, dy, "Navigation"));
+                    return redirectTo(new TestPage(display, dy, "GPS"));
                 } else if (active == 4) {
                     return redirectTo(new TestPage(display, dy, "Logs"));
                 }
@@ -61,7 +62,7 @@ class Setting: public Page {
             display->setTextWrap(true);
 
             element(1, "LAN Channel");
-            element(2, "Connected");
+            element(2, "Connections");
             element(3, "Navigation");
             element(4, "Exit");
         }

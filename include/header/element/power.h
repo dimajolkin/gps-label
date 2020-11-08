@@ -1,7 +1,7 @@
 #pragma once
 
 #include "config.h"
-#include "devices/display/display.h"
+#include "hardware/display/display.h"
 
 class PowerElement {
     private:

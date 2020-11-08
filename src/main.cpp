@@ -1,11 +1,12 @@
 #include <Arduino.h>
 #include <EEPROM.h>
 
-#include "devices/display/display.h"
+#include "hardware/display/display.h"
+#include "hardware/server/server.h"
+#include "hardware/lan/lan.h"
+
 #include "config.h"
 #include "buttons.h"
-#include "devices/server/server.h"
-#include "devices/lan/lan.h"
 #include "container.h"
 #include "app.h"
 #include "lib/logger/logger.h"

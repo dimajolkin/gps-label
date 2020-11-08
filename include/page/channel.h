@@ -1,7 +1,7 @@
 #pragma once
 
 #include "lib/page/page.h"
-#include "devices/lan/lan.h"
+#include "hardware/lan/lan.h"
 
 class ChannelPage: public Page {
     private:

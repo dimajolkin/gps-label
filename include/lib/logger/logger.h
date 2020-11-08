@@ -1,6 +1,6 @@
 #pragma once
 
-#include "devices/display/display.h"
+#include "hardware/display/display.h"
 
 Display *loggerDisplayLink = NULL;
 
