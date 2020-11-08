@@ -8,7 +8,7 @@ class Container {
         Lan *lan;
         Server *server;
         Logger *logger;
-       MemberService *memberService;
+        MemberService *memberService;
     public:
         Container(Lan *lan, Server *server, Logger *logger): lan(lan), server(server), logger(logger) {
             memberService = new MemberService();

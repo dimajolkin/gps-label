@@ -9,7 +9,7 @@ class Renderer {
         Display *display;
         uint8_t is_render = 0;
         uint8_t dy = 0;
-         uint16_t timing = 0;
+        uint16_t timing = 0;
     public:
         Renderer(Display *display, uint8_t dy): display(display), dy(dy) {}
         Renderer(Display *display): display(display) {}
