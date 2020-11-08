@@ -1,4 +1,5 @@
 #pragma once
+
 #include "lib/logger/logger.h"
 #include "device/members.h"
 

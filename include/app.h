@@ -20,7 +20,6 @@ class App {
     App(Display *display, Container *container): display(display), container(container) {
         header = new Header(display);
         buttons = new Buttons(BUTTON_PINS);
-
         current = new MapPage(display, header->getDy() + 1);
     }
 
@@ -36,12 +35,17 @@ class App {
         display->fillScreen(BACKGROUND_COLOR);
         display->println(F("Wait initilize..."));
        // initialize
-       
+
         Lan *lan = container->getLan();
         lan->init();
 
+        // режим согласования номеров 
+        container->getMembers()->append(new Member(1, true));
+
+        //
         buttons->setup();
         display->fillScreen(BACKGROUND_COLOR);
+
         start(header);
         start(current);
 
@@ -81,6 +85,8 @@ class App {
                 Serial.println(lastPackage->getLan());
                 Serial.println(lastPackage->getLng());
                 Serial.println(F("===== "));
+                container->getMembers()->registerPakage(lastPackage);
+
             } else {
                  Serial.println(F("Failed..."));
             }

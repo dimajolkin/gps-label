@@ -2,8 +2,11 @@
 
 #include "lib/page/page.h"
 #include "device/member.h"
+#include "device/members.h"
 
 class ConnectionListPage: public Page {
+    private:
+        MemberCollection *list;
     public:
         ConnectionListPage(Display *display, uint8_t dy): Page(display, dy) {}
 
@@ -14,14 +17,27 @@ class ConnectionListPage: public Page {
             }
         }
 
-        void renderConnect(uint8_t n, Member m)
+        void configure(Container *container) {
+            list = container->getMembers();
+        }
+
+        void renderMember(uint8_t n, Member *m)
         {
-            display->drawRect(0, 0, 20, 160, ST77XX_GREEN);
+            // @TODO нарисовать нормально
+            display->println(n);   
+            display->println(m->getCountPakages());   
+
+            display->drawRect(0, dy + (30 * n) + 2, 128, 30, ST77XX_GREEN);
         }
      
         void render() {
-            // renderConnect();
             display->setCursor(1, dy + 30);
-            display->println(F("Connections list view"));
+            uint8_t n = 0;
+            for (size_t i = 0; i < list->getSize(); i++) {
+                if (list->has(i)) {
+                    renderMember(n, list->get(i));
+                    n++;
+                }
+            }
         }
 };
