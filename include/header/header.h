@@ -37,11 +37,8 @@ class Header: public Renderer {
         }
 
         void update() {
-            if (millis() - timing > 1000) {
-                timing = millis(); 
-                tmp_power = server->getPowerPercent();
-                tmp_memory = server->getAvailableMemory();
-            }
+            tmp_power = server->getPowerPercent();
+            tmp_memory = server->getAvailableMemory();
 
             if (tmp_memory != memory) {
                 memory = tmp_memory;

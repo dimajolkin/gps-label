@@ -29,12 +29,4 @@ class MemberCollection {
         Member* get(uint8_t number) {
             return list[number];
         }
-
-        void registerPakage(Package *pack) {
-            if (!has(pack->n)) {
-                append(new Member(pack->n));
-            } else {
-                get(pack->n)->setLastPackage(pack);
-            }
-        }
 };

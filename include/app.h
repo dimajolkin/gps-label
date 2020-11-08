@@ -15,7 +15,7 @@ class App {
         Container *container;
         uint8_t stop = 0;
         Package *lastPackage = NULL;
-        
+        uint16_t timing = 0;
     public:
     App(Display *display, Container *container): display(display), container(container) {
         header = new Header(display);
@@ -40,9 +40,8 @@ class App {
         lan->init();
 
         // режим согласования номеров 
-        container->getMembers()->append(new Member(1, true));
+        container->getMemberService()->start();
 
-        //
         buttons->setup();
         display->fillScreen(BACKGROUND_COLOR);
 
@@ -71,11 +70,22 @@ class App {
         }
     }
 
+    void tasks() {
+        container->getServer()->update();
+        container->getMemberService()->update();
+    }
+
     void loop() {
         header->check();
         buttons->check();
         current->check();
-        
+
+        // update every 1s 
+         if (millis() - timing > 1000) {
+            timing = millis(); 
+            tasks();
+        }
+
         if (container->getLan()->available()) {
             Package pack = container->getLan()->read();
             if (pack.validate()) {
@@ -85,7 +95,8 @@ class App {
                 Serial.println(lastPackage->getLan());
                 Serial.println(lastPackage->getLng());
                 Serial.println(F("===== "));
-                container->getMembers()->registerPakage(lastPackage);
+                
+                container->getMemberService()->registerPakage(lastPackage);
 
             } else {
                  Serial.println(F("Failed..."));

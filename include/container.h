@@ -1,17 +1,17 @@
 #pragma once
 
 #include "lib/logger/logger.h"
-#include "device/members.h"
+#include "device/member-service.h"
 
 class Container {
     private:
         Lan *lan;
         Server *server;
         Logger *logger;
-        MemberCollection *members;
+       MemberService *memberService;
     public:
         Container(Lan *lan, Server *server, Logger *logger): lan(lan), server(server), logger(logger) {
-            members = new MemberCollection();
+            memberService = new MemberService();
         }
         
         Lan* getLan() {
@@ -26,7 +26,7 @@ class Container {
             return logger;
         }
 
-        MemberCollection* getMembers() {
-            return members;
+        MemberService* getMemberService() {
+            return memberService;
         }
 };

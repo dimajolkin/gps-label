@@ -6,7 +6,7 @@
 
 class ConnectionListPage: public Page {
     private:
-        MemberCollection *list;
+        MemberService *service;
     public:
         ConnectionListPage(Display *display, uint8_t dy): Page(display, dy) {}
 
@@ -18,7 +18,7 @@ class ConnectionListPage: public Page {
         }
 
         void configure(Container *container) {
-            list = container->getMembers();
+            service = container->getMemberService();
         }
 
         void renderMember(uint8_t n, Member *m)
@@ -33,9 +33,9 @@ class ConnectionListPage: public Page {
         void render() {
             display->setCursor(1, dy + 30);
             uint8_t n = 0;
-            for (size_t i = 0; i < list->getSize(); i++) {
-                if (list->has(i)) {
-                    renderMember(n, list->get(i));
+            for (size_t i = 0; i < service->getList()->getSize(); i++) {
+                if (service->getList()->has(i)) {
+                    renderMember(n, service->getList()->get(i));
                     n++;
                 }
             }
