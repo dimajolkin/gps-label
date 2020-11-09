@@ -34,15 +34,13 @@ class App {
         display->initR(INITR_BLACKTAB); 
         display->setRotation(0);
         display->fillScreen(BACKGROUND_COLOR);
-        display->println(F("Wait initilize..."));
-       // initialize
 
-        // Lan *lan = container->getLan();
-        // lan->init();
+        display->println(F("Initilize lan.."));
+        Lan *lan = container->getLan();
+        lan->init();
 
         // режим согласования номеров 
         container->getMemberService()->start();
-        container->getMemberService()->getList()->append(new Member(2));
 
         buttons->setup();
         display->fillScreen(BACKGROUND_COLOR);
