@@ -7,9 +7,9 @@
 
 class Lan {
   private:
-    const uint8_t num_channels = 128;
+    static const uint8_t num_channels = 128;
+    static const int num_reps = 100;
     uint8_t values[128];
-    const int num_reps = 100;
     RF24 *radio;
     LanConfig config;
   public:
@@ -61,7 +61,7 @@ class Lan {
     }
 
     uint8_t isChannelActive(uint8_t c) {
-        return min(0xf,values[c]&0xf) == 0;
+        return min(0xf, values[c]&0xf) == 0;
     }
 
     void startTest() {

@@ -21,6 +21,10 @@ class MemberService {
         }
     
         void registerPakage(Package *pack) {
+            if (pack->n > members->getSize()) {
+                return;
+            }
+            
             if (!members->has(pack->n)) {
                 members->append(new Member(pack->n));
             } else {

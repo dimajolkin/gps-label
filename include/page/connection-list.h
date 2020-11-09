@@ -50,6 +50,7 @@ class ConnectionListPage: public Page {
             uint8_t x = 0;
             uint8_t y = dy + (30 * n) + 2;
 
+            display->fillRect(x, y, 128, 30, BACKGROUND_COLOR);
             display->drawRect(x, y, 128, 30, ST77XX_GREEN);
             display->setCursor(x + 5, y + 5);
             display->setTextSize(3);
@@ -58,8 +59,8 @@ class ConnectionListPage: public Page {
             renderStats(x + 15, y + 3, m);
             renderAntenna(x + 80, y + 3, 40, 25, 100);
         }
-     
-        void render() {
+        
+        void update() {
             uint8_t n = 0;
             for (size_t i = 0; i < service->getList()->getSize(); i++) {
                 if (service->getList()->has(i)) {

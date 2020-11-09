@@ -14,14 +14,14 @@ class App {
         Display *display;
         Container *container;
         uint8_t stop = 0;
-        Package *lastPackage = NULL;
         uint16_t timing = 0;
     public:
     App(Display *display, Container *container): display(display), container(container) {
         header = new Header(display);
         buttons = new Buttons(BUTTON_PINS);
 
-        current = new ConnectionListPage(display, header->getDy() + 1);
+        current = new MapPage(display, header->getDy() + 1);
+        // current = new ConnectionListPage(display, header->getDy() + 1);
     }
 
     void setup() {
@@ -75,6 +75,17 @@ class App {
         container->getMemberService()->update();
     }
 
+    void readPackages() {
+        if (container->getLan()->available()) {
+            Package pack = container->getLan()->read();
+            if (pack.validate()) {
+                container->getMemberService()->registerPakage(&pack);
+            } else {
+                 Serial.println(F("Failed..."));
+            }
+        }
+    }
+
     void loop() {
         header->check();
         buttons->check();
@@ -86,21 +97,6 @@ class App {
             tasks();
         }
 
-        if (container->getLan()->available()) {
-            Package pack = container->getLan()->read();
-            if (pack.validate()) {
-                lastPackage = &pack;
-
-                Serial.println(lastPackage->n);
-                Serial.println(lastPackage->getLan());
-                Serial.println(lastPackage->getLng());
-                Serial.println(F("===== "));
-                
-                container->getMemberService()->registerPakage(lastPackage);
-
-            } else {
-                 Serial.println(F("Failed..."));
-            }
-        }
+        readPackages();
     }
 };

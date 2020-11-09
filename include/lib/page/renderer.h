@@ -6,6 +6,7 @@
 
 class Renderer {
     protected:
+        static const uint16_t SLEEP_MS = 200;
         Display *display;
         uint8_t is_render = 0;
         uint8_t dy = 0;
@@ -36,7 +37,7 @@ class Renderer {
                 is_render = 1;
             }
 
-            if (millis() - timing > 100) {
+            if (millis() - timing > SLEEP_MS) {
                timing = millis(); 
                update();
             }

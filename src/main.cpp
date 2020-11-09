@@ -21,11 +21,23 @@ App app = App(&display, &container);
 
 void handleEvent(AceButton *button, uint8_t eventType, uint8_t buttonState);
 
+void buttonTick() {
+  // app.event();
+}
+
 void setup(void)
 {
+  // подключили кнопку на D2 и GND
+  // pinMode(6, INPUT_PULLUP);
+  // D2 это прерывание 0
+  // обработчик - функция buttonTick
+  // FALLING - при нажатии на кнопку будет сигнал 0, его и ловим
+  // attachInterrupt(0, buttonTick, FALLING);
+
   app.setup();
   app.registerHandlerKeyboard(handleEvent);
 }
+
 
 void loop(void)
 {

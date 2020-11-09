@@ -57,19 +57,18 @@ void setup() {
 
 byte n = 0;
 void loop() {
-//  if (Serial.available()) {
-//    int n = Serial.parseInt();
-//    if (n == 1) {
-      Package pack;
+    if (n > 4) {
+       n = 1;
+    }
+
+    Package pack;
     pack.lan = 41.234;
     pack.lng = 51.43434;
     pack.n = n;
-    
-    radio.write(&pack, sizeof(pack));
-    //radio.write(&n, 1);
 
+    radio.write(&pack, sizeof(pack));
      n++;
     Serial.println(n);
   
-   delay(500);  
+     delay(10);  
 }
