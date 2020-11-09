@@ -16,6 +16,10 @@ class Member {
             return number;
         }
 
+        uint8_t getPing() {
+            return 1;
+        }
+
         uint8_t isRoot() {
             return root;
         }

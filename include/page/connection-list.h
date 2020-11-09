@@ -21,17 +21,45 @@ class ConnectionListPage: public Page {
             service = container->getMemberService();
         }
 
+        void renderAntenna(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t percent)
+        {
+            uint8_t len = round((w / 100.0) * percent);
+
+            display->fillTriangle(
+                x, y + h,
+                x + len, y,
+                x + len, y + h,
+                ST77XX_WHITE
+            );
+        }
+
+        void renderStats(uint8_t x, uint8_t y, Member *m) 
+        {
+            display->setCursor(x + 10, y + 3);
+            display->setTextSize(1);
+            display->print("Count: ");
+            display->print(m->getCountPakages());
+
+            display->setCursor(x + 10, y + 13);
+            display->print("Ping: ");
+            display->print(m->getPing());
+        }
+
         void renderMember(uint8_t n, Member *m)
         {
-            // @TODO нарисовать нормально
-            display->println(n);   
-            display->println(m->getCountPakages());   
+            uint8_t x = 0;
+            uint8_t y = dy + (30 * n) + 2;
 
-            display->drawRect(0, dy + (30 * n) + 2, 128, 30, ST77XX_GREEN);
+            display->drawRect(x, y, 128, 30, ST77XX_GREEN);
+            display->setCursor(x + 5, y + 5);
+            display->setTextSize(3);
+            display->print(n);
+        
+            renderStats(x + 15, y + 3, m);
+            renderAntenna(x + 80, y + 3, 40, 25, 100);
         }
      
         void render() {
-            display->setCursor(1, dy + 30);
             uint8_t n = 0;
             for (size_t i = 0; i < service->getList()->getSize(); i++) {
                 if (service->getList()->has(i)) {

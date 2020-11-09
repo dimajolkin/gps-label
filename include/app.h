@@ -20,7 +20,8 @@ class App {
     App(Display *display, Container *container): display(display), container(container) {
         header = new Header(display);
         buttons = new Buttons(BUTTON_PINS);
-        current = new MapPage(display, header->getDy() + 1);
+
+        current = new ConnectionListPage(display, header->getDy() + 1);
     }
 
     void setup() {
@@ -36,11 +37,12 @@ class App {
         display->println(F("Wait initilize..."));
        // initialize
 
-        Lan *lan = container->getLan();
-        lan->init();
+        // Lan *lan = container->getLan();
+        // lan->init();
 
         // режим согласования номеров 
         container->getMemberService()->start();
+        container->getMemberService()->getList()->append(new Member(2));
 
         buttons->setup();
         display->fillScreen(BACKGROUND_COLOR);
