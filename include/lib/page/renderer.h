@@ -6,7 +6,7 @@
 
 class Renderer {
     protected:
-        static const uint16_t SLEEP_MS = 200;
+        static const uint16_t SLEEP_MS = 400;
         Display *display;
         uint8_t is_render = 0;
         uint8_t dy = 0;

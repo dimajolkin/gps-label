@@ -35,8 +35,8 @@ class Lan {
         radio->setRetries(0, 15);     //(время между попыткой достучаться, число попыток)
         radio->setPayloadSize(32);     //размер пакета, в байтах
         radio->openReadingPipe(1, address);      //хотим слушать трубу 0
-        radio->setChannel(5);  //выбираем канал (в котором нет шумов!)
-        radio->setPALevel(RF24_PA_MAX); //уровень мощности передатчика. На выбор RF24_PA_MIN, RF24_PA_LOW, RF24_PA_HIGH, RF24_PA_MAX
+        radio->setChannel(40);  //выбираем канал (в котором нет шумов!)
+        radio->setPALevel(RF24_PA_HIGH); //уровень мощности передатчика. На выбор RF24_PA_MIN, RF24_PA_LOW, RF24_PA_HIGH, RF24_PA_MAX
         radio->setDataRate(RF24_1MBPS); //скорость обмена. На выбор RF24_2MBPS, RF24_1MBPS, RF24_250KBPS
         //должна быть одинакова на приёмнике и передатчике!
         //при самой низкой скорости имеем самую высокую чувствительность и дальность!!
@@ -46,7 +46,7 @@ class Lan {
         radio->startListening();  //начинаем слушать эфир, мы приёмный модуль
     }
 
-    uint8_t available() {
+    bool available() {
         return radio->available();
     }
 
