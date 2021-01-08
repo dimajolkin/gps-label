@@ -2,6 +2,7 @@
 
 #include "config.h"
 #include "hardware/display/display.h"
+#include "lib/draw/point.h"
 
 class PowerElement {
     private:
@@ -22,14 +23,12 @@ class PowerElement {
             }
         }
     public:
-        static void render(Display *display, uint8_t dy, uint8_t power) {
-            uint8_t x = 100;
-            uint8_t y = 0;
-            display->fillRect(x, y + 1, 24, 9, BACKGROUND_COLOR);
-            display->setCursor(x, y + 1);
+        static void render(Point point, Display *display, uint8_t power) {
+            display->fillRect(point.x, point.y + 1, 24, 9, BACKGROUND_COLOR);
+            display->setCursor(point.x, point.y + 1);
             display->setTextSize(1);
             display->print(power);
             display->write('%');
-            renderBattery(display, dy, x + 20, y, 100);
+            renderBattery(display, 11, point.x + 20, point.y, 100);
         }
 };

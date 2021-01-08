@@ -8,7 +8,7 @@ class Renderer {
     protected:
         static const uint16_t SLEEP_MS = 400;
         Display *display;
-        uint8_t is_render = 0;
+        uint8_t isRender = 0;
         uint8_t dy = 0;
         uint16_t timing = 0;
     public:
@@ -18,7 +18,7 @@ class Renderer {
 
         void load() {
             clear();
-            is_render = 0;
+            isRender = 0;
         }
 
         void clear() {
@@ -30,11 +30,11 @@ class Renderer {
         virtual void render();
 
         virtual void update() {};
-
+        
         virtual void check() {
-            if (!is_render) {
+            if (!isRender) {
                 render();
-                is_render = 1;
+                isRender = 1;
             }
 
             if (millis() - timing > SLEEP_MS) {

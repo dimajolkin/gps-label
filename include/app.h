@@ -37,9 +37,7 @@ class App {
 
         display->println(F("Initilize lan.."));
         container->getLan()->init();
-        
-        // режим согласования номеров 
-        container->getMemberService()->start();
+        container->getMemberService()->init();
 
         buttons->setup();
         display->fillScreen(BACKGROUND_COLOR);
@@ -77,12 +75,9 @@ class App {
     
     void readPackages() {
         if (container->getLan()->available()) {
-            Serial.println(F("Success..."));
             Package pack = container->getLan()->read();
             if (pack.validate()) {
                 container->getMemberService()->registerPakage(&pack);
-            } else {
-                //Serial.println(F("Failed..."));
             }
         }
     }

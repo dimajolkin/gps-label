@@ -3,25 +3,26 @@
 class Member {
     private:
         uint8_t number;
-        uint8_t root = 1;
+        uint8_t isMyDevice = 0;
         Package *lastPackage;
 
         uint16_t lastTime = 0;
         uint16_t countPakages = 0;
+        uint16_t ping = 0;
     public:
-        Member(uint8_t number, uint8_t root): number(number),root(root) {}
-        Member(uint8_t number): number(number){}
+        Member(uint8_t number, uint8_t isMyDevice): number(number),isMyDevice(isMyDevice) {}
+        Member(uint8_t number): number(number) {}
 
         uint8_t getNumber() {
             return number;
         }
 
         uint8_t getPing() {
-            return 1;
+            return ping;
         }
 
-        uint8_t isRoot() {
-            return root;
+        uint8_t isMy() {
+            return isMyDevice;
         }
 
         uint16_t getCountPakages() {
@@ -29,13 +30,14 @@ class Member {
         }
 
         void setLastPackage(Package *p) {
-            lastTime = millis();
-            countPakages++;
-
             lastPackage = p;
+            lastTime = millis();
+            countPakages++;           
         }
 
         void update() {
-            
+             if (lastTime) {
+                ping = (lastTime - millis()) / 1000;
+            }
         }
 };

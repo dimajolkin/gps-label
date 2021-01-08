@@ -1,23 +1,32 @@
 #pragma once
 
 #include "hardware/lan/package.h"
+#include "device/config.h"
 #include "device/member.h"
 #include "device/members.h"
 
 class MemberService {
     private:
         MemberCollection *members;
+        MemberConfig config;
+        Member *my;
     public:
         MemberService() {
             members = new MemberCollection();
+        }
+
+        void init () {
+            config.init();
+            my = new Member(config.getNumber(), true);
+             members->append(my);   
         }
 
         MemberCollection* getList() {
             return members;
         }
 
-        void start() {
-            members->append(new Member(1, true));
+        Member* getMy() {
+            return my;
         }
     
         void registerPakage(Package *pack) {

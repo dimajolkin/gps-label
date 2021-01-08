@@ -86,12 +86,12 @@ void setup() {
 }
 
 
-byte n = 1;
+byte n = 2;
 byte f = 0;
 byte s = 0;
 void loop() {
     if (n > 4) {
-       n = 1;
+       n = 2;
     }
 
     Package pack;

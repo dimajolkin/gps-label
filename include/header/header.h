@@ -2,10 +2,12 @@
 
 #include "header/element/power.h"
 #include "header/element/memory.h"
+#include "lib/draw/point.h"
 
 class Header: public Renderer {
     private:
         Server *server;
+        MemberService *memberService;
         uint8_t power = 0;
         uint8_t tmp_power = 0;
 
@@ -22,6 +24,7 @@ class Header: public Renderer {
 
         void configure(Container *container) {
             server = container->getServer();
+            memberService = container->getMemberService();
         }
 
         uint8_t getDy() {
@@ -29,11 +32,16 @@ class Header: public Renderer {
         }
 
         void renderPower() {
-             PowerElement::render(display, getDy(), power);
+             PowerElement::render({100, 0}, display, power);
         }
 
         void renderMemory() {
-            MemoryElement::render(display, memory);
+            MemoryElement::render({10, 0}, display, memory);
+        }
+
+        void renderMember() {
+            display->setCursor(display->width() / 2, 1);
+            display->print(memberService->getMy()->getNumber());
         }
 
         void update() {
@@ -54,6 +62,7 @@ class Header: public Renderer {
         void render() {
             renderMemory();
             renderPower();
+            renderMember();
 
             display->drawLine(
                 0, getDy(),

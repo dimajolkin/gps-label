@@ -25,8 +25,7 @@ void buttonTick() {
   // app.event();
 }
 
-void setup(void)
-{
+void setup(void) {
   // подключили кнопку на D2 и GND
   // pinMode(6, INPUT_PULLUP);
   // D2 это прерывание 0
@@ -39,8 +38,7 @@ void setup(void)
 }
 
 
-void loop(void)
-{
+void loop(void) {
     app.loop();
 }
 

@@ -42,12 +42,12 @@ class MapPage: public Page {
 
             if (btn == BTN_UP) {
                 radiusStep += DEFAULT_RADIUS_STEP;
-                is_render = 0;
+                isRender = 0;
                 clear();
             }
             if (btn == BTN_DOWN) {
                 radiusStep -= DEFAULT_RADIUS_STEP;
-                is_render = 0;
+                isRender = 0;
                 clear();
             }
 
