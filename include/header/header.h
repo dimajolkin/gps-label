@@ -14,6 +14,9 @@ class Header: public Renderer {
         uint16_t memory = 0;
         uint16_t tmp_memory = 0;
 
+        uint8_t number = 0;
+        uint8_t tmp_number = 0;
+
         const uint8_t startX = 100;
         const uint8_t startY = 0;
 
@@ -39,14 +42,15 @@ class Header: public Renderer {
             MemoryElement::render({10, 0}, display, memory);
         }
 
-        void renderMember() {
+        void renderNumber() {
             display->setCursor(display->width() / 2, 1);
-            display->print(memberService->getMy()->getNumber());
+            display->print(number);
         }
 
         void update() {
             tmp_power = server->getPowerPercent();
             tmp_memory = server->getAvailableMemory();
+            tmp_number = memberService->getMy()->getNumber();
 
             if (tmp_memory != memory) {
                 memory = tmp_memory;
@@ -57,12 +61,17 @@ class Header: public Renderer {
                 power = tmp_power;
                 renderPower();
             }
+
+            if (tmp_number != number) {
+                number = tmp_number;
+                renderNumber();
+            }
         }
 
         void render() {
             renderMemory();
             renderPower();
-            renderMember();
+            renderNumber();
 
             display->drawLine(
                 0, getDy(),

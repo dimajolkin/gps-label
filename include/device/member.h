@@ -17,6 +17,10 @@ class Member {
             return number;
         }
 
+        void setNumber(uint8_t n) {
+            number = n;
+        }
+
         uint8_t getPing() {
             return ping;
         }

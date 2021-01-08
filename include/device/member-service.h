@@ -18,9 +18,14 @@ class MemberService {
         void init () {
             config.init();
             my = new Member(config.getNumber(), true);
-             members->append(my);   
+            members->append(my);   
         }
 
+        void updateMyNumber(uint8_t number) {
+            my->setNumber(number);
+            config.setNumber(number);
+        }
+        
         MemberCollection* getList() {
             return members;
         }
