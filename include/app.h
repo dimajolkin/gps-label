@@ -40,7 +40,7 @@ class App {
         container->getMemberService()->init();
 
         display->println(F("Initilize GPS.."));
-        container->getGPS()->init();
+        // container->getGPS()->init();
 
         buttons->setup();
         display->fillScreen(BACKGROUND_COLOR);

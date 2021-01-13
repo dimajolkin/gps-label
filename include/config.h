@@ -1,8 +1,8 @@
 #pragma once 
 
 #define TFT_CS        PB9
-#define TFT_DC        PB7
 #define TFT_RST       PB8
+#define TFT_DC        PB7
 
 #define RADIO_CE       PB10
 #define RADIO_CSP      PB11

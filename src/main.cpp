@@ -24,6 +24,9 @@ App app = App(&display, &container);
 void handleEvent(AceButton *button, uint8_t eventType, uint8_t buttonState);
 
 void setup(void) {
+  SPIClass SPI_2(PB5, PB4, PB3);
+  SPI_2.begin();
+
   app.setup();
   app.registerHandlerKeyboard(handleEvent);
 }

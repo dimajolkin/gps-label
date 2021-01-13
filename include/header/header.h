@@ -53,8 +53,8 @@ class Header: public Renderer {
         void update() {
             tmp_power = server->getPowerPercent();
             tmp_memory = server->getAvailableMemory();
-            // tmp_number = memberService->getMy()->getNumber();
-            tmp_number = container->getGPS()->getCountSatellites();
+            tmp_number = memberService->getMy()->getNumber();
+            // tmp_number = container->getGPS()->getCountSatellites();
 
             if (tmp_memory != memory) {
                 memory = tmp_memory;
