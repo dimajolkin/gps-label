@@ -8,6 +8,8 @@ class Header: public Renderer {
     private:
         Server *server;
         MemberService *memberService;
+        Container *container;
+
         uint8_t power = 0;
         uint8_t tmp_power = 0;
 
@@ -26,6 +28,7 @@ class Header: public Renderer {
         }
 
         void configure(Container *container) {
+            container = container;
             server = container->getServer();
             memberService = container->getMemberService();
         }
@@ -50,7 +53,8 @@ class Header: public Renderer {
         void update() {
             tmp_power = server->getPowerPercent();
             tmp_memory = server->getAvailableMemory();
-            tmp_number = memberService->getMy()->getNumber();
+            // tmp_number = memberService->getMy()->getNumber();
+            tmp_number = container->getGPS()->getCountSatellites();
 
             if (tmp_memory != memory) {
                 memory = tmp_memory;

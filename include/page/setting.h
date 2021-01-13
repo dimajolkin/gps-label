@@ -5,6 +5,7 @@
 #include "page/test-page.h"
 #include "page/member-list.h"
 #include "page/my-member-number.h"
+#include "page/gps-log.h"
 
 struct MenuElement {
     const uint8_t number;
@@ -19,7 +20,7 @@ class Setting: public Page {
             {1, "LAN Channel"},
             {2, "Members"},
             {3, "My number"},
-            {4, "Logs"}
+            {4, "GPS"}
         };
         
         void renderElement(MenuElement item) {
@@ -61,7 +62,7 @@ class Setting: public Page {
                 } else if (active == 3) {
                     return redirectTo(new MyMemberNumber(display, dy));
                 } else if (active == 4) {
-                    return redirectTo(new TestPage(display, dy, "Logs"));
+                    return redirectTo(new GPSLog(display, dy));
                 }
             }
 

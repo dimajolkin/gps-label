@@ -39,6 +39,9 @@ class App {
         container->getLan()->init();
         container->getMemberService()->init();
 
+        display->println(F("Initilize GPS.."));
+        container->getGPS()->init();
+
         buttons->setup();
         display->fillScreen(BACKGROUND_COLOR);
 
@@ -70,6 +73,7 @@ class App {
     void tasks() {
         container->getServer()->update();
         container->getMemberService()->update();
+        container->getGPS()->update();
     }
 
     
