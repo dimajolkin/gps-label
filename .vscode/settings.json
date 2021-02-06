@@ -1,0 +1,27 @@
+{
+    "files.associations": {
+        "*.tcc": "cpp",
+        "chrono": "cpp",
+        "cstdlib": "cpp",
+        "string": "cpp",
+        "exception": "cpp",
+        "memory_resource": "cpp",
+        "cmath": "cpp",
+        "functional": "cpp",
+        "fstream": "cpp",
+        "future": "cpp",
+        "iostream": "cpp",
+        "istream": "cpp",
+        "mutex": "cpp",
+        "new": "cpp",
+        "numeric": "cpp",
+        "ostream": "cpp",
+        "ratio": "cpp",
+        "sstream": "cpp",
+        "string_view": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "typeinfo": "cpp",
+        "utility": "cpp"
+    }
+}

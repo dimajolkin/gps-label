@@ -1,6 +1,7 @@
 #pragma once
 
 #include "hardware/display/display.h"
+#include "stdio.h"
 
 Display *loggerDisplayLink = NULL;
 
@@ -33,7 +34,7 @@ class Logger {
 
         int inline static displayPutc(char c, FILE *) {
             Serial.write(c);
-            loggerDisplayLink->write(c);
+            // loggerDisplayLink->write(c);
             return c;
         }
 };

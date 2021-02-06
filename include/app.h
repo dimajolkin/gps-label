@@ -26,7 +26,7 @@ class App {
 
     void setup() {
         container->getLogger()->start();
-        // container->getLogger()->attachDisplay(display);
+        container->getLogger()->attachDisplay(display);
         container->getLogger()->attachSerial();
 
         Serial.println(F("Start app"));
@@ -47,8 +47,6 @@ class App {
 
         start(header);
         start(current);
-
-        Serial.println(F("run loop"));
     }
 
     void start(Renderer *view) {
@@ -95,6 +93,7 @@ class App {
          if (millis() - timing > 1000) {
             timing = millis(); 
             tasks();
+            printf("Run task");
         }
 
         readPackages();
