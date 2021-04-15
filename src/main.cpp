@@ -42,9 +42,9 @@ void setup(void) {
 void loop(void) {
 
   digitalWrite(PC13, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(2000);                       // wait for a second
+  delay(200);                       // wait for a second
   digitalWrite(PC13, LOW);    // turn the LED off by making the voltage LOW
-  delay(2000);  
+  delay(200);  
 
 //     app.loop();
 //  printf(" hello, world! \n");
