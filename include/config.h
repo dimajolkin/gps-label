@@ -1,19 +1,19 @@
 #pragma once 
 
-#define TFT_CS        PB9
-#define TFT_RST       PB8
-#define TFT_DC        PB7
+#define TFT_CS        PB10
+#define TFT_RST       PB1
+#define TFT_DC        PB0
 
-#define RADIO_CE       PB10
-#define RADIO_CSP      PB11
+#define RADIO_CE       PB13
+#define RADIO_CSP      PB14
 
 #define GPO_GPS_TX PA9
 #define GPO_GPS_RX PA10
 
-#define BTN_RIGHT PA1
-#define BTN_LEFT  PA2
-#define BTN_UP  PA3
-#define BTN_DOWN  PA4
+#define BTN_RIGHT PA2
+#define BTN_LEFT  PA4
+#define BTN_UP  PA1
+#define BTN_DOWN  PA3
 #define BTN_OK  PA0
 
 #define BTN_PIN_COUNT 5

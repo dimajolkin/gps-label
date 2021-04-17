@@ -71,7 +71,7 @@ class App {
     void tasks() {
         container->getServer()->update();
         container->getMemberService()->update();
-        container->getGPS()->update();
+        // container->getGPS()->update();
     }
 
     
@@ -96,6 +96,6 @@ class App {
             printf("Run task");
         }
 
-        readPackages();
+        // readPackages();
     }
 };
