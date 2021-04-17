@@ -77,7 +77,6 @@ class Setting: public Page {
 
             for (uint8_t i = 0; i < SIZE; i++) {
                 MenuElement item = elements[i];
-
                 renderElement(item);
             }
         }

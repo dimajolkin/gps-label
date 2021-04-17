@@ -37,7 +37,7 @@ class Renderer {
                 isRender = 1;
             }
 
-            if (millis() - timing > SLEEP_MS) {
+            if (millis() - timing > 1000) {
                timing = millis(); 
                update();
             }

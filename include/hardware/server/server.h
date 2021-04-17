@@ -35,7 +35,7 @@ class Server {
         }
 
         void update() {
-            memory = availableMemory(0, 10000);
+            memory++; //availableMemory(0, 10000);
             power = 10;
         }
 };

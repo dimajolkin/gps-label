@@ -25,19 +25,14 @@ class App {
     }
 
     void setup() {
-        container->getLogger()->start();
-        container->getLogger()->attachDisplay(display);
-        container->getLogger()->attachSerial();
-
         Serial.println(F("Start app"));
-
         display->initR(INITR_BLACKTAB); 
         display->setRotation(0);
         display->fillScreen(BACKGROUND_COLOR);
 
         display->println(F("Initilize lan.."));
-        container->getLan()->init();
-        container->getMemberService()->init();
+        // container->getLan()->init();
+        // container->getMemberService()->init();
 
         display->println(F("Initilize GPS.."));
         // container->getGPS()->init();
@@ -70,7 +65,7 @@ class App {
 
     void tasks() {
         container->getServer()->update();
-        container->getMemberService()->update();
+        // container->getMemberService()->update();
         // container->getGPS()->update();
     }
 
@@ -84,17 +79,23 @@ class App {
         }
     }
 
+    uint16_t check_time = 0;
+
     void loop() {
-        header->check();
-        buttons->check();
-        current->check();
+        if (millis() - check_time > 100) {
+            check_time = millis(); 
+            header->check();
+            current->check();
+        }
+
+        buttons->check();        
 
         // update every 1s 
          if (millis() - timing > 1000) {
             timing = millis(); 
             tasks();
-            printf("Run task");
         }
+        
 
         // readPackages();
     }

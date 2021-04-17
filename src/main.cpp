@@ -11,19 +11,27 @@
 #include "container.h"
 #include "app.h"
 #include "lib/logger/logger.h"
-// #include "stdio.h"
+#include "stdio.h"
 
 RF24 radio(RADIO_CE, RADIO_CSP);
 GPS gps(GPO_GPS_RX, GPO_GPS_TX);
+Display display(TFT_CS, TFT_DC, TFT_RST);
 
-Display display = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
-Logger *logger = new Logger();
-
+Logger logger;
+Server server;
 Lan lan(&radio);
-Container container(&gps, &lan, new Server(), logger);
+
+Container container(&gps, &lan, &server, &logger);
 App app = App(&display, &container);
 
 void handleEvent(AceButton *button, uint8_t eventType, uint8_t buttonState);
+
+void tick() {
+  digitalWrite(PC13, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(100);                       // wait for a second
+  digitalWrite(PC13, LOW);    // turn the LED off by making the voltage LOW
+  delay(100);  
+}
 
 void setup(void) {
   // initialize digital pin LED_BUILTIN as an output.
@@ -35,25 +43,17 @@ void setup(void) {
   app.registerHandlerKeyboard(handleEvent);
 }
 
-void tick() {
-  digitalWrite(PC13, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(100);                       // wait for a second
-  digitalWrite(PC13, LOW);    // turn the LED off by making the voltage LOW
-  delay(100);  
-}
-
 void loop(void) {
+  logger.printf("start \n");
     app.loop();
-
-//  printf(" hello, world! \n");
-//     // ITM_SendChar('a');
+    // tick();
+    logger.printf("stop \n");
 }
 
 void handleEvent(AceButton *button, uint8_t eventType, uint8_t buttonState) {
   if (eventType != AceButton::kEventClicked) {
     return;
-  } 
-  // printf("click! \n");
-  //  tick();
+  }
+  logger.printf("click! \n");
   app.onClick(button->getId());
 }

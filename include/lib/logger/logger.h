@@ -1,40 +1,27 @@
 #pragma once
 
 #include "hardware/display/display.h"
-#include "stdio.h"
+#include <stdio.h>
+#include <SWOStream.h>
+#include <Print.h>
 
-Display *loggerDisplayLink = NULL;
-
-class Logger {
+class Logger: public Print {
+    private:
+        SWOStream *swo;
     public:
-        void start() {
-            Serial.begin(SERIAL_BAUND);
+        Logger() {
+            swo = new SWOStream(6000, SWO_Async, 0, false);
         }
 
-        void attachSerial() {
-            // fdev_close();
-            // fdevopen(&serialPutc, 0);
+        size_t write(uint8_t ch) {
+            return swo->write(ch);
         }
 
-        void attachDisplay(Display *disp) {
-            loggerDisplayLink = disp;
-            // fdev_close();
-            // fdevopen(&displayPutc, 0);
+        size_t write(const uint8_t *buffer, size_t size) {
+            return swo->write(buffer, size);
         }
 
-        void detachDisplay() {
-            loggerDisplayLink = NULL;
-            // fdev_close();
-        }
-
-        static int serialPutc(char c, FILE *) {
-            Serial.write(c);
-            return c;
-        }
-
-        int inline static displayPutc(char c, FILE *) {
-            Serial.write(c);
-            // loggerDisplayLink->write(c);
-            return c;
+        void flush() {
+            swo->flush();
         }
 };
