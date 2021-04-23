@@ -363,7 +363,7 @@ void Adafruit_GFX::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16
 }
 #endif
 
-size_t Adafruit_GFX::writeChar(uint8_t c)
+int Adafruit_GFX::writeChar(uint8_t c)
 {
     if (c == '\n')
     {

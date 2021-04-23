@@ -21,6 +21,8 @@ All text above must be included in any redistribution
 #define _ADAFRUIT_GFX_H_
 
 #include "Adafruit_GFX_Config.h"
+#include "mbed.h"
+#include "stdint.h"
 
 static inline void swap(int16_t &a, int16_t &b)
 {
@@ -143,7 +145,7 @@ class Adafruit_GFX : public Stream
     /// Draw a text character at a specified pixel location
     void drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color, uint16_t bg, uint8_t size);
     /// Draw a text character at the text cursor location
-    size_t writeChar(uint8_t);
+    int writeChar(uint8_t);
 
     /// Get the width of the display in pixels
     inline int16_t width(void) { return _width; };

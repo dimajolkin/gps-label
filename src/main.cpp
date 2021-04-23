@@ -87,10 +87,6 @@ Keyboard keyboard();
 
 InterruptIn button(BTN_UP);
 
-// void flip() {
-  // led = !led;
-// }
-
 Thread thread;
 
 void displayThread() {
