@@ -58,11 +58,13 @@
 //   app.onClick(button->getId());
 // }
 #include "mbed.h"
+
 #include "config.h"
 #include <stdint.h>
 
 #include "hardware/display/display.h"
 #include "hardware/lan/lan.h"
+#include "hardware/gps/gps.h"
 
 DigitalOut led(PC_13);
 

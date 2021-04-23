@@ -309,8 +309,8 @@ void Adafruit_ST7735::commonInit(uint8_t *cmdList) {
   // lcdPort.format(8, 0);
   // lcdPort.frequency(4000000);
 
-  // lcdPort.format(16, 0);
-  lcdPort.frequency(40 * 1000000);
+  lcdPort.format(32, 0);
+  lcdPort.frequency(49 * 1000000);
   // toggle RST low to reset; CS low so it'll listen to us
   _cs = 0;
   _rst = 1;
