@@ -61,7 +61,7 @@
 
 #include "config.h"
 #include <stdint.h>
-
+#include "DebounceIn.h"
 #include "hardware/display/display.h"
 #include "hardware/lan/lan.h"
 #include "hardware/gps/gps.h"
@@ -88,9 +88,9 @@ DigitalIn pb(BTN_OK);
 Display display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST);
 Keyboard keyboard();
 
-InterruptIn button(BTN_UP);
 
 Thread thread;
+Thread threadKeyborad;
 
 void displayThread() {
    while (true) {
@@ -102,6 +102,8 @@ void displayThread() {
     }
 }
 
+DebounceIn buttonDown(BTN_DOWN);
+
 int main() {
     display.initR(INITR_BLACKTAB); 
     display.setRotation(0);
@@ -109,15 +111,15 @@ int main() {
     
     thread.start(displayThread);
 
-    pb.mode(PullUp);
-    button.rise([] {
-      led = !led;
-    });
-
+    // pb.mode(PullUp);
+    // button.fall([] {
+      // led = !led;
+    // });
+    buttonDown.mode(PullDown);
     while(1) {
-        // myled = 1; // LED is ON
-        // thread_sleep_for(500); // 200 ms
-        // myled = 0; // LED is OFF
-        // thread_sleep_for(500); // 1 sec
+        if (buttonDown.read()) {
+          led = !led;
+          thread_sleep_for(100);
+        }
     }
 }
