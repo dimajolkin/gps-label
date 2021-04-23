@@ -26,7 +26,7 @@ class Lan {
     }
 
     void init() {
-        const byte address[6] = "00001";
+        const uint8_t address[6] = "00001";
 
         config.init();
         radio->begin(); //активировать модуль
@@ -74,7 +74,7 @@ class Lan {
             while (i--) {
                 radio->setChannel(i);
                 radio->startListening();
-                delayMicroseconds(128);
+                thread_sleep_for(120);
                 radio->stopListening();
                 if (radio->testCarrier()) {
                     ++values[i];

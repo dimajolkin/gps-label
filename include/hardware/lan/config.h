@@ -1,6 +1,8 @@
 
 #pragma once
 
+// #include <EEPROM.h>
+
 #define LAN_CONFIG_SAVE_CHANNEL_ADDRESS 1
 
 class LanConfig {
@@ -12,10 +14,11 @@ class LanConfig {
         }
 
         void setChannel(uint8_t n) {
-            EEPROM.update(LAN_CONFIG_SAVE_CHANNEL_ADDRESS, n);
+            // EEPROM.update(LAN_CONFIG_SAVE_CHANNEL_ADDRESS, n);
         }
 
         uint8_t getChannel() {
-            return EEPROM.read(LAN_CONFIG_SAVE_CHANNEL_ADDRESS);
+            return 1;
+            // return EEPROM.read(LAN_CONFIG_SAVE_CHANNEL_ADDRESS);
         }
 };

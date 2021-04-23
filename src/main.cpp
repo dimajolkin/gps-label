@@ -62,6 +62,7 @@
 #include <stdint.h>
 
 #include "hardware/display/display.h"
+#include "hardware/lan/lan.h"
 
 DigitalOut led(PC_13);
 
