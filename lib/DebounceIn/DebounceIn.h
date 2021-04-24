@@ -64,7 +64,7 @@ class DebounceIn : public DigitalIn {
          * @param int i The debounce sample period time to set.
          */        
         void set_debounce_us(us_timestamp_t i) {
-            _ticker.attach_us(callback(this, &DebounceIn::_callback), i);
+            _ticker.attach(callback(this, &DebounceIn::_callback), i);
         }
         
         /** set_samples

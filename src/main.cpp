@@ -61,40 +61,23 @@
 
 #include "config.h"
 #include <stdint.h>
-// #include "DebounceIn.h"
+#include "SWO.h"
 #include "hardware/display/display.h"
 #include "hardware/lan/lan.h"
 #include "hardware/gps/gps.h"
+#include "hardware/keyboard/keyboard.h"
 
 DigitalOut led(PC_13);
 
-class Keyboard {
-  public:
-    DigitalIn *ok;
-    DigitalIn *left;
-    DigitalIn *right;
-    DigitalIn *up;
-    DigitalIn *down;
-    Keyboard() {
-      ok = new DigitalIn(BTN_OK);
-      left = new DigitalIn(BTN_LEFT);
-      right = new DigitalIn(BTN_RIGHT);
-      up = new DigitalIn(BTN_UP);
-      down = new DigitalIn(BTN_DOWN);
-    }
-};
-
-
 Display display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST);
-Keyboard keyboard();
-
 EventFlags displayDrawFlag;
+SWO_Channel swo("channel");
 
 Thread thread;
-Thread threadKeyborad;
 
 #define SAMPLE_FLAG1 (1UL << 0)
-uint16_t count_btn_clicks = 0;
+int counts[5] = {0, 0, 0, 0, 0};
+
 void displayThread() {
    while (true) {
       displayDrawFlag.wait_any(SAMPLE_FLAG1);
@@ -105,29 +88,34 @@ void displayThread() {
       display.setTextColor(ST7735_BLACK);
       // display.setTextSize(1);
       display.setTextWrap(true);
-      display.printf("%d", count_btn_clicks);
+      for (uint16_t i = 0; i < 5; i++)
+      {
+        display.setTextCursor(10, 10 * i);
+        display.printf("%d) - %d \n", i, counts[i]);
+      }
     }
 }
 
-// DebounceIn buttonDown(BTN_DOWN);
-InterruptIn button(BTN_DOWN);
-// DigitalIn pb(BTN_OK);
+void click(uint8_t key) {
+    led = !led;
+    counts[key]++;
+    displayDrawFlag.set(SAMPLE_FLAG1);
+}
+
+Keyboard keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK);
 
 int main() {
+    swo.claim();
     display.initR(INITR_BLACKTAB); 
     display.setRotation(0);
     display.fillScreen(ST7735_RED);
-    
+  
     thread.start(displayThread);
-
-    button.mode(PullUp);
-    button.fall([] {
-      led = !led;
-      count_btn_clicks++;
-      displayDrawFlag.set(SAMPLE_FLAG1);
-    });
+    keyboard.onKeyPressed(click);
 
     while(1) {
-          thread_sleep_for(100);
+      // printf("tick \n");
+      // led = !led;
+      thread_sleep_for(100);
     }
 }
