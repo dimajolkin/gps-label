@@ -61,7 +61,7 @@
 
 #include "config.h"
 #include <stdint.h>
-#include "DebounceIn.h"
+// #include "DebounceIn.h"
 #include "hardware/display/display.h"
 #include "hardware/lan/lan.h"
 #include "hardware/gps/gps.h"
@@ -84,25 +84,34 @@ class Keyboard {
     }
 };
 
-DigitalIn pb(BTN_OK);
+
 Display display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST);
 Keyboard keyboard();
 
+EventFlags displayDrawFlag;
 
 Thread thread;
 Thread threadKeyborad;
 
+#define SAMPLE_FLAG1 (1UL << 0)
+uint16_t count_btn_clicks = 0;
 void displayThread() {
    while (true) {
-        display.fillScreen(ST7735_RED);
-        thread_sleep_for(1000);
-        display.fillScreen(ST7735_GREEN);
-        thread_sleep_for(1000);
-        // ThisThread::sleep_for(1000);
+      displayDrawFlag.wait_any(SAMPLE_FLAG1);
+      displayDrawFlag.clear();
+
+      display.fillScreen(ST7735_GREEN);
+      display.setTextCursor(10, 10);
+      display.setTextColor(ST7735_BLACK);
+      // display.setTextSize(1);
+      display.setTextWrap(true);
+      display.printf("%d", count_btn_clicks);
     }
 }
 
-DebounceIn buttonDown(BTN_DOWN);
+// DebounceIn buttonDown(BTN_DOWN);
+InterruptIn button(BTN_DOWN);
+// DigitalIn pb(BTN_OK);
 
 int main() {
     display.initR(INITR_BLACKTAB); 
@@ -111,15 +120,14 @@ int main() {
     
     thread.start(displayThread);
 
-    // pb.mode(PullUp);
-    // button.fall([] {
-      // led = !led;
-    // });
-    buttonDown.mode(PullDown);
+    button.mode(PullUp);
+    button.fall([] {
+      led = !led;
+      count_btn_clicks++;
+      displayDrawFlag.set(SAMPLE_FLAG1);
+    });
+
     while(1) {
-        if (buttonDown.read()) {
-          led = !led;
           thread_sleep_for(100);
-        }
     }
 }
