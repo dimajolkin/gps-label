@@ -2,17 +2,16 @@
 
 #include "button.h"
 
+#define KEYBOARD_KEY_LEN 5
+
 class Keyboard
 {
 private:
-    Button *up;
-    Button *down;
-    Button *left;
-    Button *right;
-    Button *ok;
+    Button *keys[KEYBOARD_KEY_LEN];
     Callback<void(uint8_t)> _onKeyPressed;
 
 public:
+    const static uint8_t SIZE = KEYBOARD_KEY_LEN;
     const static uint8_t KEY_UP = 0;
     const static uint8_t KEY_DOWN = 1;
     const static uint8_t KEY_LEFT = 2;
@@ -21,31 +20,21 @@ public:
 
     Keyboard(PinName _up, PinName _down, PinName _left, PinName _right, PinName _ok)
     {
-        up = new Button(_up);
-        down = new Button(_down);
-        left = new Button(_left);
-        right = new Button(_right);
-        ok = new Button(_ok);
+        keys[KEY_UP] = new Button(_up);
+        keys[KEY_DOWN] = new Button(_down);
+        keys[KEY_LEFT] = new Button(_left);
+        keys[KEY_RIGHT] = new Button(_right);
+        keys[KEY_OK] = new Button(_ok);
     }
 
     void onKeyPressed(Callback<void(uint8_t)> func)
     {
         _onKeyPressed = func;
-        
-        up->onKeyPressed([this] {
-            _onKeyPressed(KEY_UP);
-        });
-        down->onKeyPressed([this] {
-            _onKeyPressed(KEY_DOWN);
-        });
-        left->onKeyPressed([this] {
-            _onKeyPressed(KEY_LEFT);
-        });
-        right->onKeyPressed([this] {
-            _onKeyPressed(KEY_RIGHT);
-        });
-        ok->onKeyPressed([this] {
-            _onKeyPressed(KEY_OK);
-        });
+        for (uint8_t keyCode = 0; keyCode < SIZE; keyCode++)
+        {
+            keys[keyCode]->onKeyPressed([this, keyCode] {
+                _onKeyPressed(keyCode);
+            });    
+        }
     }
 };
