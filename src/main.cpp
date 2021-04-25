@@ -1,18 +1,3 @@
-// #include <Arduino.h>
-// #include <EEPROM.h>
-// // 
-
-// #include "hardware/server/server.h"
-// #include "hardware/lan/lan.h"
-// #include "hardware/gps/gps.h"
-
-// #include "config.h"
-// #include "buttons.h"
-// #include "container.h"
-// #include "app.h"
-// #include "lib/logger/logger.h"
-// #include "stdio.h"
-
 // RF24 radio(RADIO_CE, RADIO_CSP);
 // GPS gps(GPO_GPS_RX, GPO_GPS_TX);
 // Display display(TFT_CS, TFT_DC, TFT_RST);
@@ -66,7 +51,6 @@
 #include "hardware/lan/lan.h"
 #include "hardware/gps/gps.h"
 #include "hardware/keyboard/keyboard.h"
-#include "USBSerial.h"
 
 DigitalOut led(PC_13);
 
@@ -118,8 +102,6 @@ int main() {
     keyboard.onKeyPressed(click);
 
     while(1) {
-      // printf("tick.. \n");
-            // led = !led;
       thread_sleep_for(100);
     }
 }
