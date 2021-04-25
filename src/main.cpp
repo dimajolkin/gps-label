@@ -66,6 +66,7 @@
 #include "hardware/lan/lan.h"
 #include "hardware/gps/gps.h"
 #include "hardware/keyboard/keyboard.h"
+#include "USBSerial.h"
 
 DigitalOut led(PC_13);
 
@@ -75,7 +76,8 @@ SWO_Channel swo("channel");
 
 Thread thread;
 
-#define SAMPLE_FLAG1 (1UL << 0)
+#define SAMPLE_FLAG1 1
+
 int counts[5] = {0, 0, 0, 0, 0};
 
 void displayThread() {
@@ -83,20 +85,22 @@ void displayThread() {
       displayDrawFlag.wait_any(SAMPLE_FLAG1);
       displayDrawFlag.clear();
 
+      printf("draw \n");
       display.fillScreen(ST7735_GREEN);
       display.setTextCursor(10, 10);
       display.setTextColor(ST7735_BLACK);
-      // display.setTextSize(1);
+      display.setTextSize(2);
       display.setTextWrap(true);
       for (uint16_t i = 0; i < 5; i++)
       {
-        display.setTextCursor(10, 10 * i);
+        display.setTextCursor(10, 20 * i);
         display.printf("%d) - %d \n", i, counts[i]);
       }
     }
 }
 
 void click(uint8_t key) {
+    // printf("click..");
     led = !led;
     counts[key]++;
     displayDrawFlag.set(SAMPLE_FLAG1);
@@ -114,8 +118,8 @@ int main() {
     keyboard.onKeyPressed(click);
 
     while(1) {
-      // printf("tick \n");
-      // led = !led;
+      // printf("tick.. \n");
+            // led = !led;
       thread_sleep_for(100);
     }
 }
