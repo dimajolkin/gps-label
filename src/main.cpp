@@ -20,8 +20,6 @@
 //   // initialize digital pin LED_BUILTIN as an output.
 //   pinMode(PC13, OUTPUT); 
 
-//   //  SPIClass SPI_2(PB5, PB4, PB3);
-//   //  SPI_2.begin();
 //   app.setup();
 //   app.registerHandlerKeyboard(handleEvent);
 // }
@@ -54,17 +52,20 @@ DigitalOut led(PC_13);
 
 Keyboard keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK);
 Display display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST);
-Lan lan(SPI_MOSI, SPI_MISO, SPI_SCK, RADIO_CE, RADIO_CSP);
+Lan lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP);
 
 EventFlags displayDrawFlag;
 SWO_Channel swo("channel");
-Thread thread;
+
+Thread displayThread;
+Thread lanThread;
 
 #define SAMPLE_FLAG1 1
 
 int counts[5] = {0, 0, 0, 0, 0};
+int countPackages = 0;
 
-void displayThread() {
+void onDisplayThread() {
    while (true) {
       displayDrawFlag.wait_any(SAMPLE_FLAG1);
       displayDrawFlag.clear();
@@ -73,15 +74,34 @@ void displayThread() {
       display.fillScreen(ST7735_GREEN);
       display.setTextCursor(10, 10);
       display.setTextColor(ST7735_BLACK);
-      display.setTextSize(2);
+      display.setTextSize(1);
       display.setTextWrap(true);
       for (uint16_t i = 0; i < 5; i++)
       {
         display.setTextCursor(10, 20 * i);
         display.printf("%d) - %d \n", i, counts[i]);
       }
-      lan.test();
+
+      display.printf("Packages: %d \n", countPackages);
     }
+}
+
+void onLanThread() {
+  lan.init();
+  // lan.test();
+  // thread_sleep_for(5000);
+  while(true) {
+    if (lan.available()) {
+      Package p = lan.read();
+      if (p.validate()) {
+        led = !led;
+        countPackages++;
+        displayDrawFlag.set(SAMPLE_FLAG1);
+      }
+    }
+
+    thread_sleep_for(100);
+  }
 }
 
 void click(uint8_t key) {
@@ -97,11 +117,11 @@ int main() {
     display.setRotation(0);
     display.fillScreen(ST7735_RED);
   
-    thread.start(displayThread);
+    displayThread.start(onDisplayThread);
+    lanThread.start(onLanThread);
     keyboard.onKeyPressed(click);
     printf("start app");
-    lan.init();
-
+    
     while(1) {
       thread_sleep_for(100);
     }

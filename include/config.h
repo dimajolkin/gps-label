@@ -4,8 +4,11 @@
 #define TFT_RST PB_1
 #define TFT_DC PB_0
 
-#define RADIO_CE       PB_13
-#define RADIO_CSP      PB_14
+#define RADIO_SPI_MOSI PB_15
+#define RADIO_SPI_MISO PB_14
+#define RADIO_SPI_SCK  PB_13
+#define RADIO_CE       PA_8
+#define RADIO_CSP      PA_9
 
 // #define GPO_GPS_TX PA9
 // #define GPO_GPS_RX PA10

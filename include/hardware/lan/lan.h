@@ -8,7 +8,7 @@
 class Lan {
   private:
     static const uint8_t num_channels = 128;
-    static const int num_reps = 100;
+    static const int num_reps = 10;
     uint8_t values[128];
     RF24 *radio;
     LanConfig config;
@@ -43,6 +43,7 @@ class Lan {
         //при самой низкой скорости имеем самую высокую чувствительность и дальность!!
         radio->printDetails();
         // delay(1000);
+        thread_sleep_for(1000);
         radio->powerUp(); //начать работу
         radio->startListening();  //начинаем слушать эфир, мы приёмный модуль
     }
@@ -88,7 +89,7 @@ class Lan {
         printf("start test");
         startTest();
         for (uint8_t i = 0; i < 128; i++) {
-            printf("%x", isChannelActive(i));
+            printf("%d - %x \n", i, isChannelActive(i));
         }
         printf("\n\r");
     }

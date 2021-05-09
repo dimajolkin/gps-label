@@ -51,8 +51,8 @@ const uint32_t RF_SPI_SPEED = 10000000;
 #define IF_SERIAL_DEBUG(x)
 #endif
 
-//#define printf_P printf
-#define printf_P
+#define printf_P printf
+// #define printf_P
 //#define _BV(bit) (1<<(bit))
 #define pgm_read_byte(addr) (*(const unsigned char *)(addr))
 
@@ -60,7 +60,7 @@ typedef uint16_t prog_uint16_t;
 #define PSTR(x) (x)
   #define sprintf(...) os_sprintf( __VA_ARGS__ )
   //#define printf_P printf
-  #define printf_P
+  // #define printf_P
   #define strlen_P strlen  
   #define PROGMEM
   #define pgm_read_byte(addr) (*(const unsigned char *)(addr))
