@@ -13,7 +13,8 @@ class Lan {
     RF24 *radio;
     LanConfig config;
   public:
-    Lan(RF24 *radio): radio(radio) {
+    Lan(PinName mosi, PinName miso, PinName sck, PinName _cepin, PinName _csnpin) {
+        radio = new RF24(mosi, miso, sck, _cepin, _csnpin);
         config = LanConfig();
     }
 
@@ -41,7 +42,7 @@ class Lan {
         //должна быть одинакова на приёмнике и передатчике!
         //при самой низкой скорости имеем самую высокую чувствительность и дальность!!
         radio->printDetails();
-        //delay(1000);
+        // delay(1000);
         radio->powerUp(); //начать работу
         radio->startListening();  //начинаем слушать эфир, мы приёмный модуль
     }
@@ -84,6 +85,7 @@ class Lan {
     }
 
     void test() {
+        printf("start test");
         startTest();
         for (uint8_t i = 0; i < 128; i++) {
             printf("%x", isChannelActive(i));

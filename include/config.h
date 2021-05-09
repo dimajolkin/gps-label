@@ -4,17 +4,18 @@
 #define TFT_RST PB_1
 #define TFT_DC PB_0
 
-// #define RADIO_CE       PB13
-// #define RADIO_CSP      PB14
+#define RADIO_CE       PB_13
+#define RADIO_CSP      PB_14
 
 // #define GPO_GPS_TX PA9
 // #define GPO_GPS_RX PA10
 
-#define BTN_RIGHT PA_2
+#define BTN_RIGHT PA_1
 #define BTN_LEFT  PA_4
-#define BTN_UP  PA_1
+#define BTN_UP  PC_15
 #define BTN_DOWN  PA_3
-#define BTN_OK  PA_0
+#define BTN_OK  PC_14
+#define BTN_KEY  PA_0
 
 // #define BTN_PIN_COUNT 5
 // #define BACKGROUND_COLOR ST77XX_BLACK

@@ -1,10 +1,8 @@
-// RF24 radio(RADIO_CE, RADIO_CSP);
 // GPS gps(GPO_GPS_RX, GPO_GPS_TX);
 // Display display(TFT_CS, TFT_DC, TFT_RST);
 
 // Logger logger;
 // Server server;
-// Lan lan(&radio);
 
 // Container container(&gps, &lan, &server, &logger);
 // App app = App(&display, &container);
@@ -54,10 +52,12 @@
 
 DigitalOut led(PC_13);
 
+Keyboard keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK);
 Display display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST);
+Lan lan(SPI_MOSI, SPI_MISO, SPI_SCK, RADIO_CE, RADIO_CSP);
+
 EventFlags displayDrawFlag;
 SWO_Channel swo("channel");
-
 Thread thread;
 
 #define SAMPLE_FLAG1 1
@@ -80,6 +80,7 @@ void displayThread() {
         display.setTextCursor(10, 20 * i);
         display.printf("%d) - %d \n", i, counts[i]);
       }
+      lan.test();
     }
 }
 
@@ -90,8 +91,6 @@ void click(uint8_t key) {
     displayDrawFlag.set(SAMPLE_FLAG1);
 }
 
-Keyboard keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK);
-
 int main() {
     swo.claim();
     display.initR(INITR_BLACKTAB); 
@@ -100,6 +99,8 @@ int main() {
   
     thread.start(displayThread);
     keyboard.onKeyPressed(click);
+    printf("start app");
+    lan.init();
 
     while(1) {
       thread_sleep_for(100);
