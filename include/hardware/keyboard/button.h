@@ -1,3 +1,5 @@
+#pragma once
+
 #include "PinDetect.h"
 
 class Button

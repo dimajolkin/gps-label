@@ -1,8 +1,8 @@
 #pragma once
 
 #include "mbed.h"
-#include "BufferedSerial.h"
-#include "TinyGPSplus.h"
+// #include <BufferedSerial.h>
+#include <TinyGPSplus.h>
 
 // using namespace mbed;
 
@@ -20,13 +20,13 @@ class GPS {
         GPSData *data = NULL;
     public:
         GPS(PinName rx, PinName tx) {
-            ss = new BufferedSerial(rx, tx, 9600);
+            // ss = new BufferedSerial(rx, tx, 9600);
             gps = new TinyGPSPlus();
             data = new GPSData(0.0, 0.0);
         }
 
         void init() {
-            while (!ss->readable()) {};
+            // while (!ss->readable()) {};
         }
      
         uint8_t getCountSatellites() {
@@ -38,13 +38,13 @@ class GPS {
         }
 
         void update() {
-            if (ss->readable()) {
+            // if (ss->readable()) {
                 // gps->encode(ss->read());
                 // data = new GPSData(
                     // (gps->location).lat(),
                     // (gps->location).lat()
                 // );
-            }
+            // }
         }
 
 //         void TimePrint()

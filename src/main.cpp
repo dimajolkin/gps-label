@@ -1,128 +1,82 @@
-// GPS gps(GPO_GPS_RX, GPO_GPS_TX);
-// Display display(TFT_CS, TFT_DC, TFT_RST);
-
-// Logger logger;
-// Server server;
-
-// Container container(&gps, &lan, &server, &logger);
-// App app = App(&display, &container);
-
-// void handleEvent(AceButton *button, uint8_t eventType, uint8_t buttonState);
-
-// void tick() {
-//   digitalWrite(PC13, HIGH);   // turn the LED on (HIGH is the voltage level)
-//   delay(100);                       // wait for a second
-//   digitalWrite(PC13, LOW);    // turn the LED off by making the voltage LOW
-//   delay(100);  
-// }
-
-// void setup(void) {
-//   // initialize digital pin LED_BUILTIN as an output.
-//   pinMode(PC13, OUTPUT); 
-
-//   app.setup();
-//   app.registerHandlerKeyboard(handleEvent);
-// }
-
-// void loop(void) {
-//   logger.printf("start \n");
-//     app.loop();
-//     // tick();
-//     logger.printf("stop \n");
-// }
-
-// void handleEvent(AceButton *button, uint8_t eventType, uint8_t buttonState) {
-//   if (eventType != AceButton::kEventClicked) {
-//     return;
-//   }
-//   logger.printf("click! \n");
-//   app.onClick(button->getId());
-// }
-#include "mbed.h"
+#include <mbed.h>
 
 #include "config.h"
 #include <stdint.h>
-#include "SWO.h"
 #include "hardware/display/display.h"
 #include "hardware/lan/lan.h"
 #include "hardware/gps/gps.h"
 #include "hardware/keyboard/keyboard.h"
+#include "service-locator.h"
+#include "ui/app.h"
 
 DigitalOut led(PC_13);
 
-Keyboard keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK);
-Display display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST);
-Lan lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP);
+ServiceLocator *container = new ServiceLocator(
+    new Display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST),
+    new Keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK),
+    new Lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP),
+    new Server());
+App app(container);
+
+Display *display = container->getDisplay();
 
 EventFlags displayDrawFlag;
-SWO_Channel swo("channel");
+
+void onDisplayThread()
+{
+  while (true)
+  {
+    // displayDrawFlag.wait_any(SAMPLE_FLAG1);
+    // displayDrawFlag.clear();
+    // printf("draw \n");
+    app.draw();
+  }
+}
+
+// void onLanThread() {
+//   lan.init();
+//   // lan.test();
+//   // thread_sleep_for(5000);
+//   while(true) {
+//     if (lan.available()) {
+//       Package p = lan.read();
+//       if (p.validate()) {
+//         led = !led;
+//         countPackages++;
+//         displayDrawFlag.set(SAMPLE_FLAG1);
+//       }
+//     }
+
+//     thread_sleep_for(100);
+//   }
+// }
+
+
+void onClick(uint8_t key)
+{
+  led = !led;
+  app.onClick(key);
+  // container->getLogger()->printf("hello %i \n", n);
+}
 
 Thread displayThread;
 Thread lanThread;
 
-#define SAMPLE_FLAG1 1
+int main()
+{
+  app.init();
+  container->getKeyboard()->onKeyPressed(onClick);
+  container->getLogger()->init();
+  
+  displayThread.start(onDisplayThread);
+  
 
-int counts[5] = {0, 0, 0, 0, 0};
-int countPackages = 0;
-
-void onDisplayThread() {
-   while (true) {
-      displayDrawFlag.wait_any(SAMPLE_FLAG1);
-      displayDrawFlag.clear();
-
-      printf("draw \n");
-      display.fillScreen(ST7735_GREEN);
-      display.setTextCursor(10, 10);
-      display.setTextColor(ST7735_BLACK);
-      display.setTextSize(1);
-      display.setTextWrap(true);
-      for (uint16_t i = 0; i < 5; i++)
-      {
-        display.setTextCursor(10, 20 * i);
-        display.printf("%d) - %d \n", i, counts[i]);
-      }
-
-      display.printf("Packages: %d \n", countPackages);
-    }
-}
-
-void onLanThread() {
-  lan.init();
-  // lan.test();
-  // thread_sleep_for(5000);
-  while(true) {
-    if (lan.available()) {
-      Package p = lan.read();
-      if (p.validate()) {
-        led = !led;
-        countPackages++;
-        displayDrawFlag.set(SAMPLE_FLAG1);
-      }
-    }
-
+  // lanThread.start(onLanThread);
+  printf("start app");
+  while (1)
+  {
+    printf("tick \n");
+    container->getLogger()->dispatch();
     thread_sleep_for(100);
   }
-}
-
-void click(uint8_t key) {
-    // printf("click..");
-    led = !led;
-    counts[key]++;
-    displayDrawFlag.set(SAMPLE_FLAG1);
-}
-
-int main() {
-    swo.claim();
-    display.initR(INITR_BLACKTAB); 
-    display.setRotation(0);
-    display.fillScreen(ST7735_RED);
-  
-    displayThread.start(onDisplayThread);
-    lanThread.start(onLanThread);
-    keyboard.onKeyPressed(click);
-    printf("start app");
-    
-    while(1) {
-      thread_sleep_for(100);
-    }
 }

@@ -2,8 +2,8 @@
 
 #include "hardware/display/display.h"
 #include <stdio.h>
-#include <SWOStream.h>
-#include <Print.h>
+// #include <SWOStream.h>
+// #include <Print.h>
 
 class Logger: public Print {
     private:

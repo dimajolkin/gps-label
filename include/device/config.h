@@ -12,10 +12,11 @@ class MemberConfig {
         }
 
         void setNumber(uint8_t n) {
-            EEPROM.update(MEMBER_NUMBER, n);
+            // EEPROM.update(MEMBER_NUMBER, n);
         }
 
         uint8_t getNumber() {
-            return EEPROM.read(MEMBER_NUMBER);
+            return 1;
+            // return EEPROM.read(MEMBER_NUMBER);
         }
 };
