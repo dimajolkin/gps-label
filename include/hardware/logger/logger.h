@@ -14,7 +14,7 @@ private:
 public:
     Logger()
     {
-        swo = new SWO_Channel("channel");
+        swo = new SWO_Channel("logger");
         queue = new EventQueue();
     }
 
@@ -26,6 +26,11 @@ public:
         vsprintf(buffer, format, args);
         queue->call(::printf, buffer);
         va_end(args);
+    }
+
+    SWO_Channel* getSWO()
+    {
+        return swo;
     }
 
     void init()

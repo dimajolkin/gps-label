@@ -60,6 +60,12 @@ void onClick(uint8_t key)
 Thread displayThread;
 Thread lanThread;
 
+
+FileHandle *mbed::mbed_override_console(int fd) {
+    static SWO_Channel swo("errors");
+    return &swo;
+}
+
 int main()
 {
   app.init();

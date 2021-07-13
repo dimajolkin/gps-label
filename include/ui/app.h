@@ -2,8 +2,9 @@
 #include "service-locator.h"
 #include "ui/view/test.h"
 #include "ui/model/test-model.h"
-#include "ui/controller/controller.h"
+#include "lib/ui/controller.h"
 #include "ui/controller/test-controller.h"
+#include "ui/controller/menu-controller.h"
 
 class App
 {
@@ -27,8 +28,7 @@ public:
     {
         if (controller)
         {
-            // container->getLogger()->printf("test \n");
-            controller->onClick(key);
+            Controller *contr = controller->onClick(key);
         }
     }
 
@@ -37,7 +37,9 @@ public:
         container->getDisplay()->initR(INITR_BLACKTAB);
         container->getDisplay()->setRotation(0);
         container->getDisplay()->fillScreen(ST7735_RED);
-
-        controller = new TestController(container);
+        
+        // controller = new TestController(container);
+        
+        controller = new MenuController(container);
     }
 };

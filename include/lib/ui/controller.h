@@ -1,7 +1,8 @@
 #pragma once
 
 #include "service-locator.h"
-#include "ui/view/view.h"
+#include "lib/ui/view.h"
+#include "lib/ui/response.h"
 
 class Controller {
     protected:
@@ -11,11 +12,15 @@ class Controller {
     public:
         Controller(ServiceLocator *container): container(container) {}
 
+        virtual ~Controller() {
+            delete(view);
+        }
+
         void draw() {
             if (view) {
                 view->draw(container->getDisplay());
             }
         }
 
-        virtual void onClick(uint8_t key) {}
+        virtual Controller* onClick(uint8_t key) = 0;
 };

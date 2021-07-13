@@ -2,26 +2,21 @@
 
 #include "hardware/display/display.h"
 #include "ui/model/test-model.h"
-#include "ui/view/view.h"
+#include "lib/ui/view.h"
 
 class TestView : public View
 {
-private:
-    const static uint8_t FLAG_REFRESH = 1;
+protected:
+    uint8_t refFlag = 3;
 
+private:
     TestModel *model;
-    EventFlags *refreshFlag;
 
 public:
-    TestView(TestModel *model) : model(model) {
-        refreshFlag = new EventFlags();
-    }
+    TestView(TestModel *model) : View(), model(model) {}
 
-    void draw(Display *display)
+    void update(Display *display)
     {
-        refreshFlag->wait_any(FLAG_REFRESH);
-        refreshFlag->clear();
-
         display->fillScreen(ST7735_GREEN);
         display->setTextCursor(10, 10);
         display->setTextColor(ST7735_BLACK);
@@ -34,10 +29,5 @@ public:
         }
 
         display->printf("Packages: %d \n", model->countPackages);
-    }
-
-    void refresh()
-    {
-        refreshFlag->set(FLAG_REFRESH);
     }
 };

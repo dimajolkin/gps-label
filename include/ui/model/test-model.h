@@ -1,6 +1,6 @@
 #pragma once
 
-#include "model.h"
+#include "lib/ui/model.h"
 
 class TestModel : public Model
 {
