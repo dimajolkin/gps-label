@@ -12,7 +12,9 @@ class Controller {
         Controller(ServiceLocator *container): container(container) {}
 
         void draw() {
-            view->draw(container->getDisplay());
+            if (view) {
+                view->draw(container->getDisplay());
+            }
         }
 
         virtual void onClick(uint8_t key) {}

@@ -18,17 +18,14 @@ ServiceLocator *container = new ServiceLocator(
     new Server());
 App app(container);
 
-Display *display = container->getDisplay();
-
 EventFlags displayDrawFlag;
+uint8_t SAMPLE_FLAG1 = 1;
 
 void onDisplayThread()
 {
   while (true)
   {
-    // displayDrawFlag.wait_any(SAMPLE_FLAG1);
-    // displayDrawFlag.clear();
-    // printf("draw \n");
+    printf("draw \n");
     app.draw();
   }
 }
@@ -54,6 +51,7 @@ void onDisplayThread()
 
 void onClick(uint8_t key)
 {
+  // displayDrawFlag.set(SAMPLE_FLAG1);
   led = !led;
   app.onClick(key);
   // container->getLogger()->printf("hello %i \n", n);
@@ -69,13 +67,11 @@ int main()
   container->getLogger()->init();
   
   displayThread.start(onDisplayThread);
-  
 
   // lanThread.start(onLanThread);
   printf("start app");
   while (1)
   {
-    printf("tick \n");
     container->getLogger()->dispatch();
     thread_sleep_for(100);
   }

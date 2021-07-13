@@ -5,5 +5,7 @@
 class View
 {
 public:
-    virtual void draw(Display *display) {}
+    virtual void draw(Display *display) = 0;
+
+    virtual void refresh() = 0;
 };

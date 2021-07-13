@@ -9,8 +9,6 @@ class TestController : public Controller
 {
 private:
     TestModel *testModel;
-    TestView *view;
-
 public:
     TestController(ServiceLocator *container) : Controller(container)
     {
