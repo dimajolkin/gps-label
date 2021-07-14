@@ -10,7 +10,8 @@ class Keyboard
 private:
     Button *keys[KEYBOARD_KEY_LEN];
     Callback<void(uint8_t)> _onKeyPressed;
-
+    EventQueue queue;
+    
 public:
     const static uint8_t SIZE = KEYBOARD_KEY_LEN;
     const static uint8_t KEY_UP = 0;
@@ -37,5 +38,11 @@ public:
                 _onKeyPressed(keyCode);
             });    
         }
+    }
+
+
+    void init() {
+        Thread keyboardThread;
+        keyboardThread.start(callback(&queue, &EventQueue::dispatch_forever));
     }
 };

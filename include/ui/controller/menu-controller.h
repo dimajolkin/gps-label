@@ -31,7 +31,7 @@ public:
         }
         
         view->refresh();
-
+        
         return this;
     }
 };

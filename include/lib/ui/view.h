@@ -9,10 +9,13 @@ protected:
     EventFlags *refreshFlag;
 public:
     View() {
+        static uint8_t id = 1;
+        refFlag = id++;
         refreshFlag = new EventFlags();
     }
 
     virtual ~View() {
+        refreshFlag->clear(refFlag);
         delete(refreshFlag);
     }
 
@@ -21,7 +24,7 @@ public:
     void draw(Display *display)
     {
         refreshFlag->wait_any(refFlag);
-        refreshFlag->clear();
+        refreshFlag->clear(refFlag);
         update(display);
     }
 

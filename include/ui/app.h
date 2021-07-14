@@ -3,33 +3,32 @@
 #include "ui/view/test.h"
 #include "ui/model/test-model.h"
 #include "lib/ui/controller.h"
+#include "lib/ui/stack-controller.h"
 #include "ui/controller/test-controller.h"
 #include "ui/controller/menu-controller.h"
 
 class App
 {
-
 protected:
     ServiceLocator *container;
-    Controller *controller;
-
+    StackController *stack;
+    EventFlags *refreshFlag;
 public:
-    App(ServiceLocator *container) : container(container) {}
+    App(ServiceLocator *container) : container(container) {
+        refreshFlag = new EventFlags();
+    }
 
     void draw()
     {
-        if (controller)
-        {
-            controller->draw();
-        }
+        View *view = stack->getCurrent()->getView();
+        view->draw(container->getDisplay());
     }
 
     void onClick(uint8_t key)
     {
-        if (controller)
-        {
-            Controller *contr = controller->onClick(key);
-        }
+        Controller *contr = stack->getCurrent()->onClick(key);
+
+        // Controller *contr2 = new TestController(container);
     }
 
     void init()
@@ -39,7 +38,8 @@ public:
         container->getDisplay()->fillScreen(ST7735_RED);
         
         // controller = new TestController(container);
-        
-        controller = new MenuController(container);
+        stack = new StackController(
+            new TestController(container)
+        );
     }
 };

@@ -18,9 +18,6 @@ ServiceLocator *container = new ServiceLocator(
     new Server());
 App app(container);
 
-EventFlags displayDrawFlag;
-uint8_t SAMPLE_FLAG1 = 1;
-
 void onDisplayThread()
 {
   while (true)
@@ -43,40 +40,33 @@ void onDisplayThread()
 //         displayDrawFlag.set(SAMPLE_FLAG1);
 //       }
 //     }
-
 //     thread_sleep_for(100);
 //   }
 // }
 
-
 void onClick(uint8_t key)
 {
-  // displayDrawFlag.set(SAMPLE_FLAG1);
   led = !led;
   app.onClick(key);
-  // container->getLogger()->printf("hello %i \n", n);
 }
 
-Thread displayThread;
-Thread lanThread;
-
-
-FileHandle *mbed::mbed_override_console(int fd) {
-    static SWO_Channel swo("errors");
-    return &swo;
-}
 
 int main()
 {
   app.init();
+  container->getKeyboard()->init();
   container->getKeyboard()->onKeyPressed(onClick);
   container->getLogger()->init();
-  
+
+
+  Thread displayThread;
   displayThread.start(onDisplayThread);
 
+  // Thread lanThread;
   // lanThread.start(onLanThread);
+
   printf("start app");
-  while (1)
+  while (true)
   {
     container->getLogger()->dispatch();
     thread_sleep_for(100);

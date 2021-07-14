@@ -4,23 +4,24 @@
 #include "lib/ui/view.h"
 #include "lib/ui/response.h"
 
-class Controller {
-    protected:
-        ServiceLocator *container;
-        View *view;
+class Controller
+{
+protected:
+    ServiceLocator *container;
+    View *view;
 
-    public:
-        Controller(ServiceLocator *container): container(container) {}
+public:
+    Controller(ServiceLocator *container) : container(container) {}
 
-        virtual ~Controller() {
-            delete(view);
-        }
+    virtual ~Controller()
+    {
+        delete (view);
+    }
 
-        void draw() {
-            if (view) {
-                view->draw(container->getDisplay());
-            }
-        }
+    View *getView()
+    {
+        return view;
+    }
 
-        virtual Controller* onClick(uint8_t key) = 0;
+    virtual Controller *onClick(uint8_t key) = 0;
 };
