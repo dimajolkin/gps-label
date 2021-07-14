@@ -4,6 +4,8 @@
 #include "lib/ui/view.h"
 #include "lib/ui/response.h"
 
+class Response;
+
 class Controller
 {
 protected:
@@ -23,5 +25,5 @@ public:
         return view;
     }
 
-    virtual Controller *onClick(uint8_t key) = 0;
+    virtual Response *onClick(uint8_t key) = 0;
 };

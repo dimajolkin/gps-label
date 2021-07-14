@@ -1,9 +1,10 @@
 #include <mbed.h>
 #include "service-locator.h"
-#include "ui/view/test.h"
-#include "ui/model/test-model.h"
+#include "lib/ui/response.h"
 #include "lib/ui/controller.h"
 #include "lib/ui/stack-controller.h"
+#include "lib/ui/render.h"
+
 #include "ui/controller/test-controller.h"
 #include "ui/controller/menu-controller.h"
 
@@ -12,34 +13,43 @@ class App
 protected:
     ServiceLocator *container;
     StackController *stack;
+    View *view;
+    Render *render;
     EventFlags *refreshFlag;
-public:
-    App(ServiceLocator *container) : container(container) {
-        refreshFlag = new EventFlags();
-    }
 
-    void draw()
+public:
+    App(ServiceLocator *container) : container(container)
     {
-        View *view = stack->getCurrent()->getView();
-        view->draw(container->getDisplay());
+        render = new Render(container->getDisplay());
     }
 
     void onClick(uint8_t key)
     {
-        Controller *contr = stack->getCurrent()->onClick(key);
+        Response *response = stack->getCurrent()->onClick(key);
+        if (response->getController())
+        {
+            stack->append(response->getController());
+            render->setView(stack->getCurrent()->getView());
+        }
 
-        // Controller *contr2 = new TestController(container);
+        if (response->getView())
+        {
+            render->setView(response->getView());
+        }
     }
 
     void init()
     {
+        render->run();
         container->getDisplay()->initR(INITR_BLACKTAB);
         container->getDisplay()->setRotation(0);
         container->getDisplay()->fillScreen(ST7735_RED);
-        
+
         // controller = new TestController(container);
         stack = new StackController(
-            new TestController(container)
+            new MenuController(container)
         );
+
+        render->setView(stack->getCurrent()->getView());
     }
 };

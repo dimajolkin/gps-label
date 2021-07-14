@@ -1,5 +1,6 @@
 #include <mbed.h>
 
+#include "lib/core.h"
 #include "config.h"
 #include <stdint.h>
 #include "hardware/display/display.h"
@@ -11,21 +12,15 @@
 
 DigitalOut led(PC_13);
 
+void onKeyPressed(uint8_t key);
+
 ServiceLocator *container = new ServiceLocator(
     new Display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST),
-    new Keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK),
+    new Keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK, onKeyPressed),
     new Lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP),
     new Server());
-App app(container);
 
-void onDisplayThread()
-{
-  while (true)
-  {
-    printf("draw \n");
-    app.draw();
-  }
-}
+App app(container);
 
 // void onLanThread() {
 //   lan.init();
@@ -44,7 +39,7 @@ void onDisplayThread()
 //   }
 // }
 
-void onClick(uint8_t key)
+void onKeyPressed(uint8_t key)
 {
   led = !led;
   app.onClick(key);
@@ -55,12 +50,7 @@ int main()
 {
   app.init();
   container->getKeyboard()->init();
-  container->getKeyboard()->onKeyPressed(onClick);
   container->getLogger()->init();
-
-
-  Thread displayThread;
-  displayThread.start(onDisplayThread);
 
   // Thread lanThread;
   // lanThread.start(onLanThread);

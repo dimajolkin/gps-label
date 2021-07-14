@@ -1,15 +1,25 @@
 #pragma once
 
-class Response {
-    private:
-        uint8_t code;
-    public:
-        const uint8_t REFRESH = 1;
-        const uint8_t REDIRECT = 2;
+#include "lib/ui/controller.h"
+#include "lib/ui/view.h"
 
-        Response(uint8_t code): code(code) {}
+class Response
+{
+protected:
+    Controller *controller = NULL;
+    View *view = NULL;
 
-        uint8_t getCode() {
-            return code;
-        }
+public:
+    Response(Controller *controller) : controller(controller) {}
+    Response(View *view) : view(view) {}
+
+    Controller *getController()
+    {
+        return controller;
+    }
+
+    View *getView()
+    {
+        return view;
+    }
 };

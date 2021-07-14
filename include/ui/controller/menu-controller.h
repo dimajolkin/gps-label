@@ -1,6 +1,7 @@
 #pragma once
 
 #include "lib/ui/controller.h"
+#include "lib/ui/response.h"
 #include "ui/model/menu.h"
 #include "ui/view/menu.h"
 
@@ -16,8 +17,10 @@ public:
         view = new MenuView(menu);
     }
 
-    Controller* onClick(uint8_t key)
+    Response* onClick(uint8_t key)
     {
+        printf("menu click \n");
+        
         if (key == Keyboard::KEY_UP) {
             menu->up();
         }
@@ -27,11 +30,9 @@ public:
         }
 
         if (key == Keyboard::KEY_OK) {
-            return this;
+            return new Response(new TestController(container));
         }
         
-        view->refresh();
-        
-        return this;
+        return new Response(view);
     }
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "lib/ui/controller.h"
+#include "lib/ui/response.h"
 #include "ui/model/test-model.h"
 #include "ui/view/test.h"
 
@@ -15,12 +16,11 @@ public:
         view = new TestView(testModel);
     }
 
-    Controller* onClick(uint8_t key)
+    Response* onClick(uint8_t key)
     {
         testModel->click(key);
-        container->getLogger()->printf("inc model %i %i \n", key, testModel->count(key));
-        view->refresh();
+        printf("inc model %i %i \n", key, testModel->count(key));
 
-        return this;
+        return new Response(view);
     }
 };

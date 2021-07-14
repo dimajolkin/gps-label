@@ -14,4 +14,10 @@ public:
     {
         return current;
     }
+
+    void append(Controller* contr)
+    {
+        delete current;
+        current = contr;
+    }
 };

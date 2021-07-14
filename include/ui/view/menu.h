@@ -28,10 +28,7 @@ private:
     }
 
 public:
-    MenuView(MenuModel *model) : View(), model(model)
-    {
-        refresh();
-    }
+    MenuView(MenuModel *model) : View(), model(model) {}
 
     void update(Display *display)
     {
