@@ -1,16 +1,16 @@
 #pragma once
 
-#include "framework/ui/controller.h"
+#include "framework/ui/page.h"
 #include "framework/ui/response.h"
 #include "app/model/test-model.h"
 #include "app/view/test.h"
 
-class TestController : public Controller
+class TestPage : public Page
 {
 private:
     TestModel *testModel;
 public:
-    TestController(ServiceLocator *container) : Controller(container)
+    TestPage(ServiceLocator *container) : Page(container)
     {
         testModel = new TestModel();
         view = new TestView(testModel);

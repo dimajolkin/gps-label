@@ -1,17 +1,17 @@
 #pragma once
 
-#include "framework/ui/controller.h"
+#include "framework/ui/page.h"
 #include "framework/ui/response.h"
 #include "app/model/menu.h"
 #include "app/view/menu.h"
 
-class MenuController : public Controller
+class MenuPage : public Page
 {
 private:
     MenuModel *menu;
 
 public:
-    MenuController(ServiceLocator *container) : Controller(container)
+    MenuPage(ServiceLocator *container) : Page(container)
     {
         menu = new MenuModel();
         view = new MenuView(menu);
@@ -30,7 +30,7 @@ public:
         }
 
         if (key == Keyboard::KEY_OK) {
-            return new Response(new TestController(container));
+            return new Response(new TestPage(container));
         }
         
         return new Response(view);

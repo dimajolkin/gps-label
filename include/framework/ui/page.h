@@ -6,16 +6,16 @@
 
 class Response;
 
-class Controller
+class Page
 {
 protected:
     ServiceLocator *container;
     View *view;
 
 public:
-    Controller(ServiceLocator *container) : container(container) {}
+    Page(ServiceLocator *container) : container(container) {}
 
-    virtual ~Controller()
+    virtual ~Page()
     {
         delete (view);
     }

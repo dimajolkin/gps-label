@@ -1,21 +1,21 @@
 #pragma once
 
-#include "framework/ui/controller.h"
+#include "framework/ui/page.h"
 #include "framework/ui/view.h"
 
 class Response
 {
 protected:
-    Controller *controller = NULL;
+    Page *page = NULL;
     View *view = NULL;
 
 public:
-    Response(Controller *controller) : controller(controller) {}
+    Response(Page *page) : page(page) {}
     Response(View *view) : view(view) {}
 
-    Controller *getController()
+    Page *getPage()
     {
-        return controller;
+        return page;
     }
 
     View *getView()
