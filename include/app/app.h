@@ -49,6 +49,9 @@ public:
 
     void init()
     {
+        container->getKeyboard()->init();
+        container->getLogger()->init();
+
         container->getDisplay()->initR(INITR_BLACKTAB);
         container->getDisplay()->setRotation(0);
         render->run();

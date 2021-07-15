@@ -44,19 +44,16 @@ void onKeyPressed(Keyboard::KEY key)
   app.onClick(key);
 }
 
-
 int main()
 {
   app.init();
-  container->getKeyboard()->init();
-  container->getLogger()->init();
-
   // Thread lanThread;
   // lanThread.start(onLanThread);
 
   printf("start app");
   while (true)
   {
+    // container->getServer()->printMemoryInfo();
     thread_sleep_for(100);
   }
 }
