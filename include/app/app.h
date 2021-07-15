@@ -17,20 +17,8 @@ protected:
     View *view;
     Render *render;
 
-public:
-    App(ServiceLocator *container) : container(container)
+    void route(Response *response)
     {
-        render = new Render(
-            container->getDisplay(),
-            new LayoutView(
-                new HeaderView()
-            )
-        );
-    }
-
-    void onClick(Keyboard::KEY key)
-    {
-        Response *response = stack->getCurrent()->onClick(key);
         if (response->getCode() == Response::CODE::BACK)
         {
             stack->removeBack();
@@ -53,6 +41,21 @@ public:
         }
     }
 
+public:
+    App(ServiceLocator *container) : container(container)
+    {
+        render = new Render(
+            container->getDisplay(),
+            new LayoutView(
+                new HeaderView()));
+    }
+
+    void onClick(Keyboard::KEY key)
+    {
+        Response *response = stack->getCurrent()->onClick(key);
+        route(response);
+    }
+
     void init()
     {
         container->getKeyboard()->init();
@@ -62,7 +65,6 @@ public:
         container->getDisplay()->setRotation(0);
         render->run();
 
-        // controller = new TestController(container);
         stack = new StackPage(
             new MenuPage(container));
 
