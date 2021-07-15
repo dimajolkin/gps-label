@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PinDetect.h"
+using namespace std::chrono;
 
 class Button
 {
@@ -16,7 +17,7 @@ public:
     }
 
     void onKeyPressed(Callback<void()> func) {
-        pin->setSampleFrequency();
+        pin->setSampleFrequency(2ms);
         pin->attach_asserted(func);
     }
 };

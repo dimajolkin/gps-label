@@ -32,7 +32,7 @@
 #endif
 
 #ifndef PINDETECT_SAMPLE_PERIOD
-#define PINDETECT_SAMPLE_PERIOD 20000
+#define PINDETECT_SAMPLE_PERIOD 2ms
 #endif
 
 #ifndef PINDETECT_ASSERT_COUNT
@@ -133,7 +133,7 @@ protected:
     Ticker *_ticker;
     int _prevState;
     int _currentStateCounter;
-    int _sampleTime;
+    std::chrono::milliseconds _sampleTime;
     int _assertValue;
     int _samplesTillAssertReload;
     int _samplesTillAssert;
@@ -151,7 +151,7 @@ protected:
      */
     void init(PinName p, PinMode m)
     {
-        _sampleTime = PINDETECT_SAMPLE_PERIOD;
+        // _sampleTime = PINDETECT_SAMPLE_PERIOD;
         _samplesTillAssert = PINDETECT_ASSERT_COUNT;
         _samplesTillHeld = 0;
         _samplesTillAssertReload = PINDETECT_ASSERT_COUNT;
@@ -191,13 +191,13 @@ public:
     {
         init(p, m);
     }
-
+    
     /** PinDetect destructor
      */
     ~PinDetect()
     {
-        if (_ticker)
-            delete (_ticker);
+        // if (_ticker)
+        //     delete (_ticker);
         if (_in)
             delete (_in);
     }
@@ -206,12 +206,11 @@ public:
      *
      * @param int The time between pin samples in microseconds.
      */
-    void setSampleFrequency(int i = PINDETECT_SAMPLE_PERIOD)
+    void setSampleFrequency(std::chrono::milliseconds i = PINDETECT_SAMPLE_PERIOD)
     {
         _sampleTime = i;
         _prevState = _in->read();
-        _ticker->attach_us(callback(this, &PinDetect::isr), _sampleTime);
-        // _ticker->attach(callback(this, &PinDetect::isr), 0.1f);
+        _ticker->attach(callback(this, &PinDetect::isr), _sampleTime);
     }
 
     /** Set the value used as assert.

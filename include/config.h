@@ -20,16 +20,4 @@
 #define BTN_OK  PC_14
 #define BTN_KEY  PA_0
 
-// #define BTN_PIN_COUNT 5
 #define BACKGROUND_COLOR ST7735_BLACK
-
-// #define DEBUG 1
-// #define SERIAL_BAUND 9600
-
-// const uint8_t BUTTON_PINS[BTN_PIN_COUNT] = {
-//    BTN_RIGHT,
-//    BTN_LEFT,
-//    BTN_UP,
-//    BTN_DOWN,
-//    BTN_OK,
-// };

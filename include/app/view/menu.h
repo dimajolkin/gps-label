@@ -11,9 +11,7 @@ private:
     {
         display->setTextCursor(1, item.number * 10);
         display->printf(model->isActive(item) ? "* " : "  ");
-        display->printf("%i", item.number);
-        display->printf(". ");
-        display->printf("%s\n", item.name);
+        display->printf("%i. %s", item.number, item.name);
     }
 
 public:
@@ -21,10 +19,10 @@ public:
 
     void update(Display *display)
     {
-        display->fillRect(0, 1, 7, 5 * 10, ST7735_BLACK);
+        display->fillRect(0, 1, 7, 6 * 10, ST7735_BLACK);
         display->setTextSize(1);
         display->setTextColor(ST7735_WHITE);
-        display->setTextWrap(true);
+        display->setTextWrap(false);
 
         for (uint8_t i = 0; i < model->getElementsCount(); i++)
         {
