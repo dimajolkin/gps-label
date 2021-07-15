@@ -16,10 +16,11 @@ public:
         view = new TestView(testModel);
     }
 
-    Response* onClick(uint8_t key)
+    Response* onClick(Keyboard::KEY key)
     {
-        testModel->click(key);
-        printf("inc model %i %i \n", key, testModel->count(key));
+        
+        // testModel->click(key);
+        // printf("inc model %i %i \n", key, testModel->count(key));
 
         return new Response(view);
     }

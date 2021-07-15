@@ -11,7 +11,7 @@
 
 DigitalOut led(PC_13);
 
-void onKeyPressed(uint8_t key);
+void onKeyPressed(Keyboard::KEY key);
 
 ServiceLocator *container = new ServiceLocator(
     new Display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST),
@@ -38,7 +38,7 @@ App app(container);
 //   }
 // }
 
-void onKeyPressed(uint8_t key)
+void onKeyPressed(Keyboard::KEY key)
 {
   led = !led;
   app.onClick(key);

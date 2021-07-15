@@ -22,7 +22,7 @@ public:
         render = new Render(container->getDisplay());
     }
 
-    void onClick(uint8_t key)
+    void onClick(Keyboard::KEY key)
     {
         Response *response = stack->getCurrent()->onClick(key);
         if (response->getPage())

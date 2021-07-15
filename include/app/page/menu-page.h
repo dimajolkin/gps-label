@@ -17,19 +17,17 @@ public:
         view = new MenuView(menu);
     }
 
-    Response* onClick(uint8_t key)
+    Response* onClick(Keyboard::KEY key)
     {
-        printf("menu click \n");
-        
-        if (key == Keyboard::KEY_UP) {
+        if (key == Keyboard::KEY::UP) {
             menu->up();
         }
 
-        if (key == Keyboard::KEY_DOWN) {
+        if (key == Keyboard::KEY::DOWN) {
             menu->down();
         }
 
-        if (key == Keyboard::KEY_OK) {
+        if (key == Keyboard::KEY::OK) {
             return new Response(new TestPage(container));
         }
         

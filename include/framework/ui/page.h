@@ -1,6 +1,7 @@
 #pragma once
 
 #include "service-locator.h"
+#include "hardware/keyboard/keyboard.h"
 #include "framework/ui/view.h"
 #include "framework/ui/response.h"
 
@@ -25,5 +26,5 @@ public:
         return view;
     }
 
-    virtual Response *onClick(uint8_t key) = 0;
+    virtual Response *onClick(Keyboard::KEY key) = 0;
 };
