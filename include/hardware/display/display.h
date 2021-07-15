@@ -24,4 +24,7 @@ class WindowDisplay
 private:
     Display *display;
     Window *window;
+
+public:
+    WindowDisplay(Display *display, Window *window): display(display), window(window) {}
 };
