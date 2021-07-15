@@ -5,7 +5,7 @@
 #include "framework/ui/stack-page.h"
 #include "framework/ui/render.h"
 
-#include "app/view/layout-view.h"
+#include "app/view/header/header.h"
 #include "app/page/test-page.h"
 #include "app/page/menu-page.h"
 
@@ -46,8 +46,7 @@ public:
     {
         render = new Render(
             container->getDisplay(),
-            new LayoutView(
-                new HeaderView()));
+            new HeaderView());
     }
 
     void onClick(Keyboard::KEY key)

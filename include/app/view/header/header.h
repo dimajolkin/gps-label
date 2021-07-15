@@ -66,6 +66,5 @@ public:
             0, 11,
             display->width(), 11,
             ST7735_WHITE);
-         display->setAddrWindow(0, 0, 0, 11);
     }
 };

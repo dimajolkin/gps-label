@@ -6,7 +6,7 @@
 // #include <SPI.h>
 // void wait_ms(int ms) {}
 
-typedef Adafruit_ST7735 Display;
+// typedef Adafruit_ST7735 Display;
 
 class Window
 {
@@ -16,15 +16,98 @@ public:
     uint8_t x1;
     uint8_t y1;
 
-    Window(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1): x0(x0), y0(y0), x1(x1), y1(y1) {}
+    Window(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) : x0(x0), y0(y0), x1(x1), y1(y1) {}
+
+    inline uint8_t width(void)
+    {
+        return x1 - x0;
+    }
+
+    inline uint8_t height(void)
+    {
+        return y1 - y0;
+    }
 };
 
-class WindowDisplay
+class Display : public Stream
 {
 private:
-    Display *display;
+    Adafruit_ST7735 *display;
     Window *window;
 
 public:
-    WindowDisplay(Display *display, Window *window): display(display), window(window) {}
+    Display(PinName mosi, PinName miso, PinName sck, PinName CS, PinName RS, PinName RST)
+    {
+        display = new Adafruit_ST7735(mosi, miso, sck, CS, RS, RST);
+        window = new Window(0, 0, display->width(), display->height());
+    }
+
+    Display(Display *_display, Window* _window)
+    {
+        display = _display->display;
+        window = _window;
+    }
+
+    void initR(uint8_t options = INITR_GREENTAB)
+    {
+        display->initR(options);
+    }
+
+    int _putc(int value) { return writeChar(value); }
+    int _getc() { return -1; }
+
+    inline void setTextCursor(int16_t x, int16_t y)
+    {
+        display->setTextCursor(x + window->x0, y + + window->y0);
+    }
+
+    inline void setTextSize(uint8_t s)
+    {
+        display->setTextSize(s);
+    }
+
+    inline void setTextWrap(bool w)
+    {
+        display->setTextWrap(w);
+    }
+
+    inline void setTextColor(uint16_t c)
+    {
+        display->setTextColor(c);
+    }
+
+    int writeChar(uint8_t t)
+    {
+        return display->writeChar(t);
+    }
+
+    void setRotation(uint8_t r)
+    {
+        return display->setRotation(r);
+    }
+
+    inline uint8_t getRotation(void)
+    {
+        return display->getRotation();
+    }
+
+    void fillScreen(uint16_t color)
+    {
+        fillRect(window->x0, window->y0, window->width(), window->height(), color);
+    }
+
+    void fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color)
+    {
+        display->fillRect(x + window->x0, y + window->y0, w, h, color);
+    }
+
+    void drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color)
+    {
+        display->drawLine(x0 + window->x0, y0 + window->y0, x1 + window->x0, y1 + window->y0, color);
+    }
+
+    /// Get the width of the display in pixels
+    inline int16_t width(void) { return display->width(); };
+    /// Get the height of the display in pixels
+    inline int16_t height(void) { return display->height(); };
 };
