@@ -6,8 +6,7 @@
 #include "framework/ui/render.h"
 
 #include "app/view/header/header.h"
-#include "app/page/test-page.h"
-#include "app/page/menu-page.h"
+#include "app/page/menu.h"
 
 class App
 {

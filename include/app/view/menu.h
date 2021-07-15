@@ -9,7 +9,7 @@ private:
     MenuModel *model;
     void renderElement(Display *display, MenuElement item)
     {
-        display->setTextCursor(1, item.number * 10);
+        display->setTextCursor(1, item.number * 10));
         if (model->isActive(item))
         {
             display->printf("* ");

@@ -1,14 +1,11 @@
 #pragma once
 
 #include "hardware/display/display.h"
-#include "app/model/test-model.h"
+#include "app/model/test.h"
 #include "framework/ui/view.h"
 
 class TestView : public View
 {
-protected:
-    uint8_t refFlag = 3;
-
 private:
     TestModel *model;
 

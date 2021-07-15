@@ -2,7 +2,7 @@
 
 #include "framework/ui/page.h"
 #include "framework/ui/response.h"
-#include "app/model/test-model.h"
+#include "app/model/test.h"
 #include "app/view/test.h"
 
 class TestPage : public Page

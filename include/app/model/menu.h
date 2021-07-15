@@ -2,22 +2,30 @@
 
 #include "framework/ui/model.h"
 
+enum MenuElementEnum
+{
+    LAN_CHANNEL = 1,
+    MEMBERS,
+    TEST,
+    GPS,
+};
+
 struct MenuElement
 {
-    const uint8_t number;
+    const MenuElementEnum number;
     const char *name;
 };
 
 class MenuModel : public Model
 {
 private:
-    uint8_t active = 1;
+    uint8_t active = (uint8_t) MenuElementEnum::LAN_CHANNEL;
     const static uint8_t SIZE = 4;
     MenuElement elements[SIZE] = {
-        {1, "LAN Channel"},
-        {2, "Members"},
-        {3, "My number"},
-        {4, "GPS"}};
+        {MenuElementEnum::LAN_CHANNEL, "LAN Channel"},
+        {MenuElementEnum::MEMBERS, "Members"},
+        {MenuElementEnum::TEST, "test"},
+        {MenuElementEnum::GPS, "GPS"}};
 
 public:
     uint8_t getActive()
@@ -35,9 +43,14 @@ public:
         return elements[index];
     }
 
+    bool isActive(MenuElementEnum elementEnum)
+    {
+        return (uint8_t) elementEnum == active;
+    }
+
     bool isActive(MenuElement element)
     {
-        return element.number == active;
+        return (uint8_t) element.number == active;
     }
 
     void down()
