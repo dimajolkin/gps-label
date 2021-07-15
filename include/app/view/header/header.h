@@ -33,11 +33,9 @@ private:
 public:
     void update(Display *display)
     {
-
-
         // renderMemory(display);
         renderPower(display);
-        // renderNumber(display);
+        renderNumber(display);
 
         display->drawLine(
             0, display->height(),

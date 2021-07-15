@@ -6,6 +6,7 @@ enum MenuElementEnum
 {
     LAN_CHANNEL = 1,
     MEMBERS,
+    CHANGE_MY_MEMBER_NUMBER,
     TEST,
     GPS,
 };
@@ -20,10 +21,11 @@ class MenuModel : public Model
 {
 private:
     uint8_t active = (uint8_t) MenuElementEnum::LAN_CHANNEL;
-    const static uint8_t SIZE = 4;
+    const static uint8_t SIZE = 5;
     MenuElement elements[SIZE] = {
         {MenuElementEnum::LAN_CHANNEL, "LAN Channel"},
         {MenuElementEnum::MEMBERS, "Members"},
+        {MenuElementEnum::CHANGE_MY_MEMBER_NUMBER, "Change my number"},
         {MenuElementEnum::TEST, "test"},
         {MenuElementEnum::GPS, "GPS"}};
 

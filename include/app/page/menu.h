@@ -7,6 +7,7 @@
 #include "app/page/test.h"
 #include "app/page/lan-channel.h"
 #include "app/page/members.h"
+#include "app/page/change-my-member-number.h"
 #include "app/page/gps.h"
 
 class MenuPage : public Page
@@ -47,6 +48,10 @@ public:
             if (menu->isActive(MenuElementEnum::MEMBERS))
             {
                 return redirect(new MembersPage(container));
+            }
+            if (menu->isActive(MenuElementEnum::CHANGE_MY_MEMBER_NUMBER))
+            {
+                return redirect(new ChangeMyMemberNumberPage(container));
             }
             if (menu->isActive(MenuElementEnum::TEST))
             {

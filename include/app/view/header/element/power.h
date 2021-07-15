@@ -28,7 +28,7 @@ class PowerElement {
             display->setTextColor(ST7735_WHITE);
             display->setTextCursor(point.x, point.y + 1);
             display->setTextSize(1);
-            display->printf("%i", power);
+            display->printf("%i%%", power);
             renderBattery(display, 11, point.x + 20, point.y, 100);
         }
 };
