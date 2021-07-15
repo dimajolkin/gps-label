@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lib/ui/controller.h"
+#include "framework/ui/controller.h"
 
 class StackController
 {

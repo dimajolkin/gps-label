@@ -1,12 +1,12 @@
 #include <mbed.h>
 #include "service-locator.h"
-#include "lib/ui/response.h"
-#include "lib/ui/controller.h"
-#include "lib/ui/stack-controller.h"
-#include "lib/ui/render.h"
+#include "framework/ui/response.h"
+#include "framework/ui/controller.h"
+#include "framework/ui/stack-controller.h"
+#include "framework/ui/render.h"
 
-#include "ui/controller/test-controller.h"
-#include "ui/controller/menu-controller.h"
+#include "app/controller/test-controller.h"
+#include "app/controller/menu-controller.h"
 
 class App
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lib/ui/model.h"
+#include "framework/ui/model.h"
 
 struct MenuElement
 {

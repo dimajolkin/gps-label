@@ -1,9 +1,9 @@
 #pragma once
 
-#include "lib/ui/controller.h"
-#include "lib/ui/response.h"
-#include "ui/model/test-model.h"
-#include "ui/view/test.h"
+#include "framework/ui/controller.h"
+#include "framework/ui/response.h"
+#include "app/model/test-model.h"
+#include "app/view/test.h"
 
 class TestController : public Controller
 {

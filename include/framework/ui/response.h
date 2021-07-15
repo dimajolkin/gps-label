@@ -1,7 +1,7 @@
 #pragma once
 
-#include "lib/ui/controller.h"
-#include "lib/ui/view.h"
+#include "framework/ui/controller.h"
+#include "framework/ui/view.h"
 
 class Response
 {

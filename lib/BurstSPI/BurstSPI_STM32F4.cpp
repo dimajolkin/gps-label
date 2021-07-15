@@ -16,7 +16,7 @@ void BurstSPI::clearRX( void ) {
     while (spi->SR & SPI_SR_BSY){   
         // Check RX buffer readable
         while ((spi->SR & SPI_SR_RXNE) == 0);
-        int dummy = spi->DR;
+        spi->DR;
     }
 }
 #endif

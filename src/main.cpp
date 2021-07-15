@@ -1,6 +1,5 @@
 #include <mbed.h>
 
-#include "lib/core.h"
 #include "config.h"
 #include <stdint.h>
 #include "hardware/display/display.h"
@@ -8,7 +7,7 @@
 #include "hardware/gps/gps.h"
 #include "hardware/keyboard/keyboard.h"
 #include "service-locator.h"
-#include "ui/app.h"
+#include "app/app.h"
 
 DigitalOut led(PC_13);
 
@@ -58,7 +57,6 @@ int main()
   printf("start app");
   while (true)
   {
-    container->getLogger()->dispatch();
     thread_sleep_for(100);
   }
 }

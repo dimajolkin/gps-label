@@ -1,7 +1,7 @@
 #pragma once
 
 #include <mbed.h>
-#include "lib/ui/view.h"
+#include "framework/ui/view.h"
 #include "hardware/display/display.h"
 
 class Render

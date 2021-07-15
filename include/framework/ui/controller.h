@@ -1,8 +1,8 @@
 #pragma once
 
 #include "service-locator.h"
-#include "lib/ui/view.h"
-#include "lib/ui/response.h"
+#include "framework/ui/view.h"
+#include "framework/ui/response.h"
 
 class Response;
 

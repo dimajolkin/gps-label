@@ -1,9 +1,9 @@
 #pragma once
 
-#include "lib/ui/controller.h"
-#include "lib/ui/response.h"
-#include "ui/model/menu.h"
-#include "ui/view/menu.h"
+#include "framework/ui/controller.h"
+#include "framework/ui/response.h"
+#include "app/model/menu.h"
+#include "app/view/menu.h"
 
 class MenuController : public Controller
 {

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "hardware/display/display.h"
-#include "ui/model/test-model.h"
-#include "lib/ui/view.h"
+#include "app/model/test-model.h"
+#include "framework/ui/view.h"
 
 class TestView : public View
 {

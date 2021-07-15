@@ -1,7 +1,7 @@
 #pragma once
 
-#include "lib/ui/view.h"
-#include "ui/model/menu.h"
+#include "framework/ui/view.h"
+#include "app/model/menu.h"
 
 class MenuView : public View
 {
