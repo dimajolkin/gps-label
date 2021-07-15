@@ -13,7 +13,7 @@ private:
 public:
     MembersPage(ServiceLocator *container) : Page(container)
     {
-        model = new MembersModel();
+        model = new MembersModel(container->getMemberService()->getList());
         view = new MembersView(model);
     }
 

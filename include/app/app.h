@@ -58,8 +58,9 @@ public:
     {
         container->getKeyboard()->init();
         container->getLogger()->init();
+        container->getMemberService()->init();
 
-        container->getDisplay()->initR(INITR_BLACKTAB);
+        container->getDisplay()->initR();
         container->getDisplay()->setRotation(0);
         render->run();
 

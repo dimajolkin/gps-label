@@ -4,5 +4,8 @@
 
 class MembersModel : public Model
 {
-    
+public:
+    MemberCollection *members;
+
+    MembersModel(MemberCollection *members) : members(members) {}
 };

@@ -17,5 +17,13 @@ public:
         display->setTextCursor(0, 10);
         display->printf("--- render gps view \n");
         printf("--- render gps view \n");
+        // display->setCursor(1, dy + 30);
+        // GPSData *data = container->getGPS()->get();
+        // display->print(F("Satellites: "));
+        // display->println(container->getGPS()->getCountSatellites());
+        // display->print(F("Lat: "));
+        // display->println(data->lat);
+        // display->print(F("Lng: "));
+        // display->println(data->lng);
     }
 };
