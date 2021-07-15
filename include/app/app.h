@@ -6,7 +6,7 @@
 #include "framework/ui/render.h"
 
 #include "app/view/header/header.h"
-#include "app/page/menu.h"
+#include "app/page/home.h"
 
 class App
 {
@@ -64,7 +64,7 @@ public:
         render->run();
 
         stack = new StackPage(
-            new MenuPage(container));
+            new HomePage(container));
 
         render->clear();
         render->setContentView(stack->getCurrent()->getView());

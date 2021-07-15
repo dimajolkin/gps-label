@@ -7,14 +7,9 @@
 class HeaderView : public View
 {
 private:
-    uint8_t power = 0;
-    uint8_t tmp_power = 0;
-
-    uint16_t memory = 0;
-    uint16_t tmp_memory = 0;
-
+    uint8_t power = 10;
+    uint16_t memory = 1;
     uint8_t number = 0;
-    uint8_t tmp_number = 0;
 
     const uint8_t startX = 100;
     const uint8_t startY = 0;
@@ -38,33 +33,15 @@ private:
 public:
     void update(Display *display)
     {
-        tmp_power = 10; 
-        tmp_memory = 0;
-        tmp_number = 1;
-        // tmp_number = container->getGPS()->getCountSatellites();
 
-        if (tmp_memory != memory)
-        {
-            memory = tmp_memory;
-            renderMemory(display);
-        }
 
-        if (tmp_power != power)
-        {
-            power = tmp_power;
-            renderPower(display);
-        }
+        // renderMemory(display);
+        renderPower(display);
+        // renderNumber(display);
 
-        if (tmp_number != number)
-        {
-            number = tmp_number;
-            renderNumber(display);
-        }
-
-       
         display->drawLine(
-            0, 11,
-            display->width(), 11,
+            0, display->height(),
+            display->width(), display->height(),
             ST7735_WHITE);
     }
 };

@@ -16,8 +16,8 @@ private:
     Thread *threadContent;
     Thread *threadLayout;
     Display *display;
-    Window *contentWindow;
-    Window *headerWindow;
+    Display *headerDisplay;
+    Display *contentDisplay;
     
     void refreshContent()
     {
@@ -35,7 +35,7 @@ private:
         {
             refreshFlag->wait_any(FLAG_CONTENT);
             printf("render content \n");
-            contentView->update(new Display(display, contentWindow));
+            contentView->update(contentDisplay);
         }
     }
 
@@ -43,9 +43,9 @@ private:
     {
         while (true)
         {
-            refreshFlag->wait_any(FLAG_HEADER);
-            printf("render header \n");
-            headerView->update(display);
+            refreshFlag->wait_any(FLAG_HEADER, 1000 * 2); // 2s
+            // printf("render header \n");
+            headerView->update(headerDisplay);
         }
     }
 
@@ -56,8 +56,8 @@ public:
         threadContent = new Thread();
         threadLayout = new Thread();
 
-        headerWindow = new Window(0, 0, display->width(), 11);
-        contentWindow = new Window(0, 11, display->width(), display->height() - 11);
+        headerDisplay = new Display(display, new Window(0, 0, display->width(), 11));
+        contentDisplay = new Display(display, new Window(0, 12, display->width(), display->height() - 12));
     }
 
     void clear()

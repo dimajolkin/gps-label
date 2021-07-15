@@ -42,6 +42,11 @@ public:
         window = new Window(0, 0, display->width(), display->height());
     }
 
+    Window *getWindow()
+    {
+        return window;
+    }
+
     Display(Display *_display, Window* _window)
     {
         display = _display->display;
@@ -107,7 +112,7 @@ public:
     }
 
     /// Get the width of the display in pixels
-    inline int16_t width(void) { return display->width(); };
+    inline int16_t width(void) { return window->width(); };
     /// Get the height of the display in pixels
-    inline int16_t height(void) { return display->height(); };
+    inline int16_t height(void) { return window->height(); };
 };

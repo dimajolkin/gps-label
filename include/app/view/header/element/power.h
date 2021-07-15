@@ -27,7 +27,7 @@ class PowerElement {
             display->fillRect(point.x, point.y + 1, 24, 9, BACKGROUND_COLOR);
             display->setTextCursor(point.x, point.y + 1);
             display->setTextSize(1);
-            display->printf("%i%%", power);
+            display->printf("%i", power);
             renderBattery(display, 11, point.x + 20, point.y, 100);
         }
 };
