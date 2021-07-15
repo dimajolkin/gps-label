@@ -50,7 +50,7 @@ int main()
   // Thread lanThread;
   // lanThread.start(onLanThread);
 
-  printf("start app");
+  printf("start app \n");
   while (true)
   {
     // container->getServer()->printMemoryInfo();

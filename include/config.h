@@ -21,7 +21,7 @@
 #define BTN_KEY  PA_0
 
 // #define BTN_PIN_COUNT 5
-// #define BACKGROUND_COLOR ST77XX_BLACK
+#define BACKGROUND_COLOR ST7735_BLACK
 
 // #define DEBUG 1
 // #define SERIAL_BAUND 9600

@@ -17,10 +17,13 @@ public:
 
     void update(Display *display)
     {
+        printf("--- render test view \n");
+
         display->fillScreen(ST7735_GREEN);
         display->setTextCursor(10, 10);
         display->setTextColor(ST7735_BLACK);
         display->setTextSize(1);
+        
         display->setTextWrap(true);
         for (uint16_t i = 0; i < 5; i++)
         {

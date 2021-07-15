@@ -7,49 +7,69 @@
 class Render
 {
 private:
-    View *view;
+    long unsigned int FLAG_CONTENT = (1UL << 0);
+    long unsigned int FLAG_LAYOUT = (1UL << 1);
+
+    View *layoutView;
+    View *contentView;
     EventFlags *refreshFlag;
-    Thread *thread;
+    Thread *threadContent;
+    Thread *threadLayout;
     Display *display;
 
-    void refreshDraw()
+    void refreshContent()
     {
-        refreshFlag->set(1);
+        refreshFlag->set(FLAG_CONTENT);
     }
 
-    void drawLoop()
+    void refreshLayout()
+    {
+        refreshFlag->set(FLAG_LAYOUT);
+    }
+
+    void drawViewContentLoop()
     {
         while (true)
         {
-            refreshFlag->wait_any(1);
-            refreshFlag->clear();
-            if (view)
-            {
-                view->update(display);
-            }
+            refreshFlag->wait_any(FLAG_CONTENT);
+            printf("render content \n");
+            contentView->update(display);
+        }
+    }
+
+    void drawViewLayoutLoop()
+    {
+        while (true)
+        {
+            refreshFlag->wait_any(FLAG_LAYOUT);
+            printf("render layout \n");
+            layoutView->update(display);
         }
     }
 
 public:
-    Render(Display *display) : display(display)
+    Render(Display *display, View *layoutView) : layoutView(layoutView), display(display)
     {
         refreshFlag = new EventFlags();
-        thread = new Thread();
+        threadContent = new Thread();
+        threadLayout = new Thread();
     }
 
     void clear()
     {
         display->fillScreen(ST7735_BLACK);
+        refreshLayout();
     }
 
     void run()
     {
-        thread->start(callback(this, &Render::drawLoop));
+        threadContent->start(callback(this, &Render::drawViewContentLoop));
+        threadLayout->start(callback(this, &Render::drawViewLayoutLoop));
     }
 
-    void setView(View *_view)
+    void setContentView(View *content)
     {
-        view = _view;
-        refreshDraw();
+        contentView = content;
+        refreshContent();
     }
 };
