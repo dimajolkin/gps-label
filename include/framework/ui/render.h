@@ -34,7 +34,6 @@ private:
         while (true)
         {
             refreshFlag->wait_any(FLAG_CONTENT);
-            printf("render content \n");
             contentView->update(contentDisplay);
         }
     }

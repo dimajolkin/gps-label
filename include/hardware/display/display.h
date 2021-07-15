@@ -47,7 +47,7 @@ public:
         return window;
     }
 
-    Display(Display *_display, Window* _window)
+    Display(Display *_display, Window *_window)
     {
         display = _display->display;
         window = _window;
@@ -63,7 +63,7 @@ public:
 
     inline void setTextCursor(int16_t x, int16_t y)
     {
-        display->setTextCursor(x + window->x0, y + + window->y0);
+        display->setTextCursor(x + window->x0, y + +window->y0);
     }
 
     inline void setTextSize(uint8_t s)
@@ -109,6 +109,16 @@ public:
     void drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color)
     {
         display->drawLine(x0 + window->x0, y0 + window->y0, x1 + window->x0, y1 + window->y0, color);
+    }
+
+    void fillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color)
+    {
+        display->fillCircle(x0, y0, r, color);
+    }
+
+    void drawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color)
+    {
+        display->drawCircle(x0, y0, r, color);
     }
 
     /// Get the width of the display in pixels

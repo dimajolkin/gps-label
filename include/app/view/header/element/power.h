@@ -25,6 +25,7 @@ class PowerElement {
     public:
         static void render(Point point, Display *display, uint8_t power) {
             display->fillRect(point.x, point.y + 1, 24, 9, BACKGROUND_COLOR);
+            display->setTextColor(ST7735_WHITE);
             display->setTextCursor(point.x, point.y + 1);
             display->setTextSize(1);
             display->printf("%i", power);

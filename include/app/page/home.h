@@ -20,6 +20,16 @@ public:
 
     Response *onClick(Keyboard::KEY key)
     {
+        if (key == Keyboard::KEY::UP)
+        {
+            model->up();
+        }
+
+        if (key == Keyboard::KEY::DOWN)
+        {
+            model->down();
+        }
+
         if (key == Keyboard::KEY::OK)
         {
             return redirect(new MenuPage(container));

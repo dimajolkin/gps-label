@@ -33,6 +33,11 @@ public:
             menu->down();
         }
 
+        if (key == Keyboard::KEY::LEFT)
+        {
+            return toBack();
+        }
+
         if (key == Keyboard::KEY::OK)
         {
             if (menu->isActive(MenuElementEnum::LAN_CHANNEL))
