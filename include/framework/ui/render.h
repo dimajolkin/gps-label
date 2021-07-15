@@ -29,11 +29,17 @@ private:
             }
         }
     }
+
 public:
     Render(Display *display) : display(display)
     {
         refreshFlag = new EventFlags();
         thread = new Thread();
+    }
+
+    void clear()
+    {
+        display->fillScreen(ST7735_BLACK);
     }
 
     void run()

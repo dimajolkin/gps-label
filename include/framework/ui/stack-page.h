@@ -18,8 +18,13 @@ public:
         return stack.back();
     }
 
-    void append(Page* contr)
+    void append(Page* page)
     {
-        stack.push_back(contr);
+        stack.push_back(page);
+    }
+
+    void removeBack()
+    {
+        stack.pop_back();
     }
 };

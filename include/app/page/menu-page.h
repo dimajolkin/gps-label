@@ -28,9 +28,9 @@ public:
         }
 
         if (key == Keyboard::KEY::OK) {
-            return new Response(new TestPage(container));
+            return redirect(new TestPage(container));
         }
         
-        return new Response(view);
+        return render(view);
     }
 };

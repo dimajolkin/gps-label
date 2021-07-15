@@ -25,29 +25,37 @@ public:
     void onClick(Keyboard::KEY key)
     {
         Response *response = stack->getCurrent()->onClick(key);
-        if (response->getPage())
+        if (response->getCode() == Response::CODE::BACK)
         {
-            stack->append(response->getPage());
+            stack->removeBack();
+            render->clear();
             render->setView(stack->getCurrent()->getView());
         }
 
-        if (response->getView())
+        if (response->getCode() == Response::CODE::RENDER)
         {
-            render->setView(response->getView());
+            auto objectResponse = static_cast<ObjectResponse<View> *>(response);
+            render->setView(objectResponse->getObject());
+        }
+
+        if (response->getCode() == Response::CODE::REDIRECT)
+        {
+            auto objectResponse = static_cast<ObjectResponse<Page> *>(response);
+            stack->append(objectResponse->getObject());
+            render->clear();
+            render->setView(stack->getCurrent()->getView());
         }
     }
 
     void init()
     {
-        render->run();
         container->getDisplay()->initR(INITR_BLACKTAB);
         container->getDisplay()->setRotation(0);
-        container->getDisplay()->fillScreen(ST7735_RED);
+        render->run();
 
         // controller = new TestController(container);
         stack = new StackPage(
-            new MenuPage(container)
-        );
+            new MenuPage(container));
 
         render->setView(stack->getCurrent()->getView());
     }

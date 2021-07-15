@@ -18,10 +18,12 @@ public:
 
     Response* onClick(Keyboard::KEY key)
     {
-        
-        // testModel->click(key);
-        // printf("inc model %i %i \n", key, testModel->count(key));
+        testModel->click((uint8_t) key);
+        printf("inc model %i %i \n", key, testModel->count(key));
+        if (key == Keyboard::KEY::LEFT) {
+            return toBack();
+        }
 
-        return new Response(view);
+        return render(view);
     }
 };

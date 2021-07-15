@@ -1,25 +1,31 @@
 #pragma once
 
-#include "framework/ui/page.h"
-#include "framework/ui/view.h"
-
 class Response
 {
-protected:
-    Page *page = NULL;
-    View *view = NULL;
+public:
+    enum CODE {BACK, REDIRECT, RENDER};
+private:
+    CODE code;
+public:
+    Response(CODE code) : code(code) {}
+
+    CODE getCode()
+    {
+        return code;
+    }
+};
+
+template <class T>
+class ObjectResponse : public Response
+{
+private:
+    T *object;
 
 public:
-    Response(Page *page) : page(page) {}
-    Response(View *view) : view(view) {}
+    ObjectResponse(T *object, Response::CODE code) : Response(code), object(object) {}
 
-    Page *getPage()
+    T *getObject()
     {
-        return page;
-    }
-
-    View *getView()
-    {
-        return view;
+        return object;
     }
 };
