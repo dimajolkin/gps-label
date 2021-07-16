@@ -46,7 +46,8 @@ void onKeyPressed(Keyboard::KEY key)
 
 int main()
 {
-  app.init();
+  container->getLan()->init();
+  // app.init();
   // Thread lanThread;
   // lanThread.start(onLanThread);
 

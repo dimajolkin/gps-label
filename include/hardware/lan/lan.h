@@ -41,10 +41,18 @@ class Lan {
         radio->setDataRate(RF24_1MBPS); //скорость обмена. На выбор RF24_2MBPS, RF24_1MBPS, RF24_250KBPS
         //должна быть одинакова на приёмнике и передатчике!
         //при самой низкой скорости имеем самую высокую чувствительность и дальность!!
-        radio->printDetails();
+        // radio->printDetails();
+
         // delay(1000);
         thread_sleep_for(1000);
+
         radio->powerUp(); //начать работу
+        if (radio->isEnable()) {
+            printf(" --- Enabled \n");
+        } else {
+            printf(" --- Radio failed \n");
+        }
+
         radio->startListening();  //начинаем слушать эфир, мы приёмный модуль
     }
 

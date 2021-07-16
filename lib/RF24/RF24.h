@@ -935,6 +935,10 @@ s   *
    */
   void openWritingPipe(uint64_t address);
 
+   uint8_t isEnable(void) {
+     return get_status() != 0xff;
+   }
+
 private:
   /**
    * @name Low-level internal interface.
