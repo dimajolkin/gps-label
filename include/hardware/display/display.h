@@ -53,9 +53,9 @@ public:
         window = _window;
     }
 
-    void initR(uint8_t options = INITR_GREENTAB)
+    void init()
     {
-        display->initR(options);
+        display->initR();
     }
 
     int _putc(int value) { return writeChar(value); }

@@ -60,8 +60,10 @@ public:
         container->getLogger()->init();
         container->getMemberService()->init();
 
-        container->getDisplay()->initR();
+        container->getDisplay()->init();
         container->getDisplay()->setRotation(0);
+        container->getDisplay()->fillScreen(BACKGROUND_COLOR);
+
         render->run();
 
         stack = new StackPage(
