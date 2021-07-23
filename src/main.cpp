@@ -21,19 +21,38 @@ ServiceLocator *container = new ServiceLocator(
 
 App app(container);
 
-
-
 void onKeyPressed(Keyboard::KEY key)
 {
   led = !led;
   app.onClick(key);
 }
 
+void onMembersStart()
+{
+  Lan *lan = container->getLan();
+  MemberService *memberService = container->getMemberService();
+
+  while (true)
+  {
+    if (lan->available())
+    {
+      Package pack = lan->read();
+      if (pack.validate())
+      {
+        memberService->registerPakage(&pack);
+      }
+    }
+  }
+}
+
 int main()
 {
   container->getLan()->init();
   app.init();
-  
+
+  Thread thread;
+  thread.start(onMembersStart);
+
   printf("start app \n");
   thread_sleep_for(100);
   while (true)

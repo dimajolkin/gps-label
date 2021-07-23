@@ -1,6 +1,6 @@
 #pragma once
 
-#include "device/member.h"
+#include "app/service/member/member.h"
 
 class MemberCollection {
     private:

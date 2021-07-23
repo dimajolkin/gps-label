@@ -1,6 +1,6 @@
 #pragma once
 
-#include "device/member-service.h"
+#include "app/service/member/member-service.h"
 #include "framework/ui/render.h"
 #include "hardware/lan/lan.h"
 #include "hardware/gps/gps.h"
@@ -41,7 +41,10 @@ public:
         render = r;
     }
 
-    Render *getRender() { return render; }
+    Render *getRender()
+    {
+        return render;
+    }
 
     Lan *getLan()
     {

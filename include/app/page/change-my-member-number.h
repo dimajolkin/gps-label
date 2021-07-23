@@ -4,7 +4,7 @@
 #include "framework/ui/response.h"
 #include "app/view/change-my-member-number.h"
 #include "app/model/change-my-member-number.h"
-#include "device/member-service.h"
+#include "app/service/member/member-service.h"
 
 class ChangeMyMemberNumberPage : public Page
 {
