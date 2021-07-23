@@ -9,18 +9,46 @@ class TestPage : public Page
 {
 private:
     TestModel *testModel;
+    Thread *lanThread;
+
 public:
     TestPage(ServiceLocator *container) : Page(container)
     {
         testModel = new TestModel();
         view = new TestView(testModel);
+        lanThread = new Thread();
+        lanThread->start(callback(this, &TestPage::onLanThread));
     }
 
-    Response* onClick(Keyboard::KEY key)
+    ~TestPage() {
+        lanThread->terminate();
+        delete lanThread;
+    }
+
+    void onLanThread()
     {
-        testModel->click((uint8_t) key);
+        Lan *lan = container->getLan();
+        while (true)
+        {
+            if (lan->available())
+            {
+                Package p = lan->read();
+                if (p.validate())
+                {
+                    testModel->countPackages++;
+                    refresh();
+                }
+            }
+            thread_sleep_for(100);
+        }
+    }
+
+    Response *onClick(Keyboard::KEY key)
+    {
+        testModel->click((uint8_t)key);
         printf("inc model %i %i \n", key, testModel->count(key));
-        if (key == Keyboard::KEY::LEFT) {
+        if (key == Keyboard::KEY::LEFT)
+        {
             return toBack();
         }
 

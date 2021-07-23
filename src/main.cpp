@@ -21,22 +21,7 @@ ServiceLocator *container = new ServiceLocator(
 
 App app(container);
 
-// void onLanThread() {
-//   lan.init();
-//   // lan.test();
-//   // thread_sleep_for(5000);
-//   while(true) {
-//     if (lan.available()) {
-//       Package p = lan.read();
-//       if (p.validate()) {
-//         led = !led;
-//         countPackages++;
-//         displayDrawFlag.set(SAMPLE_FLAG1);
-//       }
-//     }
-//     thread_sleep_for(100);
-//   }
-// }
+
 
 void onKeyPressed(Keyboard::KEY key)
 {
@@ -47,11 +32,10 @@ void onKeyPressed(Keyboard::KEY key)
 int main()
 {
   container->getLan()->init();
-  // app.init();
-  // Thread lanThread;
-  // lanThread.start(onLanThread);
-
+  app.init();
+  
   printf("start app \n");
+  thread_sleep_for(100);
   while (true)
   {
     // container->getServer()->printMemoryInfo();

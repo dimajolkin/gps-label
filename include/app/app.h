@@ -46,6 +46,7 @@ public:
         render = new Render(
             container->getDisplay(),
             new HeaderView());
+        container->setRender(render);
     }
 
     void onClick(Keyboard::KEY key)
@@ -67,7 +68,8 @@ public:
         render->run();
 
         stack = new StackPage(
-            new HomePage(container));
+            new HomePage(container)
+        );
 
         render->clear();
         render->setContentView(stack->getCurrent()->getView());

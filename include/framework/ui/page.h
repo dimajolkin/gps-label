@@ -4,6 +4,7 @@
 #include "hardware/keyboard/keyboard.h"
 #include "framework/ui/view.h"
 #include "framework/ui/response.h"
+#include "framework/ui/render.h"
 
 class Page
 {
@@ -25,13 +26,18 @@ protected:
     {
         return new Response(Response::CODE::BACK);
     }
+
+    void refresh()
+    {
+        container->getRender()->setContentView(view);
+    }
     
 public:
     Page(ServiceLocator *container) : container(container) {}
 
     virtual ~Page()
     {
-        delete (view);
+        delete view;
     }
 
     View *getView()

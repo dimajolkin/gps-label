@@ -25,6 +25,7 @@ public:
 
     void removeBack()
     {
+        delete stack.back();
         stack.pop_back();
     }
 };
