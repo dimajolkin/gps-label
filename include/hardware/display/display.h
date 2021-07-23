@@ -4,9 +4,6 @@
 #include <Adafruit_ST7735.h>
 // #include <Adafruit_I2CDevice.h>
 // #include <SPI.h>
-// void wait_ms(int ms) {}
-
-// typedef Adafruit_ST7735 Display;
 
 class Window
 {
@@ -106,6 +103,11 @@ public:
         display->fillRect(x + window->x0, y + window->y0, w, h, color);
     }
 
+    void fillRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint16_t color)
+    {
+        display->fillRoundRect(x + window->x0, y + window->y0, w, h, r, color);
+    }
+
     void drawRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color)
     {
         display->drawRect(x + window->x0, y + window->y0, w, h, color);
@@ -123,12 +125,12 @@ public:
 
     void fillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color)
     {
-        display->fillCircle(x0, y0, r, color);
+        display->fillCircle(x0 + window->x0, y0 + window->y0, r, color);
     }
 
     void drawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color)
     {
-        display->drawCircle(x0, y0, r, color);
+        display->drawCircle(x0 + window->x0, y0 + window->y0, r, color);
     }
 
     /// Get the width of the display in pixels
