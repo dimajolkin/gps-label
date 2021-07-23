@@ -13,7 +13,7 @@ private:
 public:
     LanChannelPage(ServiceLocator *container) : Page(container)
     {
-        model = new LanChannelModel(1);
+        model = new LanChannelModel(container->getLan()->getConfig()->getChannel());
         view = new LanChannelView(model);
     }
 
@@ -39,9 +39,9 @@ public:
             model->down();
         }
 
-        if (key == Keyboard::KEY::OK && model->isChange())
+        if (key == Keyboard::KEY::OK)
         {
-            // setActive(selected);
+            container->getLan()->getConfig()->setChannel(model->getSelected());
             return toBack();
         }
 

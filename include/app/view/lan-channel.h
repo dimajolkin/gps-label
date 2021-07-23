@@ -89,7 +89,7 @@ public:
         {
             block(n);
         }
-        selectBlock(model->getSelected());
+        // selectBlock(model->getSelected());
         // lan->stopTest();
     }
 };

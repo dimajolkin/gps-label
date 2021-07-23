@@ -26,9 +26,9 @@ private:
     }
 
 public:
-    LanChannelModel(uint8_t active) {
-        active = active;
-        selected = active;
+    LanChannelModel(uint8_t _active) {
+        active = _active;
+        selected = _active;
     }
 
     bool isChange() {
