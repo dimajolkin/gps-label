@@ -1,9 +1,7 @@
 #pragma once
 
-// #include <stdint.h>
 #include <Adafruit_ST7735.h>
-// #include <Adafruit_I2CDevice.h>
-// #include <SPI.h>
+#include <Adafruit_ILI9341.h>
 
 class Window
 {
@@ -33,9 +31,9 @@ private:
     Window *window;
 
 public:
-    Display(PinName mosi, PinName miso, PinName sck, PinName CS, PinName RS, PinName RST)
+    Display(PinName mosi, PinName miso, PinName sck, PinName CS, PinName DC, PinName RST)
     {
-        display = new Adafruit_ST7735(mosi, miso, sck, CS, RS, RST);
+        display = new Adafruit_ST7735(mosi, miso, sck, CS, DC, RST);
         window = new Window(0, 0, display->width(), display->height());
     }
 
@@ -52,7 +50,7 @@ public:
 
     void init()
     {
-        display->initR();
+        display->init();
     }
 
     int _putc(int value) { return writeChar(value); }

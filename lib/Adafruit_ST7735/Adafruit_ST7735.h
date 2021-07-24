@@ -110,6 +110,9 @@ public:
   Adafruit_ST7735(PinName mosi, PinName miso, PinName sck, PinName CS,
                   PinName RS, PinName RST);
 
+  void init() {
+    initR();
+  }
   void initB(void);                             // for ST7735B displays
   void initR(uint8_t options = INITR_GREENTAB); // for ST7735R
   void setAddrWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1);
