@@ -436,8 +436,8 @@ void Adafruit_ST7735::commonInit(uint8_t *cmdList) {
   // lcdPort.format(8, 0);
   // lcdPort.frequency(1000000);
 
-  lcdPort.format(32, 0);
-  lcdPort.frequency(49 * 1000000);
+  lcdPort.format(8, 0);
+  lcdPort.frequency(50 * 1000000 - 1);
   // toggle RST low to reset; CS low so it'll listen to us
   _cs = 0;
   _rst = 1;
@@ -471,13 +471,13 @@ void Adafruit_ST7735::initR(uint8_t options) {
     colstart = 2;
     rowstart = 3;
   } else if (options == INITR_ILI9341) {
-    _height = 320;
     _width = 240;
+    _height = 320;
     _rawHeight = _height;
     _rawWidth = _width;
     commandList(RILI9341);
-    colstart = 0xff;
-    rowstart = 0xff;
+    colstart = 0;
+    rowstart = 0;
     tabcolor = options;
     return;
   } else {
@@ -497,34 +497,36 @@ void Adafruit_ST7735::initR(uint8_t options) {
 
 void Adafruit_ST7735::setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1,
                                     uint16_t y1) {
+  if (tabcolor == INITR_ILI9341) {
+      writecommand(ST7735_CASET); // Column addr set
+      writedata(x0 >> 8);
+      writedata(x0 & 0xFF); // XSTART
+      writedata(x1 >> 8);
+      writedata(x1 & 0xFF); // XEND
+
+      writecommand(ST7735_RASET); // Row addr set
+      writedata(y0 >> 8);
+      writedata(y0); // YSTART
+      writedata(y1 >> 8);
+      writedata(y1); // YEND
+
+      writecommand(ST7735_RAMWR); // write to RAM
+      return;
+  }                                      
+
   writecommand(ST7735_CASET); // Column addr set
-  writedata(x0 >> 8);
-  writedata(x0 & 0xFF); // XSTART
-  writedata(x1 >> 8);
-  writedata(x1 & 0xFF); // XEND
+  writedata(0x00);
+  writedata(x0 + colstart); // XSTART
+  writedata(0x00);
+  writedata(x1 + colstart); // XEND
 
   writecommand(ST7735_RASET); // Row addr set
-  writedata(y0 >> 8);
-  writedata(y0); // YSTART
-  writedata(y1 >> 8);
-  writedata(y1); // YEND
+  writedata(0x00);
+  writedata(y0 + rowstart); // YSTART
+  writedata(0x00);
+  writedata(y1 + rowstart); // YEND
 
   writecommand(ST7735_RAMWR); // write to RAM
-
-
-  // writecommand(ST7735_CASET); // Column addr set
-  // writedata(0x00);
-  // writedata(x0 + colstart); // XSTART
-  // writedata(0x00);
-  // writedata(x1 + colstart); // XEND
-
-  // writecommand(ST7735_RASET); // Row addr set
-  // writedata(0x00);
-  // writedata(y0 + rowstart); // YSTART
-  // writedata(0x00);
-  // writedata(y1 + rowstart); // YEND
-
-  // writecommand(ST7735_RAMWR); // write to RAM
 }
 
 void Adafruit_ST7735::pushColor(uint16_t color) {
@@ -620,12 +622,12 @@ void Adafruit_ST7735::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
   for (y = h; y > 0; y--) {
     for (x = w; x > 0; x--) {
       lcdPort.fastWrite(hi);
-      lcdPort.clearRX();
+      // lcdPort.clearRX();
       lcdPort.fastWrite(lo);
-      lcdPort.clearRX();
+      // lcdPort.clearRX();
     }
   }
-
+  lcdPort.clearRX();
   _cs = 1;
 }
 
