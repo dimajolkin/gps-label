@@ -62,8 +62,10 @@ public:
         container->getMemberService()->init();
 
         container->getDisplay()->init();
-        container->getDisplay()->setRotation(0);
+        // container->getDisplay()->setRotation(0);
         container->getDisplay()->fillScreen(BACKGROUND_COLOR);
+
+        printf("Display: %ix%i \n", container->getDisplay()->width(), container->getDisplay()->height());
 
         render->run();
 

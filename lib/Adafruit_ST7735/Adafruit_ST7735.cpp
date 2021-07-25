@@ -269,7 +269,134 @@ static unsigned char Bcmd[] =
         10,    //     10 ms delay
         ST7735_DISPON,
         DELAY, //  4: Main screen turn on, no args w/delay
-        100};  //     100 ms delay
+        100},  //     100 ms delay
+    RILI9341[] = {
+      20, // 20 commands in list:
+
+      0xEF, // c1
+      3, // args
+      0x03,
+      0x80,
+      0x02,
+
+      0xCF, // c2
+      3,
+      0x00,
+      0XC1,
+      0X30,
+
+      0xED, // c3
+      4,
+      0x64,
+      0x03,
+      0X12,
+      0X81,
+
+      0xE8,
+      3,
+      0x85,
+      0x00,
+      0x78,
+
+      0xCB,
+      5,
+      0x39,
+      0x2C,
+      0x00,
+      0x34,
+      0x02,
+
+      0xF7,
+      1,
+      0x20,
+
+      0xEA,
+      2,
+      0x00,
+      0x00,
+
+      ST7735_PWCTR1,
+      1,
+      0x23,
+
+      ST7735_PWCTR2,
+      1,
+      0x10,
+
+      ST7735_VMCTR1,
+      2,
+      0x3e,
+      0x28,
+
+      0xC7, //ST7735_VMCTR2,
+      1,
+      0x86,
+
+      ST7735_MADCTL,
+      1,
+      0x48,
+
+      0x3A, //ST7735_PIXFMT,
+      1,
+      0x55,
+
+      ST7735_FRMCTR1,
+      2,
+      0x00,
+      0x18,
+
+      0xB6, //ST7735_DFUNCTR,
+      3,
+      0x08,
+      0x82,
+      0x27,
+
+      0xF2, // 3Gamma Function Disable
+      1,
+      0x00,
+
+      ST7735_GMCTRP1,
+      15,
+      0x0F,
+      0x31,
+      0x2B,
+      0x0C,
+      0x0E,
+      0x08,
+      0x4E,
+      0xF1,
+      0x37,
+      0x07,
+      0x10,
+      0x03,
+      0x0E,
+      0x09,
+      0x00,
+
+      ST7735_GMCTRN1, //Set Gamma
+      15,
+      0x00,
+      0x0E,
+      0x14,
+      0x03,
+      0x11,
+      0x07,
+      0x31,
+      0xC1,
+      0x48,
+      0x08,
+      0x0F,
+      0x0C,
+      0x31,
+      0x36,
+      0x0F,
+
+      ST7735_SLPOUT, DELAY,
+      120,
+
+      ST7735_DISPON, DELAY,
+      100
+    };
 
 // Companion code to the above tables.  Reads and issues
 // a series of LCD commands stored in byte array.
@@ -307,7 +434,7 @@ void Adafruit_ST7735::commonInit(uint8_t *cmdList) {
   // use default SPI format
 
   // lcdPort.format(8, 0);
-  // lcdPort.frequency(4000000);
+  // lcdPort.frequency(1000000);
 
   lcdPort.format(32, 0);
   lcdPort.frequency(49 * 1000000);
@@ -343,6 +470,16 @@ void Adafruit_ST7735::initR(uint8_t options) {
     commandList(Rcmd2green144);
     colstart = 2;
     rowstart = 3;
+  } else if (options == INITR_ILI9341) {
+    _height = 320;
+    _width = 240;
+    _rawHeight = _height;
+    _rawWidth = _width;
+    commandList(RILI9341);
+    colstart = 0xff;
+    rowstart = 0xff;
+    tabcolor = options;
+    return;
   } else {
     // colstart, rowstart left at default '0' values
     commandList(Rcmd2red);
@@ -358,21 +495,36 @@ void Adafruit_ST7735::initR(uint8_t options) {
   tabcolor = options;
 }
 
-void Adafruit_ST7735::setAddrWindow(uint8_t x0, uint8_t y0, uint8_t x1,
-                                    uint8_t y1) {
+void Adafruit_ST7735::setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1,
+                                    uint16_t y1) {
   writecommand(ST7735_CASET); // Column addr set
-  writedata(0x00);
-  writedata(x0 + colstart); // XSTART
-  writedata(0x00);
-  writedata(x1 + colstart); // XEND
+  writedata(x0 >> 8);
+  writedata(x0 & 0xFF); // XSTART
+  writedata(x1 >> 8);
+  writedata(x1 & 0xFF); // XEND
 
   writecommand(ST7735_RASET); // Row addr set
-  writedata(0x00);
-  writedata(y0 + rowstart); // YSTART
-  writedata(0x00);
-  writedata(y1 + rowstart); // YEND
+  writedata(y0 >> 8);
+  writedata(y0); // YSTART
+  writedata(y1 >> 8);
+  writedata(y1); // YEND
 
   writecommand(ST7735_RAMWR); // write to RAM
+
+
+  // writecommand(ST7735_CASET); // Column addr set
+  // writedata(0x00);
+  // writedata(x0 + colstart); // XSTART
+  // writedata(0x00);
+  // writedata(x1 + colstart); // XEND
+
+  // writecommand(ST7735_RASET); // Row addr set
+  // writedata(0x00);
+  // writedata(y0 + rowstart); // YSTART
+  // writedata(0x00);
+  // writedata(y1 + rowstart); // YEND
+
+  // writecommand(ST7735_RAMWR); // write to RAM
 }
 
 void Adafruit_ST7735::pushColor(uint16_t color) {

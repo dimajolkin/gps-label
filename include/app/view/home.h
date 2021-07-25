@@ -16,6 +16,7 @@ public:
     {
         display->setTextColor(ST7735_WHITE);
         display->setTextCursor(display->width() - 25, display->height());
+        printf("Menu height: %i \n ", display->height());
         display->setTextSize(1);
         display->printf("Menu");
     }

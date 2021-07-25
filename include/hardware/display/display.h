@@ -1,24 +1,23 @@
 #pragma once
 
 #include <Adafruit_ST7735.h>
-#include <Adafruit_ILI9341.h>
 
 class Window
 {
 public:
-    uint8_t x0;
-    uint8_t y0;
-    uint8_t x1;
-    uint8_t y1;
+    int16_t x0;
+    int16_t y0;
+    int16_t x1;
+    int16_t y1;
 
-    Window(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) : x0(x0), y0(y0), x1(x1), y1(y1) {}
+    Window(int16_t x0, int16_t y0, int16_t x1, int16_t y1) : x0(x0), y0(y0), x1(x1), y1(y1) {}
 
-    inline uint8_t width(void)
+    inline int16_t width(void)
     {
         return x1 - x0;
     }
 
-    inline uint8_t height(void)
+    inline int16_t height(void)
     {
         return y1 - y0;
     }
@@ -34,7 +33,6 @@ public:
     Display(PinName mosi, PinName miso, PinName sck, PinName CS, PinName DC, PinName RST)
     {
         display = new Adafruit_ST7735(mosi, miso, sck, CS, DC, RST);
-        window = new Window(0, 0, display->width(), display->height());
     }
 
     Window *getWindow()
@@ -50,7 +48,8 @@ public:
 
     void init()
     {
-        display->init();
+        display->initR(INITR_ILI9341);
+        window = new Window(0, 0, 240, 320);
     }
 
     int _putc(int value) { return writeChar(value); }

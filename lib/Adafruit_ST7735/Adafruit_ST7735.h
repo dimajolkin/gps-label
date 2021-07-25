@@ -35,6 +35,10 @@
 #define INITR_BLACKTAB 0x2
 #define INITR_GREENTAB2 0x3
 
+#define INITR_ILI9341 0x4
+#define ST7735_TFTHEIGHT_ILI9341 240
+#define ST7735_TFTWIDTH_ILI9341 320
+
 #define INITR_18GREENTAB INITR_GREENTAB
 #define INITR_18REDTAB INITR_REDTAB
 #define INITR_18BLACKTAB INITR_BLACKTAB
@@ -110,12 +114,9 @@ public:
   Adafruit_ST7735(PinName mosi, PinName miso, PinName sck, PinName CS,
                   PinName RS, PinName RST);
 
-  void init() {
-    initR();
-  }
   void initB(void);                             // for ST7735B displays
   void initR(uint8_t options = INITR_GREENTAB); // for ST7735R
-  void setAddrWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1);
+  void setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
   void pushColor(uint16_t color);
 
   void fillScreen(uint16_t color);

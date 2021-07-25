@@ -24,11 +24,11 @@
 
 //#defines
 
-#define LCD_SPI_MODE 0x03
-#define LCD_SPI_BITS 0x10
+#define LCD_SPI_MODE 32
+#define LCD_SPI_BITS 0
 
 //May need to lower this on certain boards
-#define LCD_FREQ 3000000
+#define LCD_FREQ 49 * 1000000
 
 #define PIN_RST 0x00
 #define PIN_SCE 0x01
@@ -104,21 +104,11 @@
 #define ILI9341_WHITE 0xFFFF
 
 #define DELAY 0x80
-//structs
-struct AdaLcdPins
-{
-  PinName mosi;
-  PinName miso;
-  PinName sclk;
-  PinName dc;
-  PinName cs;
-  PinName rst;
-};
+
 
 class Adafruit_ILI9341 : public Adafruit_GFX
 {
 public:
-  Adafruit_ILI9341(PinName DC, PinName CS, PinName RST);
   Adafruit_ILI9341(PinName mosi, PinName miso, PinName sck, PinName cs, PinName dc, PinName rst);
 
   void init(void),
@@ -147,8 +137,8 @@ public:
 
 private:
   bool hwSPI;
-  AdaLcdPins _pins;
-  BurstSPI *LcdSPI;
-  DigitalOut **Pins;
-  uint8_t tabcolor;
+  BurstSPI lcdPort; // does SPI MOSI, MISO and SCK
+  DigitalOut _cs;   // does SPI CE
+  DigitalOut _rs;   // register/date select
+  DigitalOut _rst;  // does 3310 LCD_RST
 };
