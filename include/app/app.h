@@ -41,7 +41,10 @@ protected:
     }
 
 public:
-    App(ServiceLocator *container) : container(container) {}
+    App(ServiceLocator *container) : container(container) {
+        render = new Render(container->getDisplay(), new HeaderView());
+        container->setRender(render);
+    }
 
     void onClick(Keyboard::KEY key)
     {
@@ -54,18 +57,11 @@ public:
         container->getKeyboard()->init();
         container->getLogger()->init();
         container->getMemberService()->init();
-
+        container->getLan()->init();
         container->getDisplay()->init();
-        container->getDisplay()->setRotation(0);
-        container->getDisplay()->fillScreen(BACKGROUND_COLOR);
-        
-        render = new Render(container->getDisplay(), new HeaderView());
-        container->setRender(render);
+        container->getRender()->init();
 
         printf("Display: %ix%i \n", container->getDisplay()->width(), container->getDisplay()->height());
-
-        render->run();
-
         stack = new StackPage(
             new HomePage(container)
         );

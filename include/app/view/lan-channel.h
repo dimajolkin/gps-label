@@ -83,7 +83,6 @@ public:
         display->setTextCursor(0, 50);
         display->printf("Start scan chanels...");
 
-        // lan->startTest();
         display->fillScreen(BACKGROUND_COLOR);
         for (uint8_t n = 1; n < lan->getCountChanels(); n++)
         {

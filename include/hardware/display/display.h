@@ -50,6 +50,8 @@ public:
     {
         display->initR(INITR_ILI9341);
         window = new Window(0, 0, display->width(), display->height());
+        display->setRotation(0);
+        display->fillScreen(BACKGROUND_COLOR);
     }
 
     int _putc(int value) { return writeChar(value); }

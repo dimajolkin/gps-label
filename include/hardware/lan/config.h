@@ -3,10 +3,16 @@
 
 // #include <EEPROM.h>
 
+#include "hardware/storage/storage.h"
+
 #define LAN_CONFIG_SAVE_CHANNEL_ADDRESS 1
 
 class LanConfig {
+    private:
+        Storage *s;
     public:
+        LanConfig(Storage *s): s(s) {}
+        
         void init() {
             if (getChannel() == 255) {
                 setChannel(1);
@@ -14,11 +20,10 @@ class LanConfig {
         }
 
         void setChannel(uint8_t n) {
-            // EEPROM.update(LAN_CONFIG_SAVE_CHANNEL_ADDRESS, n);
+            s->write(LAN_CONFIG_SAVE_CHANNEL_ADDRESS, n);
         }
 
         uint8_t getChannel() {
-            return 1;
-            // return EEPROM.read(LAN_CONFIG_SAVE_CHANNEL_ADDRESS);
+            return s->read(LAN_CONFIG_SAVE_CHANNEL_ADDRESS);
         }
 };

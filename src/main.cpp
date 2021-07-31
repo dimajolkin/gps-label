@@ -14,11 +14,12 @@ DigitalOut led(PC_13);
 
 void onKeyPressed(Keyboard::KEY key);
 
+Storage storage(EEPROM_SDA, EEPROM_SCL);
 ServiceLocator *container = new ServiceLocator(
     new Display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST),
     new Keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK, onKeyPressed),
-    new Lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP),
-    new Storage(EEPROM_SDA, EEPROM_SCL),
+    new Lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP, &storage),
+    &storage,
     new Server());
 
 App app(container);

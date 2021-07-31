@@ -4,6 +4,7 @@
 #include <RF24.h>
 #include "package.h"
 #include "config.h"
+#include "hardware/storage/storage.h"
 
 class Lan {
   private:
@@ -11,11 +12,11 @@ class Lan {
     static const int num_reps = 10;
     uint8_t values[128];
     RF24 *radio;
-    LanConfig config;
+    LanConfig *config;
   public:
-    Lan(PinName mosi, PinName miso, PinName sck, PinName _cepin, PinName _csnpin) {
+    Lan(PinName mosi, PinName miso, PinName sck, PinName _cepin, PinName _csnpin, Storage *storage) {
         radio = new RF24(mosi, miso, sck, _cepin, _csnpin);
-        config = LanConfig();
+        config = new LanConfig(storage);
     }
 
     uint8_t getCountChanels() {
@@ -23,13 +24,12 @@ class Lan {
     }
 
     LanConfig* getConfig() {
-        return &config;
+        return config;
     }
 
     void init() {
         const uint8_t address[6] = "00001";
-
-        config.init();
+        config->init();
         radio->begin(); //активировать модуль
 
         radio->setAutoAck(1);         //режим подтверждения приёма, 1 вкл 0 выкл

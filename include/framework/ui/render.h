@@ -47,7 +47,7 @@ public:
         header->refresh();
     }
 
-    void run()
+    void init()
     {
         header->start();
         content->start();
