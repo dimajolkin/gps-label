@@ -56,6 +56,6 @@ int main()
 
   while (true)
   {
-    thread_sleep_for(1000);
+    thread_sleep_for(100);
   }
 }

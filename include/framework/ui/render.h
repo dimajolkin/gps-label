@@ -15,9 +15,20 @@ private:
     Display *display;
     ViewRender *header;
     ViewRender *content;
+    View *headerView;
 
 public:
-    Render(Display *display, View *headerView) : display(display)
+    Render(Display *display, View *headerView) : display(display), headerView(headerView) {}
+
+    void clear()
+    {
+        mutex->lock();
+        display->fillScreen(BACKGROUND_COLOR);
+        mutex->unlock();
+        header->refresh();
+    }
+
+    void init()
     {
         mutex = new Mutex();
         refreshFlag = new EventFlags();
@@ -37,18 +48,7 @@ public:
             mutex,
             refreshFlag,
             FLAG_CONTENT);
-    }
 
-    void clear()
-    {
-        mutex->lock();
-        display->fillScreen(BACKGROUND_COLOR);
-        mutex->unlock();
-        header->refresh();
-    }
-
-    void init()
-    {
         header->start();
         content->start();
     }
