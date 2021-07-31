@@ -5,6 +5,7 @@
 #include "hardware/display/display.h"
 #include "hardware/lan/lan.h"
 #include "hardware/gps/gps.h"
+#include "hardware/storage/storage.h"
 #include "hardware/keyboard/keyboard.h"
 #include "service-locator.h"
 #include "app/app.h"
@@ -45,8 +46,6 @@ void onMembersStart()
     }
   }
 }
-
-#include "hardware/storage/storage.h"
 
 int main()
 {
