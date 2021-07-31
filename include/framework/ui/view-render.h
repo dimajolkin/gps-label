@@ -42,9 +42,7 @@ public:
                                                  refreshFlag(refreshFlag),
                                                  eventFlag(eventFlag),
                                                  waitMillisec(waitMillisec)
-    {
-        thread = new Thread();
-    }
+    {}
 
     void setView(View *_view)
     {
@@ -54,6 +52,7 @@ public:
 
     void start()
     {
+        thread = new Thread();
         thread->start(callback(this, &ViewRender::drawViewLoop));
     }
 
