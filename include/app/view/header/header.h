@@ -16,7 +16,7 @@ private:
 
     void renderPower(Display *display)
     {
-        PowerElement::render({100, 0}, display, power);
+        PowerElement::render({display->width() - 50, 0}, display, power);
     }
 
     void renderMemory(Display *display)

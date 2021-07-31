@@ -603,6 +603,7 @@ void Adafruit_ST7735::fillScreen(uint16_t color) {
   fillRect(0, 0, _width, _height, color);
 }
 
+
 // fill a rectangle
 void Adafruit_ST7735::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
                                uint16_t color) {
@@ -616,17 +617,15 @@ void Adafruit_ST7735::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
 
   setAddrWindow(x, y, x + w - 1, y + h - 1);
 
-  uint8_t hi = color >> 8, lo = color;
   _rs = 1;
   _cs = 0;
   for (y = h; y > 0; y--) {
     for (x = w; x > 0; x--) {
-      lcdPort.fastWrite(hi);
-      // lcdPort.clearRX();
-      lcdPort.fastWrite(lo);
-      // lcdPort.clearRX();
+      lcdPort.fastWrite(color >> 8);
+      lcdPort.fastWrite(color);
     }
   }
+ 
   lcdPort.clearRX();
   _cs = 1;
 }
@@ -649,6 +648,10 @@ void Adafruit_ST7735::setRotation(uint8_t m) {
   rotation = m % 4; // can't be higher than 3
   switch (rotation) {
   case 0:
+    if (tabcolor == INITR_ILI9341) {
+      break;
+    }
+    
     if (tabcolor == INITR_BLACKTAB || INITR_GREENTAB2) {
       writedata(MADCTL_MX | MADCTL_MY | MADCTL_RGB);
     } else {

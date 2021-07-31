@@ -3,7 +3,6 @@
 
 #include "mbed.h"
 
-
 /** An SPI Master, used for communicating with SPI slave devices at very high speeds
  *
  * The default mbed SPI class allows for communication via the SPI bus at high clock frequencies,
@@ -28,6 +27,7 @@
  */
 class BurstSPI : public SPI
 {
+    SPI_TypeDef *spi;
 public:
     /** Create a SPI master connected to the specified pins
     *
@@ -40,7 +40,9 @@ public:
     *  @param miso SPI Master In, Slave Out pin
     *  @param sclk SPI Clock pin
     */
-    BurstSPI(PinName mosi, PinName miso, PinName sclk) : SPI(mosi, miso, sclk) {};
+    BurstSPI(PinName mosi, PinName miso, PinName sclk) : SPI(mosi, miso, sclk)
+    {
+    };
 
     /** Put data packet in the SPI TX FIFO buffer
     *
@@ -49,20 +51,13 @@ public:
     *
     *  @param data Data to be sent to the SPI slave
     */
-    void fastWrite(int data);
-
-    /** Use this function before fastWrite to set the correct settings
-    *
-    * It is not needed to use this if the last SPI commands were either normal SPI transmissions,
-    * or setting different format/frequency for this object. It is required to call this
-    * function when several SPI objects use the same peripheral, and your last transmission was
-    * from a different object with different settings. Not sure if you should use it?
-    * Use it, it takes very little time to execute, so can't hurt.
-    */
-    void setFormat( void ) {
-        format(_bits, _mode);
-        frequency(_hz);
-    }
+    void fastWrite(uint8_t data)
+    {
+        spi = (SPI_TypeDef *)(_peripheral->spi.spi.handle.Instance);
+        // Check if data is transmitted
+        while ((spi->SR & SPI_SR_TXE) == 0);
+        spi->DR = data;
+    }  
 
     /** After you are done with fastWrite, call this function
     *
@@ -72,8 +67,32 @@ public:
     * and clears the RX buffer. You always have to call this before you want to receive
     * SPI data after using fastWrite.
     */
-    void clearRX( void );
+    void clearRX(void)
+    {
+        //Check if the RX buffer is busy
+        spi = (SPI_TypeDef *)(_peripheral->spi.spi.handle.Instance);
+        //While busy, keep checking
+        while (spi->SR & SPI_SR_BSY)
+        {
+            // Check RX buffer readable
+            while ((spi->SR & SPI_SR_RXNE) == 0);
+            spi->DR;
+        }
+    }
 
+    /** Use this function before fastWrite to set the correct settings
+    *
+    * It is not needed to use this if the last SPI commands were either normal SPI transmissions,
+    * or setting different format/frequency for this object. It is required to call this
+    * function when several SPI objects use the same peripheral, and your last transmission was
+    * from a different object with different settings. Not sure if you should use it?
+    * Use it, it takes very little time to execute, so can't hurt.
+    */
+    void setFormat(void)
+    {
+        format(_bits, _mode);
+        frequency(_hz);
+    }
 
     //Just for documentation:
 #if 0
@@ -108,7 +127,6 @@ public:
     */
     virtual int write(int value);
 #endif
-
 };
 
 #endif

@@ -47,17 +47,22 @@ void onMembersStart()
 
 int main()
 {
-  container->getLan()->init();
   app.init();
-
   Thread thread;
   thread.start(onMembersStart);
-
-  printf("start app \n");
-  thread_sleep_for(100);
-  while (true)
-  {
-    // container->getServer()->printMemoryInfo();
-    thread_sleep_for(100);
-  }
+  thread_sleep_for(osFeature_Wait);
 }
+
+// void test_disp()
+// {
+  
+  //  uint64_t time = get_ms_count();
+
+  //   // disp->fillScreen(ST7735_BLACK);
+  //   disp->fillRect(0, 0, 100, 100, ST7735_RED);
+  //   uint64_t stop_time = get_ms_count() - time;
+
+  //   disp->setTextCursor(50, 50);
+  //   disp->printf("%llu ", stop_time);
+  //   printf("%llu ", stop_time);
+// }
