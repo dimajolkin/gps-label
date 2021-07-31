@@ -437,7 +437,7 @@ void Adafruit_ST7735::commonInit(uint8_t *cmdList) {
   // lcdPort.frequency(1000000);
 
   lcdPort.format(8, 0);
-  lcdPort.frequency(50 * 1000000 - 1);
+  lcdPort.frequency(50 * 1000000 - 100);
   // toggle RST low to reset; CS low so it'll listen to us
   _cs = 0;
   _rst = 1;
@@ -479,6 +479,7 @@ void Adafruit_ST7735::initR(uint8_t options) {
     colstart = 0;
     rowstart = 0;
     tabcolor = options;
+    _wait_ms(100);
     return;
   } else {
     // colstart, rowstart left at default '0' values

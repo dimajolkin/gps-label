@@ -41,13 +41,7 @@ protected:
     }
 
 public:
-    App(ServiceLocator *container) : container(container)
-    {
-        render = new Render(
-            container->getDisplay(),
-            new HeaderView());
-        container->setRender(render);
-    }
+    App(ServiceLocator *container) : container(container) {}
 
     void onClick(Keyboard::KEY key)
     {
@@ -64,6 +58,9 @@ public:
         container->getDisplay()->init();
         container->getDisplay()->setRotation(0);
         container->getDisplay()->fillScreen(BACKGROUND_COLOR);
+        
+        render = new Render(container->getDisplay(), new HeaderView());
+        container->setRender(render);
 
         printf("Display: %ix%i \n", container->getDisplay()->width(), container->getDisplay()->height());
 

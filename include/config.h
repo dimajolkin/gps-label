@@ -10,6 +10,9 @@
 #define RADIO_CE       PA_8
 #define RADIO_CSP      PA_9
 
+#define EEPROM_SDA PB_9
+#define EEPROM_SCL PB_8
+
 // #define GPO_GPS_TX PA9
 // #define GPO_GPS_RX PA10
 
