@@ -54,5 +54,8 @@ int main()
   Thread thread;
   thread.start(onMembersStart);
 
-  thread_sleep_for(osFeature_Wait);
+  while (true)
+  {
+    thread_sleep_for(1000);
+  }
 }
