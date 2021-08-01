@@ -26,6 +26,10 @@ class Lan {
     LanConfig* getConfig() {
         return config;
     }
+    
+    RF24* getRadio() {
+        return radio;
+    }
 
     void init() {
         const uint8_t address[6] = "00001";
@@ -43,7 +47,6 @@ class Lan {
         //при самой низкой скорости имеем самую высокую чувствительность и дальность!!
         // radio->printDetails();
 
-        // delay(1000);
         thread_sleep_for(1000);
 
         radio->powerUp(); //начать работу
@@ -53,6 +56,7 @@ class Lan {
             printf(" --- Radio failed \n");
         }
 
+        radio->maskIRQ(true, true, true);
         radio->startListening();  //начинаем слушать эфир, мы приёмный модуль
     }
 

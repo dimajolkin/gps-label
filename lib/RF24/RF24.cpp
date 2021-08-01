@@ -104,7 +104,7 @@ uint8_t RF24::write_register(uint8_t reg, const uint8_t *buf, uint8_t len)
 
 uint8_t RF24::write_register(uint8_t reg, uint8_t value)
 {
-  uint8_t status;
+  uint8_t status = 1;
 
   IF_SERIAL_DEBUG(printf_P(PSTR("write_register(%02x,%02x)\r\n"), reg, value));
 
