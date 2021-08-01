@@ -58,10 +58,11 @@ private:
     {
         uint8_t x = ((n - 1) % LanChannelModel::COUNT_BLOCKS_IN_LINE);
         uint8_t y = (n - 1) / LanChannelModel::COUNT_BLOCKS_IN_LINE;
+        uint8_t h = display->width() / LanChannelModel::COUNT_BLOCKS_IN_LINE;
 
-        display->fillRoundRect((x * 20) + 3, (y * 20) + 5, 18, 18, 1, background);
-        display->drawRect((x * 20) + 3, (y * 20) + 5, 18, 18, color);
-        display->setTextCursor((x * 20) + 3, (y * 20) + 5 + 7);
+        display->fillRoundRect((x * h) + 3, (y * h) + 5, h - 2, h -2, 1, background);
+        display->drawRect((x * h) + 3, (y * h) + 5, h - 2, h -2, color);
+        display->setTextCursor((x * h) + 3, (y * h) + 5 + 7);
         display->setTextColor(ST7735_WHITE);
         display->printf("%i", n);
     }
@@ -82,13 +83,11 @@ public:
         display = _display;
         display->setTextCursor(0, 50);
         display->printf("Start scan chanels...");
-
-        display->fillScreen(BACKGROUND_COLOR);
         for (uint8_t n = 1; n < lan->getCountChanels(); n++)
         {
             block(n);
         }
-        // selectBlock(model->getSelected());
+        selectBlock(model->getSelected());
         // lan->stopTest();
     }
 };
