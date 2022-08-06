@@ -15,12 +15,15 @@ DigitalOut led(PC_13);
 void onKeyPressed(Keyboard::KEY key);
 
 Storage storage(EEPROM_SDA, EEPROM_SCL);
+
 ServiceLocator *container = new ServiceLocator(
     new Display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST),
     new Keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK, onKeyPressed),
     new Lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP, &storage),
     &storage,
-    new Server());
+    new Server(),
+    new GPSDevice(GPO_GPS_RX, GPO_GPS_TX)
+);
 
 App app(container);
 
@@ -54,6 +57,7 @@ RF24 *radio = container->getLan()->getRadio();
 InterruptIn irq(PB_4);
 
 uint32_t c = 0;
+
 // https://github.com/nRF24/RF24/blob/master/examples/InterruptConfigure/InterruptConfigure.ino
 void interruptHandler() {
   
@@ -71,17 +75,61 @@ void interruptHandler() {
 }
 
 
+
+void debugGPS() {
+  auto disp = container->getDisplay();
+  disp->init();
+  disp->setTextSize(1);
+  disp->setTextColor(ST7735_WHITE);
+  disp->printf("init GPS1\n");
+
+  container->getGPS()->init();
+
+  disp->printf("Wait read\n");
+  disp->setTextWrap(false);
+  printf("Tick\n");
+
+  uint8_t s = 0;
+  while(true) {
+    container->getGPS()->update();
+    // UnbufferedSerial *ss = container->getGPS()->getSerial();
+
+    // char c[1];
+    // ss->read(c, sizeof(char));
+    // container->getDisplay()->writeChar(c[0]);
+    // if (c[0] == '\n') {
+    //   s++;
+    // }
+    
+    auto dd = container->getGPS()->get();
+    if (dd->lat) {
+      disp->printf("LAT: %f, LNG %f \n", dd->lat, dd->lng);
+      led = !led;
+    }
+    
+    // printf("LAT: %f, LNG %f \n", dd->lat, dd->lng);
+    // thread_sleep_for(100);
+  }
+
+  container->getDisplay()->setTextColor(ST7735_GREEN);
+  container->getDisplay()->printf("SUCCESS\n");
+}
+
+
 int main()
 {
-  app.init();
+  Thread debug;
+  debug.start(debugGPS);
+  // app.init();
   Thread thread;
   thread.start(onMembersStart);
 
-  // irq.fall(&interruptHandler);
+  // // irq.fall(&interruptHandler);
 
   while (true)
   {
     container->getLogger()->dispatch();
+    // led = !led;
     thread_sleep_for(100);
   }
 }

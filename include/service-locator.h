@@ -14,7 +14,7 @@ class ServiceLocator
 {
 private:
     Display *display;
-    // GPS *gps;
+    GPSDevice *gps;
     Keyboard *keyboard;
     Lan *lan;
     Storage *storage;
@@ -29,13 +29,15 @@ public:
         Keyboard *keyboard,
         Lan *lan,
         Storage *storage,
-        Server *server)
-    {
+        Server *server,
+        GPSDevice *gps
+    ) {
         this->display = display;
         this->keyboard = keyboard;
         this->lan = lan;
         this->storage = storage;
         this->server = server;
+        this->gps = gps;
         this->logger = new Logger();
         this->memberService = new MemberService();
     }
@@ -65,9 +67,9 @@ public:
         return display;
     }
 
-    // GPS* getGPS() {
-    //     return gps;
-    // }
+    GPSDevice* getGPS() {
+        return gps;
+    }
 
     Storage *getStorage()
     {

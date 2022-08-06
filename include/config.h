@@ -13,8 +13,8 @@
 #define EEPROM_SDA PB_9
 #define EEPROM_SCL PB_8
 
-// #define GPO_GPS_TX PA9
-// #define GPO_GPS_RX PA10
+#define GPO_GPS_TX PB_6
+#define GPO_GPS_RX PB_7
 
 #define BTN_RIGHT PA_1
 #define BTN_LEFT  PA_4

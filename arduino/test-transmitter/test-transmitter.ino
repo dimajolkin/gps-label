@@ -1,7 +1,7 @@
 /**
  * Проект для тестирования, передачи данных, запускал через Arduino IDE.
  */
-
+#include <SoftwareSerial.h>
 #include <SPI.h>
 #include <nRF24L01.h>
 #include <RF24.h>
@@ -52,8 +52,15 @@ void printfBegin(void) {
    fdevopen(&serial_putc, 0 );
 }
 
+#define rxPin 5
+#define txPin 6
+SoftwareSerial gpsSerial (rxPin, txPin);
 
 void setup() { 
+  pinMode(rxPin, INPUT);
+  pinMode(txPin, OUTPUT);
+  gpsSerial.begin(9600);
+    
   ledSuccess.attach();
   ledFailed.attach();
   ledSuccess.up();
@@ -90,6 +97,12 @@ byte n = 2;
 byte f = 0;
 byte s = 0;
 void loop() {
+    while (gpsSerial.available())
+    {
+        char c = gpsSerial.read(); // Receive a single character from the software serial port
+        Serial.print(c);
+    }
+    
     if (n > 4) {
        n = 2;
     }

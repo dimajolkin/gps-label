@@ -60,6 +60,7 @@ public:
         container->getLan()->init();
         container->getDisplay()->init();
         container->getRender()->init();
+        // container->getGPS()->init();
 
         printf("Display: %ix%i \n", container->getDisplay()->width(), container->getDisplay()->height());
         stack = new StackPage(

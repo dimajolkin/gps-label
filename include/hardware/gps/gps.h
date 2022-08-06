@@ -1,7 +1,6 @@
 #pragma once
 
 #include "mbed.h"
-// #include <BufferedSerial.h>
 #include <TinyGPSplus.h>
 
 // using namespace mbed;
@@ -13,20 +12,23 @@ class GPSData  {
         GPSData(double lat, double lng): lat(lat), lng(lng) {}
 };
 
-class GPS {
+#define MAXIMUM_BUFFER_SIZE  32
+
+class GPSDevice {
     private:
-        BufferedSerial *ss;
+        UnbufferedSerial *ss;
         TinyGPSPlus *gps;
         GPSData *data = NULL;
+        char c[MAXIMUM_BUFFER_SIZE];
     public:
-        GPS(PinName rx, PinName tx) {
-            // ss = new BufferedSerial(rx, tx, 9600);
+        GPSDevice(PinName rx, PinName tx) {
+            ss = new UnbufferedSerial(tx, rx, 9600);
             gps = new TinyGPSPlus();
             data = new GPSData(0.0, 0.0);
         }
 
         void init() {
-            // while (!ss->readable()) {};
+            while (!ss->readable()) {};
         }
      
         uint8_t getCountSatellites() {
@@ -37,14 +39,19 @@ class GPS {
             return data;
         }
 
+        UnbufferedSerial* getSerial() {
+            return ss;
+        }
+
         void update() {
-            // if (ss->readable()) {
-                // gps->encode(ss->read());
-                // data = new GPSData(
-                    // (gps->location).lat(),
-                    // (gps->location).lat()
-                // );
-            // }
+            if (ss->readable()) {
+                ss->read(&c, MAXIMUM_BUFFER_SIZE);
+                gps->encode(c[0]);
+                auto location = gps->location;
+                if (location.isValid()) {
+                    data = new GPSData(location.lat(), location.lng());
+                }
+            }
         }
 
 //         void TimePrint()
