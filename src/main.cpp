@@ -1,5 +1,8 @@
-#include <mbed.h>
+#define APP_DEBUG_GPS 
+// #define APP 
 
+
+#include <mbed.h>
 #include "config.h"
 #include <stdint.h>
 #include "hardware/display/display.h"
@@ -116,20 +119,41 @@ void debugGPS() {
 }
 
 
-int main()
-{
-  Thread debug;
-  debug.start(debugGPS);
-  // app.init();
-  Thread thread;
-  thread.start(onMembersStart);
-
-  // // irq.fall(&interruptHandler);
-
-  while (true)
+#ifdef APP
+  int main()
   {
-    container->getLogger()->dispatch();
-    // led = !led;
-    thread_sleep_for(100);
-  }
+    Thread debug;
+    app.init();
+    Thread thread;
+    thread.start(onMembersStart);
+    // irq.fall(&interruptHandler);
+
+    while (true)
+    {
+      container->getLogger()->dispatch();
+      led = !led;
+      thread_sleep_for(100);
+    }
 }
+#endif
+
+#ifdef DEBUG_GPS
+  int main()
+  {
+    
+    Thread debug;
+    debug.start(debugGPS);
+    // app.init();
+    Thread thread;
+    thread.start(onMembersStart);
+
+    // // irq.fall(&interruptHandler);
+
+    while (true)
+    {
+      container->getLogger()->dispatch();
+      // led = !led;
+      thread_sleep_for(100);
+    }
+}
+#endif

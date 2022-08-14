@@ -1,45 +1,21 @@
 #pragma once
 
 #include <Adafruit_ST7735.h>
-
-class Window
-{
-public:
-    int16_t x0;
-    int16_t y0;
-    int16_t x1;
-    int16_t y1;
-
-    Window(int16_t x0, int16_t y0, int16_t x1, int16_t y1) : x0(x0), y0(y0), x1(x1), y1(y1) {}
-
-    inline int16_t width(void)
-    {
-        return x1 - x0;
-    }
-
-    inline int16_t height(void)
-    {
-        return y1 - y0;
-    }
-};
+#include "window.h"
+#include "driver.h"
 
 class Display : public Stream
 {
 private:
-    Adafruit_ST7735 *display;
+    DisplayDriver *display;
     Window *window;
 
 public:
     Display(PinName mosi, PinName miso, PinName sck, PinName CS, PinName DC, PinName RST)
     {
-        display = new Adafruit_ST7735(mosi, miso, sck, CS, DC, RST);
+        display = new DisplayDriver(mosi, miso, sck, CS, DC, RST);
     }
-
-    Window *getWindow()
-    {
-        return window;
-    }
-
+   
     Display(Display *_display, Window *_window)
     {
         display = _display->display;
@@ -56,6 +32,11 @@ public:
 
     int _putc(int value) { return writeChar(value); }
     int _getc() { return -1; }
+
+    Window *getWindow()
+    {
+        return window;
+    }
 
     inline void setTextCursor(int16_t x, int16_t y)
     {
