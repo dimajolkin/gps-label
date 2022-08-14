@@ -2,16 +2,19 @@
 
 class HeaderModel
 {
-public:
-    uint8_t power = 10;
-    uint16_t memory = 1;
-    uint8_t number = 0;
+    private:
+        ServiceLocator *c;
+    public:
+        uint8_t power = 10;
+        uint16_t memory = 1;
+        uint8_t number = 0;
 
-    HeaderModel(ServiceLocator *c) {
-        update(c);
+    HeaderModel(ServiceLocator *c): c(c) {
+        update();
     }
 
-    void update(ServiceLocator *c) {
-        number = c->getMemberService()->getMy()->getNumber();
+    void update() {
+        // number = c->getMemberService()->getMy()->getNumber();
+        number = c->getGPS()->getCountSatellites();
     }
 };

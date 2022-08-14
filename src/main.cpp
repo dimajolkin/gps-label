@@ -1,6 +1,5 @@
-#define APP_DEBUG_GPS 
-// #define APP 
-
+// #define APP_DEBUG_GPS
+#define APP
 
 #include <mbed.h>
 #include "config.h"
@@ -25,13 +24,17 @@ ServiceLocator *container = new ServiceLocator(
     new Lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP, &storage),
     &storage,
     new Server(),
-    new GPSDevice(GPO_GPS_RX, GPO_GPS_TX)
-);
+    new GPSDevice(GPO_GPS_RX, GPO_GPS_TX));
 
 App app(container);
 
 void onKeyPressed(Keyboard::KEY key)
 {
+  if (key == Keyboard::KEY::OK)
+  {
+    container->getRender()->clear();
+  }
+
   led = !led;
   app.onClick(key);
 }
@@ -54,7 +57,6 @@ void onMembersStart()
   }
 }
 
-
 RF24 *radio = container->getLan()->getRadio();
 
 InterruptIn irq(PB_4);
@@ -62,10 +64,11 @@ InterruptIn irq(PB_4);
 uint32_t c = 0;
 
 // https://github.com/nRF24/RF24/blob/master/examples/InterruptConfigure/InterruptConfigure.ino
-void interruptHandler() {
-  
+void interruptHandler()
+{
+
   bool tx_ds, tx_df, rx_dr;
-  radio->whatHappened(tx_ds, tx_df, rx_dr); 
+  radio->whatHappened(tx_ds, tx_df, rx_dr);
 
   container->getLogger()->printf("c %i \n", c++);
   // container->getLogger()->printf("tdata_sent %i \n", tx_ds);
@@ -77,83 +80,83 @@ void interruptHandler() {
   // }
 }
 
+void taskReadGps() {
+  while (true) {
+    container->getGPS()->read();
+    thread_sleep_for(10);
+  }
+}
+#ifdef APP_DEBUG_GPS
+void debugGPS()
+{
+  Thread reader;
+  reader.start(taskReadGps);
 
-
-void debugGPS() {
   auto disp = container->getDisplay();
   disp->init();
-  disp->setTextSize(1);
+  disp->setTextSize(2);
   disp->setTextColor(ST7735_WHITE);
-  disp->printf("init GPS1\n");
+  disp->printf("GPS init\n");
 
   container->getGPS()->init();
+  disp->printf("GPS initialize\n");
 
   disp->printf("Wait read\n");
-  disp->setTextWrap(false);
-  printf("Tick\n");
 
-  uint8_t s = 0;
-  while(true) {
-    container->getGPS()->update();
-    // UnbufferedSerial *ss = container->getGPS()->getSerial();
-
-    // char c[1];
-    // ss->read(c, sizeof(char));
-    // container->getDisplay()->writeChar(c[0]);
-    // if (c[0] == '\n') {
-    //   s++;
-    // }
-    
-    auto dd = container->getGPS()->get();
-    if (dd->lat) {
-      disp->printf("LAT: %f, LNG %f \n", dd->lat, dd->lng);
-      led = !led;
-    }
-    
-    // printf("LAT: %f, LNG %f \n", dd->lat, dd->lng);
-    // thread_sleep_for(100);
-  }
-
-  container->getDisplay()->setTextColor(ST7735_GREEN);
-  container->getDisplay()->printf("SUCCESS\n");
-}
-
-
-#ifdef APP
-  int main()
+  while (true)
   {
-    Thread debug;
-    app.init();
-    Thread thread;
-    thread.start(onMembersStart);
-    // irq.fall(&interruptHandler);
+    disp->setTextCursor(0, 50);
+    disp->clearText(18);
+    disp->setTextColor(ST7735_WHITE);
 
-    while (true)
-    {
-      container->getLogger()->dispatch();
-      led = !led;
-      thread_sleep_for(100);
-    }
+    auto dd = container->getGPS()->get();
+    disp->printf("S:%i -- %.4f,%.4f", container->getGPS()->getCountSatellites(), (float) dd->lat, (float) dd->lng);
+
+    led = !led;
+    thread_sleep_for(1000); // 1s
+  }
 }
 #endif
 
-#ifdef DEBUG_GPS
-  int main()
+#ifdef APP
+int main()
+{
+  app.init();
+  
+  // start gps
+  Thread gpsThread;
+  gpsThread.start(taskReadGps);
+
+  Thread thread;
+  thread.start(onMembersStart);
+  // irq.fall(&interruptHandler);
+
+  while (true)
   {
-    
-    Thread debug;
-    debug.start(debugGPS);
-    // app.init();
-    Thread thread;
-    thread.start(onMembersStart);
+    container->getLogger()->dispatch();
+    led = !led;
+    thread_sleep_for(100);
+  }
+}
+#endif
 
-    // // irq.fall(&interruptHandler);
+#ifdef APP_DEBUG_GPS
+int main()
+{
 
-    while (true)
-    {
-      container->getLogger()->dispatch();
-      // led = !led;
-      thread_sleep_for(100);
-    }
+  Thread debug;
+  debug.start(debugGPS);
+  // app.init();
+  Thread thread;
+  thread.start(onMembersStart);
+
+  // // irq.fall(&interruptHandler);
+
+  while (true)
+  {
+    container->getLogger()->dispatch();
+    // led = !led;
+    thread_sleep_for(100);
+  }
 }
 #endif

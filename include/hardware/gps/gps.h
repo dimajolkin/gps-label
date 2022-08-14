@@ -12,44 +12,48 @@ class GPSData  {
         GPSData(double lat, double lng): lat(lat), lng(lng) {}
 };
 
-#define MAXIMUM_BUFFER_SIZE  32
-
 class GPSDevice {
     private:
-        UnbufferedSerial *ss;
-        TinyGPSPlus *gps;
+        BufferedSerial *serial;
+        TinyGPSPlus *service;
         GPSData *data = NULL;
-        char c[MAXIMUM_BUFFER_SIZE];
+        char read_buffer[1] = {0};
+        uint8_t initialize = 0;
     public:
         GPSDevice(PinName rx, PinName tx) {
-            ss = new UnbufferedSerial(tx, rx, 9600);
-            gps = new TinyGPSPlus();
+            serial = new BufferedSerial(tx, rx, 9600);
+            service = new TinyGPSPlus();
             data = new GPSData(0.0, 0.0);
         }
 
         void init() {
-            while (!ss->readable()) {};
+            while (!serial->readable()) {};
+            initialize = 1;
         }
      
         uint8_t getCountSatellites() {
-            return (gps->satellites).value();
+            return (service->satellites).value();
         }
 
-        GPSData *get() {
+        GPSData* get() {
             return data;
         }
 
-        UnbufferedSerial* getSerial() {
-            return ss;
+        BufferedSerial* getSerial() {
+            return serial;
         }
 
-        void update() {
-            if (ss->readable()) {
-                ss->read(&c, MAXIMUM_BUFFER_SIZE);
-                gps->encode(c[0]);
-                auto location = gps->location;
-                if (location.isValid()) {
-                    data = new GPSData(location.lat(), location.lng());
+        uint8_t isInit() {
+            return initialize;
+        }
+
+        void read() {
+            if (serial->read(&read_buffer, sizeof(char))) {
+                if (service->encode(read_buffer[0])) {
+                    auto location = service->location;
+                    if (location.isValid()) {
+                        data = new GPSData(location.lat(), location.lng());
+                    }
                 }
             }
         }

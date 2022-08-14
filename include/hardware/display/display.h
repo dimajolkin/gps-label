@@ -38,6 +38,15 @@ public:
         return window;
     }
 
+    inline void clearText(uint8_t size) {
+      printf("\r");
+      setTextColor(BACKGROUND_COLOR);
+      for(uint8_t c = 0; c < size; c++) {
+        printf("%c", 218);
+      }
+      printf("\r");
+    }
+
     inline void setTextCursor(int16_t x, int16_t y)
     {
         display->setTextCursor(x + window->x0, y + +window->y0);

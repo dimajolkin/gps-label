@@ -40,9 +40,24 @@ protected:
         }
     }
 
+    HeaderModel *headerModel;
+    // move in task manager
+    void taskHeader() {
+        while(true) {
+            headerModel->update();
+            thread_sleep_for(1000 * 2);
+        }
+    }
+
+    Thread *headerThread;
+
 public:
     App(ServiceLocator *container) : container(container) {
-        render = new Render(container->getDisplay(), new HeaderView());
+        headerModel = new HeaderModel(container);
+        headerThread = new Thread();
+        headerThread->start(callback(this, &App::taskHeader));
+        
+        render = new Render(container->getDisplay(), new HeaderView(headerModel));
         container->setRender(render);
     }
 
@@ -54,14 +69,14 @@ public:
 
     void init()
     {
+        container->getDisplay()->init();
         container->getKeyboard()->init();
         container->getLogger()->init();
         container->getMemberService()->init();
         container->getLan()->init();
-        container->getDisplay()->init();
-        container->getRender()->init();
-        // container->getGPS()->init();
+        container->getGPS()->init();
 
+        container->getRender()->init();        
         printf("Display: %ix%i \n", container->getDisplay()->width(), container->getDisplay()->height());
         stack = new StackPage(
             new HomePage(container)

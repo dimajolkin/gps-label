@@ -8,22 +8,20 @@ class GpsView : public View
 {
 private:
     GpsModel *model;
+    uint8_t n = 0;
 
 public:
     GpsView(GpsModel *model) : View(), model(model) {}
 
     void update(Display *display)
     {
-        display->setTextCursor(0, 10);
-        display->printf("--- render gps view \n");
-        printf("--- render gps view \n");
-        // display->setCursor(1, dy + 30);
-        // GPSData *data = container->getGPS()->get();
-        // display->print(F("Satellites: "));
-        // display->println(container->getGPS()->getCountSatellites());
-        // display->print(F("Lat: "));
-        // display->println(data->lat);
-        // display->print(F("Lng: "));
-        // display->println(data->lng);
+        display->fillScreen(BACKGROUND_COLOR);
+        n++;
+        display->setTextCursor(0, 15);
+        GPSData *data = model->get();
+        display->printf("Tick: %i \n", n);
+        display->printf("Satellites: %i \n", model->getSatellites());
+        display->printf("Lat: %f\n", data->lat);
+        display->printf("Lng: %f\n", data->lng);
     }
 };
