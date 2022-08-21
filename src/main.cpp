@@ -1,5 +1,6 @@
 // #define APP_DEBUG_GPS
-#define APP
+#define APP_DEBUG_BATTERY
+// #define APP
 
 #include <mbed.h>
 #include "config.h"
@@ -9,6 +10,7 @@
 #include "hardware/gps/gps.h"
 #include "hardware/storage/storage.h"
 #include "hardware/keyboard/keyboard.h"
+#include "hardware/battery/battery.h"
 #include "service-locator.h"
 #include "app/app.h"
 
@@ -17,75 +19,87 @@ DigitalOut led(PC_13);
 void onKeyPressed(Keyboard::KEY key);
 
 Storage storage(EEPROM_SDA, EEPROM_SCL);
+// Battery battary(3000, 3700, 3300, 1.47, BATTERY_PIN);
 
-ServiceLocator *container = new ServiceLocator(
-    new Display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST),
-    new Keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK, onKeyPressed),
-    new Lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP, &storage),
-    &storage,
-    new Server(),
-    new GPSDevice(GPO_GPS_RX, GPO_GPS_TX));
 
-App app(container);
+// ServiceLocator *container = new ServiceLocator(
+//     new Display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST),
+//     new Keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK, onKeyPressed),
+//     new Lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP, &storage),
+//     &storage,
+//     new Server(),
+//     new GPSDevice(GPO_GPS_RX, GPO_GPS_TX));
 
-void onKeyPressed(Keyboard::KEY key)
-{
-  if (key == Keyboard::KEY::OK)
-  {
-    container->getRender()->clear();
-  }
+// App app(container);
 
-  led = !led;
-  app.onClick(key);
-}
+// void onKeyPressed(Keyboard::KEY key)
+// {
+//   if (key == Keyboard::KEY::OK)
+//   {
+//     container->getRender()->clear();
+//   }
 
-void onMembersStart()
-{
-  Lan *lan = container->getLan();
-  MemberService *memberService = container->getMemberService();
+//   led = !led;
+//   app.onClick(key);
+// }
 
-  while (true)
-  {
-    if (lan->available())
-    {
-      Package pack = lan->read();
-      if (pack.validate())
-      {
-        memberService->registerPakage(&pack);
-      }
-    }
-  }
-}
+// void onMembersStart()
+// {
+//   Lan *lan = container->getLan();
+//   MemberService *memberService = container->getMemberService();
 
-RF24 *radio = container->getLan()->getRadio();
+//   while (true)
+//   {
+//     if (lan->available())
+//     {
+//       Package pack = lan->read();
+//       if (pack.validate())
+//       {
+//         memberService->registerPakage(&pack);
+//       }
+//     }
+//   }
+// }
 
-InterruptIn irq(PB_4);
-
-uint32_t c = 0;
+// RF24 *radio = container->getLan()->getRadio();
+// 
+// InterruptIn irq(PB_4);
+// 
+// uint32_t c = 0;
 
 // https://github.com/nRF24/RF24/blob/master/examples/InterruptConfigure/InterruptConfigure.ino
-void interruptHandler()
-{
+// void interruptHandler()
+// {
 
-  bool tx_ds, tx_df, rx_dr;
-  radio->whatHappened(tx_ds, tx_df, rx_dr);
+//   bool tx_ds, tx_df, rx_dr;
+//   radio->whatHappened(tx_ds, tx_df, rx_dr);
 
-  container->getLogger()->printf("c %i \n", c++);
-  // container->getLogger()->printf("tdata_sent %i \n", tx_ds);
-  // container->getLogger()->printf("data_fail %i \n", tx_df);
-  // container->getLogger()->printf("data_ready %i \n", rx_dr);
+//   container->getLogger()->printf("c %i \n", c++);
+//   // container->getLogger()->printf("tdata_sent %i \n", tx_ds);
+//   // container->getLogger()->printf("data_fail %i \n", tx_df);
+//   // container->getLogger()->printf("data_ready %i \n", rx_dr);
 
-  // if (tx_df) {
-  //   radio->flush_tx();
-  // }
-}
+//   // if (tx_df) {
+//   //   radio->flush_tx();
+//   // }
+// }
 
-void taskReadGps() {
+// void taskReadGps() {
+//   while (true) {
+//     container->getGPS()->read();
+//     thread_sleep_for(10);
+//   }
+// }
+
+void taskBattry() {
+  
   while (true) {
-    container->getGPS()->read();
-    thread_sleep_for(10);
+    // printf("%i - %i", battary.voltage(), battary.level());
+    // printf("%f \n", battery.read());
+    thread_sleep_for(500);
   }
 }
+
 #ifdef APP_DEBUG_GPS
 void debugGPS()
 {
@@ -134,6 +148,23 @@ int main()
   while (true)
   {
     container->getLogger()->dispatch();
+    led = !led;
+    thread_sleep_for(100);
+  }
+}
+#endif
+
+#ifdef APP_DEBUG_BATTERY
+int main()
+{
+  AnalogIn battery(BATTERY_PIN);
+   // start battery
+  // Thread batteryThread;
+  // batteryThread.start(taskBattry);
+
+  while (true)
+  {
+    // container->getLogger()->dispatch();
     led = !led;
     thread_sleep_for(100);
   }

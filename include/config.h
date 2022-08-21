@@ -23,4 +23,6 @@
 #define BTN_OK  PC_14
 #define BTN_KEY  PA_0
 
+#define BATTERY_PIN PA_7_ALT0
+
 #define BACKGROUND_COLOR ST7735_BLACK
