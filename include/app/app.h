@@ -64,6 +64,11 @@ public:
 
     void onClick(Keyboard::KEY key)
     {
+        if (key == Keyboard::KEY::OK)
+        {
+            container->getRender()->clear();
+        }
+
         Response *response = stack->getCurrent()->onClick(key);
         route(response);
     }
@@ -71,6 +76,7 @@ public:
     void init()
     {
         container->getDisplay()->init();
+        container->getKeyboard()->onKeyPress(callback(this, &App::onClick));
         container->getKeyboard()->init();
         container->getLogger()->init();
         // container->getMemberService()->init();

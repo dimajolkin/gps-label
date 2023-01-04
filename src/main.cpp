@@ -14,23 +14,6 @@
 #include "service-locator.h"
 #include "app/runtime.h"
 
-// void onMembersStart()
-// {
-//   Lan *lan = container->getLan();
-//   MemberService *memberService = container->getMemberService();
-
-//   while (true)
-//   {
-//     if (lan->available())
-//     {
-//       Package pack = lan->read();
-//       if (pack.validate())
-//       {
-//         memberService->registerPakage(&pack);
-//       }
-//     }
-//   }
-// }
 
 // RF24 *radio = container->getLan()->getRadio();
 // 
@@ -54,8 +37,6 @@
 //   //   radio->flush_tx();
 //   // }
 // }
-
-
 
 #ifdef APP_DEBUG_GPS
 void debugGPS()
@@ -93,7 +74,7 @@ void debugGPS()
 int main()
 {
   Storage storage(EEPROM_SDA, EEPROM_SCL);
-  
+
   ServiceLocator container(
     new Display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST),
     new Keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK),
