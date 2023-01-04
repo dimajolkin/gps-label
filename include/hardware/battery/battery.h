@@ -1,3 +1,5 @@
+#pragma once
+
 #include "mbed.h"
 using BattaryCalcFunction = Callback<uint8_t(uint16_t voltage, uint16_t minVoltage, uint16_t maxVoltage)>;
 

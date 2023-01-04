@@ -19,13 +19,18 @@ private:
 public:
     const static uint8_t SIZE = KEYBOARD_KEY_LEN;
 
-    Keyboard(PinName _up, PinName _down, PinName _left, PinName _right, PinName _ok, Callback<void(Keyboard::KEY)> onKeyPressed)
+    Keyboard(PinName _up, PinName _down, PinName _left, PinName _right, PinName _ok)
     {
         keys[KEY::UP] = new Button(_up);
         keys[KEY::DOWN] = new Button(_down);
         keys[KEY::LEFT] = new Button(_left);
         keys[KEY::RIGHT] = new Button(_right);
         keys[KEY::OK] = new Button(_ok);
+        
+    }
+
+    void onKeyPress(Callback<void(Keyboard::KEY)> onKeyPressed)
+    {
         _onKeyPressed = onKeyPressed;
     }
 

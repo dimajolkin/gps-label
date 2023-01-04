@@ -9,6 +9,7 @@
 #include "hardware/keyboard/keyboard.h"
 #include "hardware/logger/logger.h"
 #include "hardware/storage/storage.h"
+#include "hardware/battery/battery.h"
 
 class ServiceLocator
 {
@@ -18,6 +19,7 @@ private:
     Keyboard *keyboard;
     Lan *lan;
     Storage *storage;
+    Battery *battery;
     Server *server;
     Logger *logger;
     MemberService *memberService;
@@ -29,6 +31,7 @@ public:
         Keyboard *keyboard,
         Lan *lan,
         Storage *storage,
+        Battery *battery,
         Server *server,
         GPSDevice *gps
     ) {
@@ -36,6 +39,7 @@ public:
         this->keyboard = keyboard;
         this->lan = lan;
         this->storage = storage;
+        this->battery = battery;
         this->server = server;
         this->gps = gps;
         this->logger = new Logger();
@@ -74,6 +78,11 @@ public:
     Storage *getStorage()
     {
         return storage;
+    }
+
+    Battery *getBattery()
+    {
+        return battery;
     }
 
     Server *getServer()

@@ -1,10 +1,11 @@
+#pragma once
+
 #include <mbed.h>
 #include "service-locator.h"
 #include "framework/ui/response.h"
 #include "framework/ui/page.h"
 #include "framework/ui/stack-page.h"
 #include "framework/ui/render.h"
-
 #include "app/view/header/header.h"
 #include "app/page/home.h"
 

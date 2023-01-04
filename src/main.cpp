@@ -12,37 +12,7 @@
 #include "hardware/keyboard/keyboard.h"
 #include "hardware/battery/battery.h"
 #include "service-locator.h"
-#include "app/app.h"
-
-DigitalOut led(PC_13);
-
-void onKeyPressed(Keyboard::KEY key);
-
-Storage storage(EEPROM_SDA, EEPROM_SCL);
-Battery battary(BATTERY_MIN_VOLTAGE, BATTERY_MAX_VOLTAGE, BATTERY_REF_VOLTAGE, BATTERY_DIVIDER_RATION, BATTERY_PIN);
-
-
-ServiceLocator *container = new ServiceLocator(
-    new Display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST),
-    new Keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK, onKeyPressed),
-    new Lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP, &storage),
-    &storage,
-    new Server(),
-    new GPSDevice(GPO_GPS_RX, GPO_GPS_TX)
-);
-
-App app(container);
-
-void onKeyPressed(Keyboard::KEY key)
-{
-  if (key == Keyboard::KEY::OK)
-  {
-    container->getRender()->clear();
-  }
-
-  led = !led;
-  app.onClick(key);
-}
+#include "app/runtime.h"
 
 // void onMembersStart()
 // {
@@ -85,19 +55,7 @@ void onKeyPressed(Keyboard::KEY key)
 //   // }
 // }
 
-void taskReadGps() {
-  while (true) {
-    container->getGPS()->read();
-    thread_sleep_for(10);
-  }
-}
 
-void taskBattry() {
-  while (true) {
-    container->getServer()->setPowerLevel(battary.level());
-    thread_sleep_for(1000);
-  }
-}
 
 #ifdef APP_DEBUG_GPS
 void debugGPS()
@@ -134,24 +92,20 @@ void debugGPS()
 #ifdef APP
 int main()
 {
-  app.init();
+  Storage storage(EEPROM_SDA, EEPROM_SCL);
   
-  Thread gpsThread;
-  gpsThread.start(taskReadGps);
+  ServiceLocator container(
+    new Display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST),
+    new Keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK),
+    new Lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP, &storage),
+    &storage,
+    new Battery(BATTERY_MIN_VOLTAGE, BATTERY_MAX_VOLTAGE, BATTERY_REF_VOLTAGE, BATTERY_DIVIDER_RATION, BATTERY_PIN),
+    new Server(),
+    new GPSDevice(GPO_GPS_RX, GPO_GPS_TX)
+  );
 
-  Thread batteryThread;
-  batteryThread.start(taskBattry);
-
-  // Thread thread;
-  // thread.start(onMembersStart);
-  // irq.fall(&interruptHandler);
-
-  while (true)
-  {
-    container->getLogger()->dispatch();
-    led = !led;
-    thread_sleep_for(100);
-  }
+  AppRuntime runtime(&container);
+  runtime.run();
 }
 #endif
 
