@@ -4,7 +4,7 @@
 class Server
 {
 private:
-    uint8_t power = 10;
+    uint8_t power = 0;
     uint16_t memory = 0;
 
     int16_t availableMemory(uint16_t min, uint16_t max)
@@ -28,9 +28,15 @@ private:
     }
 
 public:
-    uint8_t getPowerPercent()
+
+    uint8_t getPowerLevel()
     {
         return power;
+    }
+
+    void setPowerLevel(uint8_t level)
+    {
+        power = level;
     }
 
     int16_t getAvailableMemory()
@@ -59,7 +65,6 @@ public:
 
     void update()
     {
-        memory++; //availableMemory(0, 10000);
-        power = 10;
+        memory = 0; //availableMemory(0, 10000);
     }
 };

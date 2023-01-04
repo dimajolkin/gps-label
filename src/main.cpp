@@ -1,6 +1,6 @@
 // #define APP_DEBUG_GPS
-#define APP_DEBUG_BATTERY
-// #define APP
+// #define APP_DEBUG_BATTERY
+#define APP
 
 #include <mbed.h>
 #include "config.h"
@@ -31,17 +31,17 @@ ServiceLocator *container = new ServiceLocator(
     new GPSDevice(GPO_GPS_RX, GPO_GPS_TX)
 );
 
-// App app(container);
+App app(container);
 
 void onKeyPressed(Keyboard::KEY key)
 {
-//   if (key == Keyboard::KEY::OK)
-//   {
-//     container->getRender()->clear();
-//   }
+  if (key == Keyboard::KEY::OK)
+  {
+    container->getRender()->clear();
+  }
 
-//   led = !led;
-//   app.onClick(key);
+  led = !led;
+  app.onClick(key);
 }
 
 // void onMembersStart()
@@ -85,19 +85,17 @@ void onKeyPressed(Keyboard::KEY key)
 //   // }
 // }
 
-// void taskReadGps() {
-//   while (true) {
-//     container->getGPS()->read();
-//     thread_sleep_for(10);
-//   }
-// }
+void taskReadGps() {
+  while (true) {
+    container->getGPS()->read();
+    thread_sleep_for(10);
+  }
+}
 
 void taskBattry() {
-  
   while (true) {
-    printf("V= %i ;  %%i \n", battary.voltage(), battary.level());
-    // printf("tick \n");
-    thread_sleep_for(500);
+    container->getServer()->setPowerLevel(battary.level());
+    thread_sleep_for(1000);
   }
 }
 
@@ -138,12 +136,14 @@ int main()
 {
   app.init();
   
-  // start gps
   Thread gpsThread;
   gpsThread.start(taskReadGps);
 
-  Thread thread;
-  thread.start(onMembersStart);
+  Thread batteryThread;
+  batteryThread.start(taskBattry);
+
+  // Thread thread;
+  // thread.start(onMembersStart);
   // irq.fall(&interruptHandler);
 
   while (true)

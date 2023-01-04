@@ -72,9 +72,9 @@ public:
         container->getDisplay()->init();
         container->getKeyboard()->init();
         container->getLogger()->init();
-        container->getMemberService()->init();
-        container->getLan()->init();
-        container->getGPS()->init();
+        // container->getMemberService()->init();
+        // container->getLan()->init();
+        // container->getGPS()->init();
 
         container->getRender()->init();        
         printf("Display: %ix%i \n", container->getDisplay()->width(), container->getDisplay()->height());
