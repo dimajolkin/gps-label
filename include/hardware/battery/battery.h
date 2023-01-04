@@ -69,7 +69,7 @@ class Battery
         this->maxVoltage = maxVoltage;
         this->refVoltage = refVoltage;
         this->dividerRatio = dividerRatio;
-        this->sense = new AnalogIn(sensePin);
+        this->sense = new AnalogIn(sensePin, refVoltage);
     }
 
     /**
@@ -102,7 +102,7 @@ class Battery
 		 */
     uint16_t voltage()
     {
-        uint16_t reading = sense->read() * dividerRatio * refVoltage / 1024;
+        uint16_t reading = sense->read_voltage() * dividerRatio;
         return reading;
     }
 };

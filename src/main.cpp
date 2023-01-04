@@ -19,21 +19,22 @@ DigitalOut led(PC_13);
 void onKeyPressed(Keyboard::KEY key);
 
 Storage storage(EEPROM_SDA, EEPROM_SCL);
-// Battery battary(3000, 3700, 3300, 1.47, BATTERY_PIN);
+Battery battary(BATTERY_MIN_VOLTAGE, BATTERY_MAX_VOLTAGE, BATTERY_REF_VOLTAGE, BATTERY_DIVIDER_RATION, BATTERY_PIN);
 
 
-// ServiceLocator *container = new ServiceLocator(
-//     new Display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST),
-//     new Keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK, onKeyPressed),
-//     new Lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP, &storage),
-//     &storage,
-//     new Server(),
-//     new GPSDevice(GPO_GPS_RX, GPO_GPS_TX));
+ServiceLocator *container = new ServiceLocator(
+    new Display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST),
+    new Keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK, onKeyPressed),
+    new Lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP, &storage),
+    &storage,
+    new Server(),
+    new GPSDevice(GPO_GPS_RX, GPO_GPS_TX)
+);
 
 // App app(container);
 
-// void onKeyPressed(Keyboard::KEY key)
-// {
+void onKeyPressed(Keyboard::KEY key)
+{
 //   if (key == Keyboard::KEY::OK)
 //   {
 //     container->getRender()->clear();
@@ -41,7 +42,7 @@ Storage storage(EEPROM_SDA, EEPROM_SCL);
 
 //   led = !led;
 //   app.onClick(key);
-// }
+}
 
 // void onMembersStart()
 // {
@@ -94,8 +95,8 @@ Storage storage(EEPROM_SDA, EEPROM_SCL);
 void taskBattry() {
   
   while (true) {
-    // printf("%i - %i", battary.voltage(), battary.level());
-    // printf("%f \n", battery.read());
+    printf("V= %i ;  %%i \n", battary.voltage(), battary.level());
+    // printf("tick \n");
     thread_sleep_for(500);
   }
 }
@@ -157,16 +158,14 @@ int main()
 #ifdef APP_DEBUG_BATTERY
 int main()
 {
-  AnalogIn battery(BATTERY_PIN);
-   // start battery
-  // Thread batteryThread;
-  // batteryThread.start(taskBattry);
+  Thread batteryThread;
+  batteryThread.start(taskBattry);
 
   while (true)
   {
-    // container->getLogger()->dispatch();
+    container->getLogger()->dispatch();
     led = !led;
-    thread_sleep_for(100);
+    thread_sleep_for(200);
   }
 }
 #endif

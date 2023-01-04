@@ -16,13 +16,18 @@
 #define GPO_GPS_TX PB_6
 #define GPO_GPS_RX PB_7
 
-#define BTN_RIGHT PA_1
+#define BTN_RIGHT PA_0
 #define BTN_LEFT  PA_4
 #define BTN_UP  PC_15
 #define BTN_DOWN  PA_3
 #define BTN_OK  PC_14
-#define BTN_KEY  PA_0
+// #define BTN_KEY  PA_0
 
-#define BATTERY_PIN PA_7_ALT0
+#define BATTERY_PIN PA_1
+#define BATTERY_MIN_VOLTAGE 3300
+#define BATTERY_MAX_VOLTAGE 4700
+#define BATTERY_REF_VOLTAGE 4700
+#define BATTERY_DIVIDER_RATION 2
+
 
 #define BACKGROUND_COLOR ST7735_BLACK
