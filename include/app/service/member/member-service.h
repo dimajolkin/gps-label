@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hardware/lan/package.h"
+#include "board/hardware/lan/package.h"
 #include "app/service/member/config.h"
 #include "app/service/member/member.h"
 #include "app/service/member/members.h"

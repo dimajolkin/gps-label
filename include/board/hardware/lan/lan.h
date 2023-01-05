@@ -4,7 +4,7 @@
 #include <RF24.h>
 #include "package.h"
 #include "config.h"
-#include "hardware/storage/storage.h"
+#include "board/hardware/storage/storage.h"
 
 class Lan {
   private:

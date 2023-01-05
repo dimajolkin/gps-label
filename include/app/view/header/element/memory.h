@@ -2,7 +2,7 @@
 
 #include "config.h"
 #include "framework/draw/point.h"
-#include "hardware/display/display.h"
+#include "board/hardware/display/display.h"
 
 class MemoryElement {
 

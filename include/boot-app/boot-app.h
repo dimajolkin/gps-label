@@ -1,6 +1,6 @@
 #pragma once
 
-#include "service-locator.h";
+#include "service-locator.h"
 
 class BootApp
 {
@@ -79,6 +79,7 @@ public:
             return gps->isInit();
         }); 
         
+
         this->loading("LAN", [this, gps] {
             gps->init();
 

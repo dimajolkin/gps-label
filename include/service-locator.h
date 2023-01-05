@@ -2,46 +2,22 @@
 
 #include "app/service/member/member-service.h"
 #include "framework/ui/render.h"
-#include "hardware/lan/lan.h"
-#include "hardware/gps/gps.h"
-#include "hardware/server/server.h"
-#include "hardware/display/display.h"
-#include "hardware/keyboard/keyboard.h"
-#include "hardware/logger/logger.h"
-#include "hardware/storage/storage.h"
-#include "hardware/battery/battery.h"
+#include "board/board.h"
+#include "board/hardware/logger/logger.h"
 
 class ServiceLocator
 {
 private:
-    Display *display;
-    GPSDevice *gps;
-    Keyboard *keyboard;
-    Lan *lan;
-    Storage *storage;
-    Battery *battery;
-    Server *server;
-    Logger *logger;
+    Board *board;
     MemberService *memberService;
     Render *render;
+    Logger *logger;
 
 public:
     ServiceLocator(
-        Display *display,
-        Keyboard *keyboard,
-        Lan *lan,
-        Storage *storage,
-        Battery *battery,
-        Server *server,
-        GPSDevice *gps
+        Board *board
     ) {
-        this->display = display;
-        this->keyboard = keyboard;
-        this->lan = lan;
-        this->storage = storage;
-        this->battery = battery;
-        this->server = server;
-        this->gps = gps;
+        this->board = board;
         this->logger = new Logger();
         this->memberService = new MemberService();
     }
@@ -58,36 +34,36 @@ public:
 
     Lan *getLan()
     {
-        return lan;
+        return board->getLan();
     }
 
     Keyboard *getKeyboard()
     {
-        return keyboard;
+        return board->getKeyboard();
     }
 
     Display *getDisplay()
     {
-        return display;
+        return board->getDisplay();
     }
 
     GPSDevice* getGPS() {
-        return gps;
+        return board->getGPS();
     }
 
     Storage *getStorage()
     {
-        return storage;
+        return board->getStorage();
     }
 
     Battery *getBattery()
     {
-        return battery;
+        return board->getBattery();
     }
 
     Server *getServer()
     {
-        return server;
+        return board->getServer();
     }
 
     Logger *getLogger()

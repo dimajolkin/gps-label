@@ -1,7 +1,7 @@
 #pragma once
 
 #include "service-locator.h"
-#include "hardware/keyboard/keyboard.h"
+#include "board/hardware/keyboard/keyboard.h"
 #include "framework/ui/view.h"
 #include "framework/ui/response.h"
 #include "framework/ui/render.h"

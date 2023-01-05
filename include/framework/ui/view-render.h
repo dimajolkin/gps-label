@@ -2,7 +2,7 @@
 
 #include <mbed.h>
 #include "framework/ui/view.h"
-#include "hardware/display/display.h"
+#include "board/hardware/display/display.h"
 
 class ViewRender
 {

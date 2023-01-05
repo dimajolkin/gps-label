@@ -5,12 +5,13 @@
 #include <mbed.h>
 #include "config.h"
 #include <stdint.h>
-#include "hardware/display/display.h"
-#include "hardware/lan/lan.h"
-#include "hardware/gps/gps.h"
-#include "hardware/storage/storage.h"
-#include "hardware/keyboard/keyboard.h"
-#include "hardware/battery/battery.h"
+#include "board/hardware/display/display.h"
+#include "board/hardware/lan/lan.h"
+#include "board/hardware/gps/gps.h"
+#include "board/hardware/storage/storage.h"
+#include "board/hardware/keyboard/keyboard.h"
+#include "board/hardware/battery/battery.h"
+#include "board/board.h"
 #include "service-locator.h"
 #include "runtime.h"
 
@@ -74,16 +75,17 @@ void debugGPS()
 int main()
 {
   Storage storage(EEPROM_SDA, EEPROM_SCL);
-
-  ServiceLocator container(
-    new Display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST),
-    new Keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK),
-    new Lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP, &storage),
-    &storage,
-    new Battery(BATTERY_MIN_VOLTAGE, BATTERY_MAX_VOLTAGE, BATTERY_REF_VOLTAGE, BATTERY_DIVIDER_RATION, BATTERY_PIN),
-    new Server(),
-    new GPSDevice(GPO_GPS_RX, GPO_GPS_TX)
+  Board board(
+      new Display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST),
+      new Keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK),
+      new Lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP, &storage),
+      &storage,
+      new Battery(BATTERY_MIN_VOLTAGE, BATTERY_MAX_VOLTAGE, BATTERY_REF_VOLTAGE, BATTERY_DIVIDER_RATION, BATTERY_PIN),
+      new Server(),
+      new GPSDevice(GPO_GPS_RX, GPO_GPS_TX)
   );
+
+  ServiceLocator container(&board);
 
   AppRuntime runtime(&container);
   runtime.run();

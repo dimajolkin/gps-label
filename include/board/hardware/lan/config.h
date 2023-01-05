@@ -3,7 +3,7 @@
 
 // #include <EEPROM.h>
 
-#include "hardware/storage/storage.h"
+#include "board/hardware/storage/storage.h"
 
 #define LAN_CONFIG_SAVE_CHANNEL_ADDRESS 1
 

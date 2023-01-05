@@ -1,7 +1,7 @@
 #pragma once
 
 #include "config.h"
-#include "hardware/display/display.h"
+#include "board/hardware/display/display.h"
 #include "framework/draw/point.h"
 
 class PowerElement {

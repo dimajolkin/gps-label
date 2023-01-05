@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hardware/display/display.h"
+#include "board/hardware/display/display.h"
 #include "app/model/members.h"
 #include "framework/ui/view.h"
 
