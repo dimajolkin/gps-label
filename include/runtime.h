@@ -10,23 +10,7 @@ private:
   App *app;
   
 public:
-  // void onMembersStart()
-  // {
-  //   Lan *lan = container->getLan();
-  //   MemberService *memberService = container->getMemberService();
-
-  //   while (true)
-  //   {
-  //     if (lan->available())
-  //     {
-  //       Package pack = lan->read();
-  //       if (pack.validate())
-  //       {
-  //         memberService->registerPakage(&pack);
-  //       }
-  //     }
-  //   }
-  // }
+  
 
   void taskReadGps()
   {

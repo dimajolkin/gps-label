@@ -51,6 +51,24 @@ protected:
         }
     }
 
+    void onMembersWatch()
+    {
+        Lan *lan = container->getLanIn();
+        auto memberService = container->getMemberService();
+
+        while (true)
+        {
+        if (lan->available())
+        {
+            Package pack = lan->read();
+            if (pack.validate())
+            {
+                memberService->registerPakage(&pack);
+            }
+        }
+        }
+    }
+
 
 public:
     App(Container *container) : container(container) {
@@ -77,9 +95,9 @@ public:
         container->getKeyboard()->onKeyPress(callback(this, &App::onClick));
         container->getKeyboard()->init();
         container->getLogger()->init();
+
         container->getMemberService()->init();
-        container->getLanIn()->init();
-        container->getGPS()->init();
+        container->getTaskManager()->registerMembersWatch(callback(this, &App::onMembersWatch));
 
         container->getRender()->init();        
         printf("Display: %ix%i \n", container->getDisplay()->width(), container->getDisplay()->height());

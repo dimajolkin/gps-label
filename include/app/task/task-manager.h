@@ -7,6 +7,7 @@ private:
     Thread *headerTask;
     Thread *gpsTask;
     Thread *batteryTask;
+    Thread *registerMembersWatchTask;
 
 public:
     TaskManager()
@@ -14,6 +15,7 @@ public:
         headerTask = new Thread();
         gpsTask = new Thread();
         batteryTask = new Thread();
+        registerMembersWatchTask = new Thread();
     }
 
     void registerHeaderTask(mbed::Callback<void()> task)
@@ -29,5 +31,10 @@ public:
     void registerBattery(mbed::Callback<void()> task)
     {
         batteryTask->start(task);
+    }
+
+    void registerMembersWatch(mbed::Callback<void()> task)
+    {
+        registerMembersWatchTask->start(task);
     }
 };

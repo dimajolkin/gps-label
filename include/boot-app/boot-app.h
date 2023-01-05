@@ -71,7 +71,7 @@ public:
         display->setTextCursor(0, 0);
         display->setTextColor(ST7735_WHITE);
         display->printf("Run GPS-LABEL v1.0: \n");
-        
+
         auto gps = this->board->getGPS();
         this->loading("GPS", [this, gps] {
             gps->init();
