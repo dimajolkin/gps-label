@@ -45,9 +45,9 @@ public:
         return render;
     }
 
-    Lan *getLan()
+    Lan *getLanIn()
     {
-        return board->getLan();
+        return board->getLanIn();
     }
 
     Keyboard *getKeyboard()

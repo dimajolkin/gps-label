@@ -64,8 +64,8 @@ public:
     
     this->app->init();
 
-    container->getTaskManager()->append(callback(this, &AppRuntime::taskReadGps));
-    container->getTaskManager()->append(callback(this, &AppRuntime::taskBattry));
+    container->getTaskManager()->registerGps(callback(this, &AppRuntime::taskReadGps));
+    container->getTaskManager()->registerBattery(callback(this, &AppRuntime::taskBattry));
 
     // Thread thread;
     // thread.start(onMembersStart);

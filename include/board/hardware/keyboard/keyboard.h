@@ -39,7 +39,9 @@ public:
         for (uint8_t keyCode = 0; keyCode < SIZE; keyCode++)
         {
             keys[keyCode]->onKeyPressed([this, keyCode] {
-                queue.call(_onKeyPressed, KEY(keyCode));
+                if (_onKeyPressed) {
+                    queue.call(_onKeyPressed, KEY(keyCode));
+                }
             });
         }
 

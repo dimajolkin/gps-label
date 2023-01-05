@@ -13,7 +13,7 @@ private:
 public:
     LanChannelPage(Container *container) : Page(container)
     {
-        model = new LanChannelModel(container->getLan()->getConfig()->getChannel());
+        model = new LanChannelModel(container->getLanIn()->getConfig()->getChannel());
         view = new LanChannelView(model);
     }
 
@@ -41,7 +41,7 @@ public:
 
         if (key == Keyboard::KEY::OK)
         {
-            container->getLan()->getConfig()->setChannel(model->getSelected());
+            container->getLanIn()->getConfig()->setChannel(model->getSelected());
             return toBack();
         }
 

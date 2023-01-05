@@ -3,19 +3,31 @@
 
 class TaskManager
 {
-// private:
-    // std::vector list;
+private:
+    Thread *headerTask;
+    Thread *gpsTask;
+    Thread *batteryTask;
 
 public:
     TaskManager()
     {
+        headerTask = new Thread();
+        gpsTask = new Thread();
+        batteryTask = new Thread();
     }
 
-    void append(mbed::Callback<void()> task)
+    void registerHeaderTask(mbed::Callback<void()> task)
     {
-        Thread t;
-        t.start(task);
+        headerTask->start(task);
+    }
 
-        // list.append(t);
+    void registerGps(mbed::Callback<void()> task)
+    {
+        gpsTask->start(task);
+    }
+
+    void registerBattery(mbed::Callback<void()> task)
+    {
+        batteryTask->start(task);
     }
 };

@@ -61,6 +61,10 @@ class Lan {
     }
 
     bool available() {
+        if (!radio->isEnable()) {
+            return false;
+        }
+        
         return radio->available();
     }
 

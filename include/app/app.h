@@ -50,12 +50,13 @@ protected:
             thread_sleep_for(1000 * 2);
         }
     }
-    
+
 
 public:
     App(Container *container) : container(container) {
         headerModel = new HeaderModel(container);
-        container->getTaskManager()->append(callback(this, &App::taskHeader));        
+        container->getTaskManager()->registerHeaderTask(callback(this, &App::taskHeader));
+
         render = new Render(container->getDisplay(), new HeaderView(headerModel));
         container->setRender(render);
     }
@@ -76,9 +77,9 @@ public:
         container->getKeyboard()->onKeyPress(callback(this, &App::onClick));
         container->getKeyboard()->init();
         container->getLogger()->init();
-        // container->getMemberService()->init();
-        // container->getLan()->init();
-        // container->getGPS()->init();
+        container->getMemberService()->init();
+        container->getLanIn()->init();
+        container->getGPS()->init();
 
         container->getRender()->init();        
         printf("Display: %ix%i \n", container->getDisplay()->width(), container->getDisplay()->height());

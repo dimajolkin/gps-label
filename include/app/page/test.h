@@ -27,7 +27,7 @@ public:
 
     void onLanThread()
     {
-        Lan *lan = container->getLan();
+        Lan *lan = container->getLanIn();
         while (true)
         {
             if (lan->available())

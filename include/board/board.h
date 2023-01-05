@@ -40,7 +40,7 @@ public:
         this->gps = gps;
     }
 
-    Lan *getLan()
+    Lan *getLanIn()
     {
         return lan;
     }
