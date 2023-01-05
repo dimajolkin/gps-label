@@ -1,6 +1,7 @@
 #pragma once
 
 #include <mbed.h>
+#include <string>
 #include "service-locator.h"
 #include "framework/ui/response.h"
 #include "framework/ui/page.h"
@@ -73,92 +74,8 @@ public:
         route(response);
     }
 
-    void drawWait(const char *str)
-    {
-        auto display = container->getDisplay();
-        char p[] = ".....";
-        for (uint8_t i = 0; i< 10; i++)
-        {
-            for (uint8_t n = 0; n < 5; n++)
-            {
-                for (uint8_t k = 0; k < 5; k++)
-                {
-                    p[k] = (k < n) ? '.' : ' ';
-                }
-                
-                display->printf(str, p);
-
-                thread_sleep_for(500);
-                display->clearText(20);
-            }
-        } 
-    }
-
-    void loading(const char *text, mbed::Callback<bool()> task)
-    {
-        auto display = container->getDisplay();
-        Thread taskLoadingGps;
-        taskLoadingGps.start([this] {
-            this->drawWait("\rGPS: %s");
-        });
-        thread_sleep_for(2000);
-
-        while (true)
-        {
-            if (task()) {
-                taskLoadingGps.terminate();
-                break;
-            }
-            thread_sleep_for(100);
-        }
-
-        display->clearText(10);
-
-        display->printf("GPS: ");
-        display->setTextColor(ST7735_GREEN);
-        display->printf("DONE \n");
-    
-        display->setTextColor(ST7735_WHITE);
-    }
-
-    void bootstrap()
-    {
-        auto display = container->getDisplay();
-        display->init();
-        display->setTextCursor(0, 0);
-        display->setTextColor(ST7735_WHITE);
-        display->printf("Initialization devices: \n");
-        
-        auto gps = this->container->getGPS();
-        this->loading("GPS", [this, gps] {
-            gps->init();
-
-            return gps->isInit();
-        }); 
-        
-        this->loading("LAN", [this, gps] {
-            gps->init();
-
-            return gps->isInit();
-        });
-       
-       
-        // display->setTextColor(ST7735_YELLOW);
-        // display->printf("WAIT");
-        // 
-
-        // display->clearText(10, 5);
-        // display->setTextColor(ST7735_RED);
-        // display->printf("FAILED");
-
-        
-    }
-
     void init()
     {
-        this->bootstrap();
-
-        return;
         container->getKeyboard()->onKeyPress(callback(this, &App::onClick));
         container->getKeyboard()->init();
         container->getLogger()->init();

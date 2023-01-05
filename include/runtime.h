@@ -1,13 +1,14 @@
 #include <mbed.h>
-#include "app.h"
-#include "service-locator.h"
+#include "app/app.h"
+#include "boot-app/boot-app.h"
+
 
 class AppRuntime
 {
 private:
   ServiceLocator *container;
   App *app;
-
+  
 public:
   // void onMembersStart()
   // {
@@ -58,7 +59,9 @@ public:
 
   void run()
   {
-
+    auto boot = new BootApp(container);
+    boot->run();
+    
     this->app->init();
 
     Thread gpsThread;
