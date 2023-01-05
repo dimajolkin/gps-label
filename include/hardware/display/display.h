@@ -9,13 +9,14 @@ class Display : public Stream
 private:
     DisplayDriver *display;
     Window *window;
+    uint16_t currentColor = BACKGROUND_COLOR;
 
 public:
     Display(PinName mosi, PinName miso, PinName sck, PinName CS, PinName DC, PinName RST)
     {
         display = new DisplayDriver(mosi, miso, sck, CS, DC, RST);
     }
-   
+
     Display(Display *_display, Window *_window)
     {
         display = _display->display;
@@ -38,13 +39,17 @@ public:
         return window;
     }
 
-    inline void clearText(uint8_t size) {
-      printf("\r");
-      setTextColor(BACKGROUND_COLOR);
-      for(uint8_t c = 0; c < size; c++) {
-        printf("%c", 218);
-      }
-      printf("\r");
+    inline void clearText(uint8_t size)
+    {
+        auto prevColor = currentColor;
+        printf("\r");
+        setTextColor(BACKGROUND_COLOR);
+        for (uint8_t c = 0; c < size; c++)
+        {
+            printf("%c", 218);
+        }
+        printf("\r");
+        setTextColor(prevColor);
     }
 
     inline void setTextCursor(int16_t x, int16_t y)
@@ -64,6 +69,7 @@ public:
 
     inline void setTextColor(uint16_t c)
     {
+        currentColor = c;
         display->setTextColor(c);
     }
 

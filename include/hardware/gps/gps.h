@@ -27,7 +27,9 @@ class GPSDevice {
         }
 
         void init() {
-            while (!serial->readable()) {};
+            while (!serial->readable()) {
+                thread_sleep_for(500);
+            }
             initialize = 1;
         }
      
