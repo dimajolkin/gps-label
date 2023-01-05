@@ -11,7 +11,7 @@ private:
     GpsModel *model;
     Thread *thread;
 public:
-    GpsPage(ServiceLocator *container) : Page(container)
+    GpsPage(Container *container) : Page(container)
     {
         model = new GpsModel(container->getGPS());
         view = new GpsView(model);

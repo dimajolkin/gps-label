@@ -1,6 +1,6 @@
 #pragma once
 
-#include "service-locator.h"
+#include "app/container.h"
 #include "board/hardware/keyboard/keyboard.h"
 #include "framework/ui/view.h"
 #include "framework/ui/response.h"
@@ -9,7 +9,7 @@
 class Page
 {
 protected:
-    ServiceLocator *container;
+    Container *container;
     View *view;
 
     Response *redirect(Page *newPage)
@@ -33,7 +33,7 @@ protected:
     }
     
 public:
-    Page(ServiceLocator *container) : container(container) {}
+    Page(Container *container) : container(container) {}
 
     virtual ~Page()
     {

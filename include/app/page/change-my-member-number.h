@@ -13,7 +13,7 @@ private:
     MemberService *service;
 
 public:
-    ChangeMyMemberNumberPage(ServiceLocator *container) : Page(container)
+    ChangeMyMemberNumberPage(Container *container) : Page(container)
     {
         service = container->getMemberService();
         uint8_t number = service->getMy()->getNumber();

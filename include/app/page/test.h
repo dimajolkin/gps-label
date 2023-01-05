@@ -12,7 +12,7 @@ private:
     Thread *lanThread;
 
 public:
-    TestPage(ServiceLocator *container) : Page(container)
+    TestPage(Container *container) : Page(container)
     {
         testModel = new TestModel();
         view = new TestView(testModel);

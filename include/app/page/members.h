@@ -12,7 +12,7 @@ private:
     Thread *thread;
 
 public:
-    MembersPage(ServiceLocator *container) : Page(container)
+    MembersPage(Container *container) : Page(container)
     {
         model = new MembersModel(container->getMemberService()->getList());
         view = new MembersView(model);

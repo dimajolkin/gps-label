@@ -1,15 +1,15 @@
 #pragma once
 
-#include "service-locator.h"
+#include "board/board.h"
 
 class BootApp
 {
 private:
-    ServiceLocator *container;
+    Board *board;
 
     void drawWait(std::string name)
     {
-        auto display = container->getDisplay();
+        auto display = board->getDisplay();
         char p[] = ".....";
         for (uint8_t i = 0; i < 10; i++)
         {
@@ -31,7 +31,7 @@ private:
 
     void loading(const char *name, mbed::Callback<bool()> task)
     {
-        auto display = container->getDisplay();
+        auto display = board->getDisplay();
         Thread taskLoadingGps;
         taskLoadingGps.start([this, name]
                              {
@@ -60,19 +60,19 @@ private:
     }
 
 public:
-    BootApp(ServiceLocator *container) : container(container)
+    BootApp(Board *board) : board(board)
     {
     }
 
     void run()
     {
-        auto display = container->getDisplay();
+        auto display = board->getDisplay();
         display->init();
         display->setTextCursor(0, 0);
         display->setTextColor(ST7735_WHITE);
         display->printf("Initialization devices: \n");
         
-        auto gps = this->container->getGPS();
+        auto gps = this->board->getGPS();
         this->loading("GPS", [this, gps] {
             gps->init();
 

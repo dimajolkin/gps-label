@@ -6,7 +6,7 @@
 class AppRuntime
 {
 private:
-  ServiceLocator *container;
+  Container *container;
   App *app;
   
 public:
@@ -52,14 +52,14 @@ public:
     app->onClick(key);
   }
 
-  AppRuntime(ServiceLocator *container) : container(container)
+  AppRuntime(Container *container) : container(container)
   {
     this->app = new App(container);
   }
 
   void run()
   {
-    auto boot = new BootApp(container);
+    auto boot = new BootApp(container->getBoard());
     boot->run();
     
     this->app->init();

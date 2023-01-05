@@ -11,7 +11,7 @@ private:
     LanChannelModel *model;
 
 public:
-    LanChannelPage(ServiceLocator *container) : Page(container)
+    LanChannelPage(Container *container) : Page(container)
     {
         model = new LanChannelModel(container->getLan()->getConfig()->getChannel());
         view = new LanChannelView(model);

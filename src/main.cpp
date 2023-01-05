@@ -12,14 +12,13 @@
 #include "board/hardware/keyboard/keyboard.h"
 #include "board/hardware/battery/battery.h"
 #include "board/board.h"
-#include "service-locator.h"
+#include "app/container.h"
 #include "runtime.h"
 
-
 // RF24 *radio = container->getLan()->getRadio();
-// 
+//
 // InterruptIn irq(PB_4);
-// 
+//
 // uint32_t c = 0;
 
 // https://github.com/nRF24/RF24/blob/master/examples/InterruptConfigure/InterruptConfigure.ino
@@ -63,7 +62,7 @@ void debugGPS()
     disp->setTextColor(ST7735_WHITE);
 
     auto dd = container->getGPS()->get();
-    disp->printf("S:%i -- %.4f,%.4f", container->getGPS()->getCountSatellites(), (float) dd->lat, (float) dd->lng);
+    disp->printf("S:%i -- %.4f,%.4f", container->getGPS()->getCountSatellites(), (float)dd->lat, (float)dd->lng);
 
     led = !led;
     thread_sleep_for(1000); // 1s
@@ -82,10 +81,9 @@ int main()
       &storage,
       new Battery(BATTERY_MIN_VOLTAGE, BATTERY_MAX_VOLTAGE, BATTERY_REF_VOLTAGE, BATTERY_DIVIDER_RATION, BATTERY_PIN),
       new Server(),
-      new GPSDevice(GPO_GPS_RX, GPO_GPS_TX)
-  );
+      new GPSDevice(GPO_GPS_RX, GPO_GPS_TX));
 
-  ServiceLocator container(&board);
+  Container container(&board);
 
   AppRuntime runtime(&container);
   runtime.run();

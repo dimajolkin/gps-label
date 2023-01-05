@@ -1,6 +1,5 @@
 #pragma once
 
-#include "config.h"
 #include "framework/draw/point.h"
 #include "board/hardware/display/display.h"
 

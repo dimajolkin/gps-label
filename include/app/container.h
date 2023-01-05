@@ -4,27 +4,40 @@
 #include "framework/ui/render.h"
 #include "board/board.h"
 #include "board/hardware/logger/logger.h"
+#include "app/task/task-manager.h"
 
-class ServiceLocator
+class Container
 {
 private:
     Board *board;
     MemberService *memberService;
     Render *render;
     Logger *logger;
+    TaskManager *taskManager;
 
 public:
-    ServiceLocator(
+    Container(
         Board *board
     ) {
         this->board = board;
         this->logger = new Logger();
         this->memberService = new MemberService();
+        this->taskManager = new TaskManager();
     }
 
     void setRender(Render *r)
     {
         render = r;
+    }
+
+    TaskManager *getTaskManager() 
+    {
+        return taskManager;
+    }
+
+    Board *getBoard()
+    {
+        return board;
     }
 
     Render *getRender()

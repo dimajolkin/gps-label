@@ -16,7 +16,7 @@ private:
     MenuModel *menu;
 
 public:
-    MenuPage(ServiceLocator *container) : Page(container)
+    MenuPage(Container *container) : Page(container)
     {
         menu = new MenuModel();
         view = new MenuView(menu);

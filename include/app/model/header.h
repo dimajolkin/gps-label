@@ -3,13 +3,13 @@
 class HeaderModel
 {
     private:
-        ServiceLocator *c;
+        Container *c;
     public:
         uint8_t power = 0;
         uint16_t memory = 1;
         uint8_t number = 0;
 
-    HeaderModel(ServiceLocator *c): c(c) {
+    HeaderModel(Container *c): c(c) {
         update();
     }
 

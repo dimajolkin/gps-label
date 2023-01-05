@@ -12,7 +12,7 @@ private:
     HomeModel *model;
 
 public:
-    HomePage(ServiceLocator *container) : Page(container)
+    HomePage(Container *container) : Page(container)
     {
         model = new HomeModel();
         view = new HomeView(model);

@@ -2,7 +2,7 @@
 
 #include <mbed.h>
 #include <string>
-#include "service-locator.h"
+#include "app/container.h"
 #include "framework/ui/response.h"
 #include "framework/ui/page.h"
 #include "framework/ui/stack-page.h"
@@ -13,7 +13,7 @@
 class App
 {
 protected:
-    ServiceLocator *container;
+    Container *container;
     StackPage *stack;
     View *view;
     Render *render;
@@ -54,11 +54,9 @@ protected:
     Thread *headerThread;
 
 public:
-    App(ServiceLocator *container) : container(container) {
+    App(Container *container) : container(container) {
         headerModel = new HeaderModel(container);
-        headerThread = new Thread();
-        headerThread->start(callback(this, &App::taskHeader));
-        
+        container->getTaskManager()->append(callback(this, &App::taskHeader));        
         render = new Render(container->getDisplay(), new HeaderView(headerModel));
         container->setRender(render);
     }
