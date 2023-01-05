@@ -50,8 +50,7 @@ protected:
             thread_sleep_for(1000 * 2);
         }
     }
-
-    Thread *headerThread;
+    
 
 public:
     App(Container *container) : container(container) {
