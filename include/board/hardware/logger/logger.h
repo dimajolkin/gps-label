@@ -6,11 +6,11 @@
 #include <stdarg.h>
 
 
-FileHandle *mbed::mbed_override_console(int fd)
-{
-    static SWO_Channel swo("errors");
-    return &swo;
-}
+// FileHandle *mbed::mbed_override_console(int fd)
+// {
+//     static SWO_Channel swo("errors");
+//     return &swo;
+// }
 
 class Logger
 {

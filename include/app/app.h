@@ -55,17 +55,16 @@ protected:
     {
         Lan *lan = container->getLanIn();
         auto memberService = container->getMemberService();
-
         while (true)
         {
-        if (lan->available())
-        {
-            Package pack = lan->read();
-            if (pack.validate())
+            if (lan->available())
             {
-                memberService->registerPakage(&pack);
+                Package pack = lan->read();
+                if (pack.validate())
+                {
+                    memberService->registerPakage(&pack);
+                }
             }
-        }
         }
     }
 
@@ -95,8 +94,8 @@ public:
         container->getKeyboard()->onKeyPress(callback(this, &App::onClick));
         container->getKeyboard()->init();
         container->getLogger()->init();
-
         container->getMemberService()->init();
+        
         container->getTaskManager()->registerMembersWatch(callback(this, &App::onMembersWatch));
 
         container->getRender()->init();        

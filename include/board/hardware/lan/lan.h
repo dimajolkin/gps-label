@@ -13,6 +13,8 @@ class Lan {
     uint8_t values[128];
     RF24 *radio;
     LanConfig *config;
+    bool isInit = false;
+
   public:
     Lan(PinName mosi, PinName miso, PinName sck, PinName _cepin, PinName _csnpin, Storage *storage) {
         radio = new RF24(mosi, miso, sck, _cepin, _csnpin);
@@ -50,26 +52,16 @@ class Lan {
         // thread_sleep_for(1000);
 
         radio->powerUp(); //начать работу
-        // if (radio->isEnable()) {
-            // printf(" --- Enabled \n");
-        // } else {
-            // printf(" --- Radio failed \n");
-        // }
-
         // radio->maskIRQ(true, true, true);
         radio->startListening();  //начинаем слушать эфир, мы приёмный модуль
+        isInit = true;
     }
 
     bool isEnable() {
-        // return true;
-        return radio->isEnable();
+        return isInit == true;
     }
 
     bool available() {
-        if (!radio->isEnable()) {
-            return false;
-        }
-        
         return radio->available();
     }
 

@@ -95,9 +95,12 @@ public:
         });
 
         auto lan = this->board->getLanIn();
-        this->loading("LAN-IN", callback(lan, &Lan::init), [this, lan] {
+        Thread t;
+        t.start(callback(lan, &Lan::init));
+        this->loading("LAN-IN", [this, lan] {
             return lan->isEnable();
         });
+        t.join();
         display->printf("SUCCESS");
     }
 };
