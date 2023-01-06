@@ -45,6 +45,7 @@ public:
   {
     auto boot = new BootApp(container->getBoard());
     boot->run();
+    container->getDisplay()->fillScreen(BACKGROUND_COLOR);
     
     this->app->init();
 

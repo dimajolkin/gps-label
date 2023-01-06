@@ -17,6 +17,7 @@ class Logger
 private:
     SWO_Channel *swo;
     EventQueue *queue;
+    bool isInit = false;
 
 public:
     Logger()
@@ -27,6 +28,10 @@ public:
 
     void printf(const char *format, ...)
     {
+        if (!isInit) {
+            return;
+        }
+
         char buffer[256];
         va_list args;
         va_start(args, format);
@@ -42,6 +47,7 @@ public:
 
     void init()
     {
+        isInit = true;
         swo->claim();
     }
 

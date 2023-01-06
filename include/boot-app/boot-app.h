@@ -30,7 +30,12 @@ private:
         }
     }
 
-    void loading(const char *name, mbed::Callback<bool()> task)
+    void loading(const char *name, mbed::Callback<bool()> check)
+    {
+        loading(name, [] {}, check);
+    }
+
+    void loading(const char *name, mbed::Callback<void()> init, mbed::Callback<bool()> check)
     {
         auto display = board->getDisplay();
         Thread taskLoadingGps;
@@ -38,10 +43,12 @@ private:
                              {
                                  this->drawWait(std::string(name).append(": %s"));
                              });
+
         thread_sleep_for(500);
+        init();
         while (true)
         {
-            if (task())
+            if (check())
             {
                 taskLoadingGps.terminate();
                 break;
@@ -54,7 +61,6 @@ private:
         display->setTextColor(ST7735_GREEN);
         display->printf("DONE \n");
         
-
         display->setTextColor(ST7735_WHITE);
     }
 
@@ -73,9 +79,7 @@ public:
         display->printf("Run GPS-LABEL v1.0: \n");
 
         auto gps = this->board->getGPS();
-        this->loading("GPS", [this, gps] {
-            gps->init();
-
+        this->loading("GPS", callback(gps, &GPSDevice::init), [this, gps] {
             return gps->isInit();
         }); 
         
@@ -91,11 +95,9 @@ public:
         });
 
         auto lan = this->board->getLanIn();
-        this->loading("LAN-IN", [this, lan] {
-            lan->init();
-
-            return lan->available();
+        this->loading("LAN-IN", callback(lan, &Lan::init), [this, lan] {
+            return lan->isEnable();
         });
-       
+        display->printf("SUCCESS");
     }
 };

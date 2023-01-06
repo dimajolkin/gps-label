@@ -47,17 +47,22 @@ class Lan {
         //при самой низкой скорости имеем самую высокую чувствительность и дальность!!
         // radio->printDetails();
 
-        thread_sleep_for(1000);
+        // thread_sleep_for(1000);
 
         radio->powerUp(); //начать работу
-        if (radio->isEnable()) {
-            printf(" --- Enabled \n");
-        } else {
-            printf(" --- Radio failed \n");
-        }
+        // if (radio->isEnable()) {
+            // printf(" --- Enabled \n");
+        // } else {
+            // printf(" --- Radio failed \n");
+        // }
 
-        radio->maskIRQ(true, true, true);
+        // radio->maskIRQ(true, true, true);
         radio->startListening();  //начинаем слушать эфир, мы приёмный модуль
+    }
+
+    bool isEnable() {
+        // return true;
+        return radio->isEnable();
     }
 
     bool available() {
