@@ -53,19 +53,19 @@ protected:
 
     void onMembersWatch()
     {
-        Lan *lan = container->getLanIn();
-        auto memberService = container->getMemberService();
-        while (true)
-        {
-            if (lan->available())
-            {
-                Package pack = lan->read();
-                if (pack.validate())
-                {
-                    memberService->registerPakage(&pack);
-                }
-            }
-        }
+        // Lan *lan = container->getLanIn();
+        // auto memberService = container->getMemberService();
+        // while (true)
+        // {
+        //     if (lan->available())
+        //     {
+        //         Package pack = lan->read();
+        //         if (pack.validate())
+        //         {
+        //             memberService->registerPakage(&pack);
+        //         }
+        //     }
+        // }
     }
 
 
@@ -80,6 +80,7 @@ public:
 
     void onClick(Keyboard::KEY key)
     {
+        container->getBoard()->getLed()->toggle();
         if (key == Keyboard::KEY::OK)
         {
             container->getRender()->clear();

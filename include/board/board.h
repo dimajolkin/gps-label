@@ -8,6 +8,7 @@
 #include "board/hardware/logger/logger.h"
 #include "board/hardware/storage/storage.h"
 #include "board/hardware/battery/battery.h"
+#include "board/hardware/led/led.h"
 
 class Board
 {
@@ -20,6 +21,7 @@ private:
     Battery *battery;
     Server *server;
     Logger *logger;
+    Led *led;
 
 public:
     Board(
@@ -29,7 +31,8 @@ public:
         Storage *storage,
         Battery *battery,
         Server *server,
-        GPSDevice *gps
+        GPSDevice *gps,
+        Led *led
     ) {
         this->display = display;
         this->keyboard = keyboard;
@@ -38,6 +41,12 @@ public:
         this->battery = battery;
         this->server = server;
         this->gps = gps;
+        this->led = led;
+    }
+
+    Led *getLed()
+    {
+        return led;
     }
 
     Lan *getLanIn()

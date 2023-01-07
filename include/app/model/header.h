@@ -15,7 +15,7 @@ class HeaderModel
 
     void update() {
         // number = c->getMemberService()->getMy()->getNumber();
-        number = c->getGPS()->getCountSatellites();
+        number++;// = c->getGPS()->getCountSatellites();
         power = c->getServer()->getPowerLevel();
         memory = c->getServer()->getAvailableMemory();
     }

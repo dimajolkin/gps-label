@@ -14,11 +14,17 @@ class Lan {
     RF24 *radio;
     LanConfig *config;
     bool isInit = false;
+    InterruptIn *irq;
 
   public:
-    Lan(PinName mosi, PinName miso, PinName sck, PinName _cepin, PinName _csnpin, Storage *storage) {
+    Lan(PinName mosi, PinName miso, PinName sck, PinName _cepin, PinName _csnpin, PinName _irq, Storage *storage) {
         radio = new RF24(mosi, miso, sck, _cepin, _csnpin);
         config = new LanConfig(storage);
+        irq = new InterruptIn(_irq);
+    }
+
+    void setOnInterrup(Callback<void()> func) {
+        irq->fall(func);
     }
 
     uint8_t getCountChanels() {
@@ -42,6 +48,8 @@ class Lan {
         radio->setRetries(0, 15);     //(время между попыткой достучаться, число попыток)
         radio->setPayloadSize(32);     //размер пакета, в байтах
         radio->openReadingPipe(1, address);      //хотим слушать трубу 0
+        // radio->openWritingPipe(address);
+        
         radio->setChannel(40);  //выбираем канал (в котором нет шумов!)
         radio->setPALevel(RF24_PA_HIGH); //уровень мощности передатчика. На выбор RF24_PA_MIN, RF24_PA_LOW, RF24_PA_HIGH, RF24_PA_MAX
         radio->setDataRate(RF24_1MBPS); //скорость обмена. На выбор RF24_2MBPS, RF24_1MBPS, RF24_250KBPS
@@ -49,10 +57,10 @@ class Lan {
         //при самой низкой скорости имеем самую высокую чувствительность и дальность!!
         // radio->printDetails();
 
-        // thread_sleep_for(1000);
-
+        
+        radio->maskIRQ(1, 1, 0);
         radio->powerUp(); //начать работу
-        // radio->maskIRQ(true, true, true);
+        
         radio->startListening();  //начинаем слушать эфир, мы приёмный модуль
         isInit = true;
     }

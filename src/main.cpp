@@ -11,32 +11,10 @@
 #include "board/hardware/storage/storage.h"
 #include "board/hardware/keyboard/keyboard.h"
 #include "board/hardware/battery/battery.h"
+#include "board/hardware/led/led.h"
 #include "board/board.h"
 #include "app/container.h"
 #include "runtime.h"
-
-// RF24 *radio = container->getLan()->getRadio();
-//
-// InterruptIn irq(PB_4);
-//
-// uint32_t c = 0;
-
-// https://github.com/nRF24/RF24/blob/master/examples/InterruptConfigure/InterruptConfigure.ino
-// void interruptHandler()
-// {
-
-//   bool tx_ds, tx_df, rx_dr;
-//   radio->whatHappened(tx_ds, tx_df, rx_dr);
-
-//   container->getLogger()->printf("c %i \n", c++);
-//   // container->getLogger()->printf("tdata_sent %i \n", tx_ds);
-//   // container->getLogger()->printf("data_fail %i \n", tx_df);
-//   // container->getLogger()->printf("data_ready %i \n", rx_dr);
-
-//   // if (tx_df) {
-//   //   radio->flush_tx();
-//   // }
-// }
 
 #ifdef APP_DEBUG_GPS
 void debugGPS()
@@ -77,11 +55,13 @@ int main()
   Board board(
       new Display(SPI_MOSI, SPI_MISO, SPI_SCK, TFT_CS, TFT_DC, TFT_RST),
       new Keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK),
-      new Lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP, &storage),
+      new Lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP, RADIO_IRQ, &storage),
       &storage,
       new Battery(BATTERY_MIN_VOLTAGE, BATTERY_MAX_VOLTAGE, BATTERY_REF_VOLTAGE, BATTERY_DIVIDER_RATION, BATTERY_PIN),
       new Server(),
-      new GPSDevice(GPO_GPS_RX, GPO_GPS_TX));
+      new GPSDevice(GPS_RX, GPS_TX),
+      new Led(LED_PIN)
+  );
 
   Container container(&board);
 

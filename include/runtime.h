@@ -8,6 +8,7 @@ class AppRuntime
 private:
   Container *container;
   App *app;
+  uint8_t c = 0;
   
 public:
   
@@ -26,14 +27,16 @@ public:
     while (true)
     {
       container->getServer()->setPowerLevel(container->getBattery()->level());
-      thread_sleep_for(1000);
+      thread_sleep_for(5000);
     }
   }
 
-  void onKeyPressed(Keyboard::KEY key)
-  {
-    // led = !led;
-    app->onClick(key);
+  void lanInterruptHandler() {
+      // auto radio = container->getLanIn()->getRadio();
+      // bool tx_ds, tx_df, rx_dr;
+      // radio->whatHappened(tx_ds, tx_df, rx_dr);
+
+      container->getBoard()->getLed()->toggle();
   }
 
   AppRuntime(Container *container) : container(container)
@@ -49,17 +52,14 @@ public:
     
     this->app->init();
 
-    container->getTaskManager()->registerGps(callback(this, &AppRuntime::taskReadGps));
-    container->getTaskManager()->registerBattery(callback(this, &AppRuntime::taskBattry));
+    // container->getTaskManager()->registerGps(callback(this, &AppRuntime::taskReadGps));
+    // container->getTaskManager()->registerBattery(callback(this, &AppRuntime::taskBattry));
 
-    // Thread thread;
-    // thread.start(onMembersStart);
-    // irq.fall(&interruptHandler);
+    container->getLanIn()->setOnInterrup(callback(this, &AppRuntime::lanInterruptHandler));
 
     while (true)
     {
       container->getLogger()->dispatch();
-      // led = !led;
       thread_sleep_for(100);
     }
   }
