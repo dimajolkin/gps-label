@@ -16,9 +16,12 @@ class Storage
 {
 private:
     EEPROM *eeprom;
-
+    PinName sda;
+    PinName scl;
 public:
-    Storage(PinName sda, PinName scl)
+    Storage(PinName sda, PinName scl): sda(sda), scl(scl) {}
+
+    void init()
     {
         eeprom = new EEPROM(sda, scl, 0x00, EEPROM::T24C256);
     }

@@ -83,8 +83,9 @@ public:
             return gps->isInit();
         }); 
         
+        
         auto storage = this->board->getStorage();
-        this->loading("FLASH", [this, storage] {
+        this->loading("FLASH", callback(storage, &Storage::init), [this, storage] {
             storage->write(200, 12);
             if (storage->read(200) == 12) {
                 storage->write(200, 0);
