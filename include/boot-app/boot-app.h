@@ -84,24 +84,24 @@ public:
         }); 
         
         
-        auto storage = this->board->getStorage();
-        this->loading("FLASH", callback(storage, &Storage::init), [this, storage] {
-            storage->write(200, 12);
-            if (storage->read(200) == 12) {
-                storage->write(200, 0);
-                return true;
-            }
+        // auto storage = this->board->getStorage();
+        // this->loading("FLASH", callback(storage, &Storage::init), [this, storage] {
+        //     storage->write(200, 12);
+        //     if (storage->read(200) == 12) {
+        //         storage->write(200, 0);
+        //         return true;
+        //     }
 
-            return false;
-        });
+        //     return false;
+        // });
 
-        auto lan = this->board->getLanIn();
-        Thread t;
-        t.start(callback(lan, &Lan::init));
-        this->loading("LAN-IN", [this, lan] {
-            return lan->isEnable();
-        });
-        t.join();
+        // auto lan = this->board->getLanIn();
+        // Thread t;
+        // t.start(callback(lan, &Lan::init));
+        // this->loading("LAN-IN", [this, lan] {
+        //     return lan->isEnable();
+        // });
+        // t.join();
         display->printf("SUCCESS");
     }
 };

@@ -15,7 +15,7 @@
 #define RADIO_SPI_MISO PB_14
 #define RADIO_SPI_SCK PB_13
 
-#define RADIO_CE PB_9
+#define RADIO_CE PA_9
 #define RADIO_CSP PA_8
 #define RADIO_IRQ PA_12
  
@@ -25,8 +25,8 @@
 #define GPS_TX PB_6
 #define GPS_RX PB_7
 
-#define BTN_RIGHT PA_0
-#define BTN_LEFT PA_4
+#define BTN_RIGHT PA_4
+#define BTN_LEFT PA_0
 #define BTN_UP PC_15
 #define BTN_DOWN PA_3
 #define BTN_OK PC_14
