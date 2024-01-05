@@ -15,7 +15,7 @@
 // #include "board/board.h"
 // #include "app/container.h"
 // #include "runtime.h"
-
+#include "ui/ui.h"
 
 
 #define WIDTH 240
@@ -86,12 +86,14 @@ int main()
   keyboard.init();
   keyboard.onKeyPress(callback(onClick));
 
-  // run example
-  lv_example_get_started_1();
+  ui_init();
 
-  lv_obj_t * spinner = lv_spinner_create(lv_scr_act(), 1000, 60);
-    lv_obj_set_size(spinner, 100, 100);
-    lv_obj_center(spinner);
+  // run example
+  // lv_example_get_started_1();
+
+  //lv_obj_t * spinner = lv_spinner_create(lv_scr_act(), 1000, 60);
+  //lv_obj_set_size(spinner, 100, 100);
+  //lv_obj_center(spinner);
 
 
 
