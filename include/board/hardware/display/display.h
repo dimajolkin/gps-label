@@ -52,6 +52,16 @@ public:
         setTextColor(prevColor);
     }
 
+    void flush(int16_t x1, int16_t y1, int16_t x2, int16_t y2, lv_color_t* color_p)
+    {
+        display->flush(x1, y1, x2, y2, color_p);
+
+        // tft.startWrite();
+        // tft.setAddrWindow( area->x1, area->y1, w, h );
+        // tft.pushColors( ( uint16_t * )&color_p->full, w * h, true );
+        // tft.endWrite();
+    }
+
     inline void setTextCursor(int16_t x, int16_t y)
     {
         display->setTextCursor(x + window->x0, y + +window->y0);

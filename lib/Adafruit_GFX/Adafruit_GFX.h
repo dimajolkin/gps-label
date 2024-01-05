@@ -22,6 +22,7 @@ All text above must be included in any redistribution
 
 #include "Adafruit_GFX_Config.h"
 #include "mbed.h"
+#include "lvgl.h"
 #include "stdint.h"
 
 static inline void swap(int16_t &a, int16_t &b)

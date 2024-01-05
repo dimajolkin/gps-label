@@ -631,6 +631,32 @@ void Adafruit_ST7735::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
   _cs = 1;
 }
 
+
+
+// fill a rectangle
+void Adafruit_ST7735::flush(int16_t x1, int16_t y1, int16_t x2, int16_t y2, lv_color_t* color)
+{
+  // rudimentary clipping (drawChar w/big text requires this)
+  uint32_t w = ( x2 - x1 + 1 );
+  uint32_t h = ( y2 - y1 + 1 );
+
+  setAddrWindow(x1, y1, x2, y2);
+
+  _rs = 1;
+  _cs = 0;
+  for (y1 = h; y1 > 0; y1--) {
+    for (x1 = w; x1 > 0; x1--) {
+      lcdPort.fastWrite(color->full >> 8);
+      lcdPort.fastWrite(color->full);
+      color++;
+    }
+  }
+ 
+  lcdPort.clearRX();
+  _cs = 1;
+}
+
+
 // Pass 8-bit (each) R,G,B, get back 16-bit packed color
 uint16_t Adafruit_ST7735::Color565(uint8_t r, uint8_t g, uint8_t b) {
   return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
