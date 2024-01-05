@@ -29,6 +29,11 @@ public:
         
     }
 
+    bool isPressed(Keyboard::KEY key)
+    {
+        return keys[key]->isPressed();
+    }
+
     void onKeyPress(Callback<void(Keyboard::KEY)> onKeyPressed)
     {
         _onKeyPressed = onKeyPressed;

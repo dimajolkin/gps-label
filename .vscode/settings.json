@@ -3,6 +3,8 @@
         "atomic": "cpp",
         "*.tcc": "cpp",
         "istream": "cpp",
-        "ostream": "cpp"
-    }
+        "ostream": "cpp",
+        "lv_group.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "enabled"
 }

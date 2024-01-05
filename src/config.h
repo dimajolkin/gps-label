@@ -7,9 +7,9 @@
 #define TFT_RST PB_1
 #define TFT_DC PB_0
 
-#define SPI_MOSI PA_7
-#define SPI_MISO PA_6
-#define SPI_SCK PA_5
+#define APP_SPI_MOSI PA_7
+#define APP_SPI_MISO PA_6
+#define APP_SPI_SCK PA_5
 
 #define RADIO_SPI_MOSI PB_15
 #define RADIO_SPI_MISO PB_14
