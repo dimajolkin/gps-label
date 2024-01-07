@@ -21,6 +21,7 @@ public:
         void (*flush_cb)(struct _lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p)
     ) {
         disp->init();
+        thread_sleep_for(100);
         lv_init();       
     
         static lv_disp_draw_buf_t disp_buf;
@@ -35,8 +36,6 @@ public:
         lv_disp_drv_init(&disp_drv);            /*Basic initialization*/
         disp_drv.draw_buf = &disp_buf;          /*Set an initialized buffer*/
         disp_drv.flush_cb = flush_cb;        /*Set a flush callback to draw to the display*/
-        // const auto _disp = disp;
-
 
         disp_drv.hor_res = disp->width();                 /*Set the horizontal resolution in pixels*/
         disp_drv.ver_res = disp->height();                 /*Set the vertical resolution in pixels*/
