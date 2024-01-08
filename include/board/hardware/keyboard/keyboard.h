@@ -13,7 +13,7 @@ private:
     Thread thread;
 
 public:
-    enum KEY {UP, DOWN, LEFT, RIGHT, OK};
+    enum KEY {UP, DOWN, LEFT, RIGHT, OK, NONE};
 private:
     Callback<void(Keyboard::KEY)> _onKeyPressed;
 public:
@@ -32,6 +32,28 @@ public:
     bool isPressed(Keyboard::KEY key)
     {
         return keys[key]->isPressed();
+    }
+
+    bool isPressed()
+    {
+        for (uint8_t keyCode = 0; keyCode < SIZE; keyCode++)
+        {
+            if (keys[keyCode]->isPressed()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    Keyboard::KEY lastKey() {
+        for (uint8_t keyCode = 0; keyCode < SIZE; keyCode++)
+        {
+            if (keys[keyCode]->isPressed()) {
+                return KEY(keyCode);
+            }
+        }
+
+        return KEY::NONE;
     }
 
     void onKeyPress(Callback<void(Keyboard::KEY)> onKeyPressed)

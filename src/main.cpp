@@ -16,6 +16,7 @@
 // #include "board/board.h"
 // #include "app/container.h"
 // #include "runtime.h"
+#include "app/screen/BaseScreen.h"
 #include "app/screen/TestScreen.h"
 
 #define WIDTH 240
@@ -29,15 +30,15 @@ FileHandle *mbed::mbed_override_console(int)
     return &custom_target_console;
 }
 
-void lv_ticker_func();
-void keypad_read(lv_indev_drv_t *indev, lv_indev_data_t *data);
+void lvTickerFunc();
+void onKeypadRead(lv_indev_drv_t *indev, lv_indev_data_t *data);
 
 LVGLDisplay display(new Display(APP_SPI_MOSI, APP_SPI_MISO, APP_SPI_SCK, TFT_CS, TFT_DC, TFT_RST));
 
 Keyboard keyboard(BTN_UP, BTN_DOWN, BTN_LEFT, BTN_RIGHT, BTN_OK);
 LVGLKeypad keypad(&keyboard);
 
-TestScreen *screen;
+BaseScreen *screen;
 
 
 void my_print(const char * buf)
@@ -57,15 +58,10 @@ int main()
 
   lv_log_register_print_cb( my_print );
 
-  keypad.init();
+  keypad.init(onKeypadRead);
+
   printf("Hello world!!");
   debug("Hello world");
-
-  // lv_indev_drv_t indev_drv;                       //Descriptor of an input device driver
-  // lv_indev_drv_init(&indev_drv);                  //Basic initialization
-  // indev_drv.type = LV_INDEV_TYPE_KEYPAD;         //The touchpad is pointer type device
-  // indev_drv.read_cb = keypad_read;              //Set the touchpad_read function
-  // auto input = lv_indev_drv_register(&indev_drv);              //Register touch driver in LvGL
 
   screen = new TestScreen(
     lv_scr_act(),
@@ -101,12 +97,12 @@ int main()
   // AppRuntime runtime(&container);
   // runtime.run();
   while(true) {
-    lv_ticker_func();
+    lvTickerFunc();
     thread_sleep_for(5);
   }
 }
 
-void lv_ticker_func() {
+void lvTickerFunc() {
     lv_tick_inc(LVGL_TICK); 
     //Call lv_tick_inc(x) every x milliseconds in a Timer or Task (x should be between 1 and 10). 
     //It is required for the internal timing of LittlevGL.
@@ -116,27 +112,15 @@ void lv_ticker_func() {
 }
 
 
-void keypad_read(lv_indev_drv_t *indev, lv_indev_data_t *data)
+void onKeypadRead(lv_indev_drv_t *indev, lv_indev_data_t *data)
 {
-    if (keyboard.isPressed(Keyboard::KEY::UP)) {
-      data->key = LV_KEY_PREV;
-      data->state = LV_INDEV_STATE_PRESSED;
-    } else if (keyboard.isPressed(Keyboard::KEY::DOWN)) {
-      data->key = LV_KEY_NEXT;
-      data->state = LV_INDEV_STATE_PRESSED;
-    } else if (keyboard.isPressed(Keyboard::KEY::LEFT)) {
-      data->key = LV_KEY_LEFT;
-      data->state = LV_INDEV_STATE_PRESSED;
-    } else if (keyboard.isPressed(Keyboard::KEY::RIGHT)) {
-      data->key = LV_KEY_RIGHT;
-      data->state = LV_INDEV_STATE_PRESSED;
-    } else if (keyboard.isPressed(Keyboard::KEY::OK)) {
-      data->key = LV_KEY_ENTER;
-      data->state = LV_INDEV_STATE_PRESSED;
-    } else {
-      // data->key = NULL;
-      data->state = LV_INDEV_STATE_RELEASED;
-    }
+  if (keyboard.isPressed()) {
+    auto lastKey = keyboard.lastKey();
+    data->key = screen->onKeypadRead(lastKey);
+    data->state = LV_INDEV_STATE_PRESSED;
+  } else {
+    data->state = LV_INDEV_STATE_RELEASED;
+  }
 }
 
 
