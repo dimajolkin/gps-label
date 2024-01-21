@@ -3,8 +3,6 @@
 #include "mbed.h"
 #include <TinyGPSplus.h>
 
-// using namespace mbed;
-
 class GPSData  {
     public:
         double lat;
@@ -59,27 +57,4 @@ class GPSDevice {
                 }
             }
         }
-
-//         void TimePrint()
-// {
-//   if (gps.time.isValid())
-//   {
-//     if (gps.time.hour() < 10)
-//       Serial.print(F("0"));
-//     Serial.print(gps.time.hour());
-//     Serial.print(F(":"));
-//     if (gps.time.minute() < 10)
-//       Serial.print(F("0"));
-//     Serial.print(gps.time.minute());
-//     Serial.print(F(":"));
-//     if (gps.time.second() < 10)
-//       Serial.print(F("0"));
-//     Serial.print(gps.time.second());
-//     Serial.print(F(" "));
-//   }
-//   else
-//   {
-//     Serial.print(F("(unknown)"));
-//   }
-// }
 };
