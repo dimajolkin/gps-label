@@ -1,3 +1,4 @@
+#define LV_USE_LOG 0
 
 // #define APP_DEBUG_BATTERY
 #include "mbed.h"
@@ -19,6 +20,7 @@
 #include "app/screen/BaseScreen.h"
 #include "app/screen/TestScreen.h"
 #include "app/screen/LogScreen.h"
+
 
 #define WIDTH 240
 #define HEIGHT 320
