@@ -6,5 +6,6 @@
 4. <strike>Придумать как организовать работу с фоновыми задачами</strike>
 5. Разобраться с возможностью получать и отправлять пакеты через 1 устройство
 
+https://easyeda.com/editor#id=8e8ea6e64add45f4a1ae954bbd99bab1|8f3bc9c5c7bb4b5dbef7381df7b42c6e
 
 ![Схема](docs/image/board.png)
