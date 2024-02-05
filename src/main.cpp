@@ -34,7 +34,7 @@ FileHandle *mbed::mbed_override_console(int)
 }
 
 void lvTickerFunc();
-void onKeypadRead(lv_indev_drv_t *indev, lv_indev_data_t *data);
+void onKeypadRead(lv_indev_t * indev, lv_indev_data_t * data);
 
 LVGLDisplay display(new Display(APP_SPI_MOSI, APP_SPI_MISO, APP_SPI_SCK, TFT_CS, TFT_DC, TFT_RST));
 
@@ -47,7 +47,7 @@ Lan lan = Lan(RADIO_SPI_MOSI, RADIO_SPI_MISO, RADIO_SPI_SCK, RADIO_CE, RADIO_CSP
 Led led = Led(LED_PIN);
 
 
-LogScreen *screen;
+TestScreen *screen;
 
 #if LV_USE_LOG
 void my_print(const char * buf)
@@ -56,7 +56,7 @@ void my_print(const char * buf)
 }
 #endif
 
-void my_disp_flush_cb(lv_disp_drv_t* disp_drv, const lv_area_t* area, lv_color_t* color_p)
+void my_disp_flush_cb(lv_display_t* disp_drv, const lv_area_t* area, lv_color_t* color_p)
 {
     display.flush(disp_drv, area, color_p);
 }
@@ -69,7 +69,7 @@ int main()
   lv_log_register_print_cb( my_print );
   #endif
 
-  keypad.init(onKeypadRead);
+  // keypad.init(onKeypadRead);
   gps.init();
   storage.init();
 
@@ -77,12 +77,12 @@ int main()
   printf("Hello world!!");
   debug("Hello world");
 
-  // screen = new TestScreen(
-  //   lv_scr_act(),
-  //   &keypad
-  // );
+  screen = new TestScreen(
+    lv_scr_act(),
+    &keypad
+  );
 
-  screen = new LogScreen(lv_scr_act(), &keypad);
+  // screen = new LogScreen(lv_scr_act(), &keypad);
 
   screen->init();
 
@@ -111,10 +111,10 @@ int main()
     lvTickerFunc();
     thread_sleep_for(1);
 
-    if (serial->read(&read_buffer, sizeof(char))) {
+    // if (serial->read(&read_buffer, sizeof(char))) {
       // debug(&read_buffer[0]);
-      screen->update(read_buffer[0]);
-    }
+      // screen->update(read_buffer[0]);
+    // }
   }
 }
 
@@ -128,15 +128,15 @@ void lvTickerFunc() {
 }
 
 
-void onKeypadRead(lv_indev_drv_t *indev, lv_indev_data_t *data)
+void onKeypadRead(lv_indev_t *indev, lv_indev_data_t *data)
 {
-  if (keyboard.isPressed()) {
-    auto lastKey = keyboard.lastKey();
-    data->key = screen->onKeypadRead(lastKey);
-    data->state = LV_INDEV_STATE_PRESSED;
-  } else {
-    data->state = LV_INDEV_STATE_RELEASED;
-  }
+  // if (keyboard.isPressed()) {
+  //   auto lastKey = keyboard.lastKey();
+  //   data->key = screen->onKeypadRead(lastKey);
+  //   data->state = LV_INDEV_STATE_PRESSED;
+  // } else {
+  //   data->state = LV_INDEV_STATE_RELEASED;
+  // }
 }
 
 

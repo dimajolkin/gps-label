@@ -19,14 +19,15 @@ public:
 
     void init()
     {
-        textarea = lv_textarea_create(screen);
-        lv_obj_set_size(textarea, LV_HOR_RES, LV_VER_RES);
-        lv_obj_set_pos(textarea, 0, 0);
+        // textarea = lv_textarea_create(screen);
+        // lv_obj_set_size(textarea, LV_HOR_RES, 100);
+        // lv_obj_set_pos(textarea, 0, 0);
     }
 
     void update(char c) 
     {
-        lv_textarea_add_char(textarea, c);
+        // lv_textarea_add_char(textarea, c);
+        
     }
 
 
